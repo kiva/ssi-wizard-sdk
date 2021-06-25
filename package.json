@@ -3,6 +3,8 @@
     "version": "0.0.1",
     "private": true,
     "dependencies": {
+        "@material-ui/core": "^4.11.4",
+        "@material-ui/icons": "^4.11.2",
         "@testing-library/jest-dom": "^5.14.1",
         "@testing-library/react": "^11.2.7",
         "@testing-library/user-event": "^12.8.3",
@@ -10,9 +12,11 @@
         "@types/node": "^12.20.15",
         "@types/react": "^17.0.11",
         "@types/react-dom": "^17.0.8",
+        "axios": "^0.21.1",
+        "classnames": "^2.3.1",
+        "node-sass": "^6.0.1",
         "react": "^17.0.2",
         "react-dom": "^17.0.2",
-        "react-scripts": "4.0.3",
         "typescript": "^4.3.4",
         "web-vitals": "^1.1.2"
     },
@@ -42,7 +46,9 @@
     },
     "description": "An open-source package to streamline the creation of Verifiable Credential transaction UIs",
     "main": "index.js",
-    "devDependencies": {},
+    "devDependencies": {
+        "react-scripts": "4.0.3"
+    },
     "keywords": [],
     "author": "Kiva Microfunds",
     "license": "https://github.com/kiva/protocol-sdk-verifier/blob/main/LICENSE"
