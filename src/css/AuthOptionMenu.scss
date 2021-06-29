@@ -1,0 +1,60 @@
+@import "mixins/_fonts";
+@import "mixins/_colors";
+
+#auth_option_menu {
+    max-width: 1000px;
+    align-self: center;
+    margin: 0 auto;
+    .auth_instructions {
+        justify-content: center;
+        margin: 10px auto;
+    }
+    #auth_options {
+        justify-content: space-evenly;
+        .auth_option {
+            width: 300px;
+            justify-content: space-between;
+            flex-direction: column;
+            margin: 0 20px;
+            > div {
+                padding-top: 0;
+            }
+            h2 {
+                font-size: 1.75rem;
+            }
+            &::before {
+                content: "";
+                height: 25px;
+                padding: 2px 0 5px 10px;
+                margin-bottom: 10px;
+            }
+        }
+        .recommended {
+            &::before {
+                content: "Recommended";
+                background: $primary-color;
+                color: $secondary-color;
+                width: 130px;
+                border-radius: 0 0 20px 0;
+                font-weight: 500;
+            }
+        }
+        .selected {
+            border: 2px solid $primary-color;
+        }
+    }
+    .radio-container {
+        background: $secondary-color;
+        * {
+            margin: 0 auto;
+        }
+    }
+}
+
+#select-auth-method {
+    @include the-font;
+    background: $primary-color;
+    color: $primary-offset;
+    width: 300px;
+    margin: 40px auto;
+}
