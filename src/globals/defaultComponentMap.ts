@@ -1,5 +1,5 @@
 import {ComponentMap} from '../interfaces/FlowRouterInterfaces';
-console.log(__dirname);
+
 export const defaultComponentMap: ComponentMap = {
     confirmation: {
         path: '/commonComponents/ConfirmationScreen',
