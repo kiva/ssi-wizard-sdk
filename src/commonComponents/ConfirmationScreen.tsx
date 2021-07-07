@@ -7,40 +7,38 @@ import Typography from '@material-ui/core/Typography';
 import '../css/Common.scss';
 import '../css/ConfirmationScreen.scss';
 
-import {CredentialKeyFieldsProps, CredentialKeyFieldState, ConfirmationProps} from '../interfaces/ConfirmationInterfaces';
+import { CredentialKeyFieldsProps, CredentialKeyFieldState, ConfirmationProps } from '../interfaces/ConfirmationInterfaces';
 
 import FlowDispatchContext from '../contexts/FlowDispatchContext';
 import FlowDispatchTypes from '../enums/FlowDispatchTypes';
 
-export default class ConfirmationScreen extends React.Component<ConfirmationProps> {
+import React, { useState, useRef } from 'react';
 
-    static contextType = FlowDispatchContext;
-
-    consent = (): void => {
-        const dispatch = this.context();
+export default function ConfirmationScreen = (props: ConfirmationProps) => {
+    const consent = (): void => {
         const type: string = FlowDispatchTypes.NEXT;
-        dispatch({type});
-    }
+        props.dispatch({ type });
+    };
 
-    render() {
-        return <div className="Confirmation screen">
+    return (
+        <div className="Confirmation screen">
             <Grid container
                 direction="column"
                 justify="center"
                 alignItems="center">
                 <Grid item>
                     <Typography component="h2" variant="h6" gutterBottom>
-                        {this.props.reviewText}
+                        {consent.props.reviewText}
                     </Typography>
                 </Grid>
             </Grid>
             <div className="legal-terms-section">
                 <div className="legal-terms1">
-                    <p>{this.props.agreement}</p>
+                    <p>{consent.props.agreement}</p>
 
-                    <p>{this.props.info_includes}</p>
+                    <p>{consent.props.info_includes}</p>
                 </div>
-                <PII fields={this.props.CONSTANTS.credentialKeyMap} />
+                <PII fields={consent.props.CONSTANTS.credentialKeyMap} />
             </div>
             <Grid container
                 direction="row"
@@ -49,50 +47,38 @@ export default class ConfirmationScreen extends React.Component<ConfirmationProp
                 <Grid item>
                     <Button
                         className="accept"
-                        onClick={() => this.consent()}>
-                        {this.props.buttonText}
+                        onClick={() => consent()}>
+                        {consent.props.buttonText}
                     </Button>
                 </Grid>
             </Grid>
         </div>;
-    }
-}
+    );
 
-class PII extends React.Component<CredentialKeyFieldsProps, CredentialKeyFieldState> {
-    constructor(props: any) {
-        super(props);
-        this.state = this.delegateLabels();
-    }
 
-    delegateLabels(): CredentialKeyFieldState {
-        const columnOne: string[] = [];
-        const columnTwo: string[] = [];
-        const fields = this.props.fields;
+    function PII = (props: CredentialKeyFieldProps, CredentialKeyFieldState) => {
+        const labels = useRef<CredentialKeyFieldState>(delegateLabels());
 
-        let i = 0;
-        for (let field in fields) {
-            let currentArray = i % 2 === 0 ? columnOne : columnTwo;
-            currentArray.push(fields[field].name);
-            i++;
+        function delegateLabels(): CredentialKeyFieldState {
+            const columnOne: string[] = [];
+            const columnTwo: string[] = [];
+            let i = 0;
+            for (let field in fields) {
+                let currentArray = i % 2 === 0 ? columnOne : columnTwo;
+                currentArray.push(fields[field].name);
+                i++;
+                return { columnOne, columnTwo };
+            };
+
+            return (
+                <div className="legal-terms2">
+                    <ul>{labels.current.columnOne.map(field => {
+                        return <li key={field}>{field}</li>
+                    })}</ul>
+                    <ul>{labels.current.columnTwo.map(field => {
+                        return <li key={field}>{field}</li>
+                    })}</ul>
+                </div>
+            );
         }
-
-        return {columnOne, columnTwo};
     }
-
-    renderFields() {
-        return (
-            <div className="legal-terms2">
-                <ul>{this.state.columnOne.map(field => {
-                    return <li key={field}>{field}</li>
-                })}</ul>
-                <ul>{this.state.columnTwo.map(field => {
-                    return <li key={field}>{field}</li>
-                })}</ul>
-            </div>
-        );
-    }
-
-    render() {
-        return this.renderFields();
-    }
-}

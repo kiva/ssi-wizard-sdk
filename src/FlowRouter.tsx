@@ -62,15 +62,21 @@ const FlowController: React.FC<IConstants> = (CONSTANTS: IConstants) => {
     }
 
     return (
-        <FlowDispatchContext.Provider value={() => dispatch}>
+       
             <Suspense fallback="">
                 <div className="KernelContainer">
                     <div className="KernelContent" data-cy={step}>
-                        <TheComponent {...componentMap[step].props} CONSTANTS={CONSTANTS} store={componentStoreMethods} prevScreen={prevStep} authIndex={authIndex} />
+                        <TheComponent 
+                            {...componentMap[step].props} 
+                            CONSTANTS={CONSTANTS} 
+                            store={componentStoreMethods} 
+                            prevScreen={prevStep} 
+                            authIndex={authIndex}
+                            dispatch={dispatch} />
                     </div>
                 </div>
             </Suspense>
-        </FlowDispatchContext.Provider> 
+      
     );
 }
 
