@@ -1,5 +1,5 @@
-@import "mixins/_fonts";
-@import "mixins/_colors";
+@import 'mixins/_fonts.scss';
+@import 'mixins/_colors.scss';
 
 .VerificationRequirement {
     &.screen {
@@ -23,5 +23,5 @@
 }
 
 .MuiFormControl-root.form-control {
-  min-width: 200px;
+    min-width: 200px;
 }

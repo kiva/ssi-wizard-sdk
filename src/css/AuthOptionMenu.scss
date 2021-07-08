@@ -1,5 +1,5 @@
-@import "mixins/_fonts";
-@import "mixins/_colors";
+@import 'mixins/_fonts.scss';
+@import 'mixins/_colors.scss';
 
 #auth_option_menu {
     max-width: 1000px;
@@ -23,7 +23,7 @@
                 font-size: 1.75rem;
             }
             &::before {
-                content: "";
+                content: '';
                 height: 25px;
                 padding: 2px 0 5px 10px;
                 margin-bottom: 10px;
@@ -31,7 +31,7 @@
         }
         .recommended {
             &::before {
-                content: "Recommended";
+                content: 'Recommended';
                 background: $primary-color;
                 color: $secondary-color;
                 width: 130px;

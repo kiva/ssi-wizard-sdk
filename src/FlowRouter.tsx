@@ -5,7 +5,11 @@ import {Flow} from './interfaces/FlowSelectorInterfaces';
 import {IConstants} from './interfaces/IConstants';
 import {defaultComponentMap} from './globals/defaultComponentMap';
 
-import {ComponentStoreMethods, FlowAction, ComponentMap} from './interfaces/FlowRouterInterfaces';
+import {
+    ComponentStoreMethods,
+    FlowAction,
+    ComponentMap
+} from './interfaces/FlowRouterInterfaces';
 import useComponentStore from './hooks/useComponentStore';
 import getFlow from './helpers/getFlow';
 
@@ -13,20 +17,26 @@ const FlowController: React.FC<IConstants> = (CONSTANTS: IConstants) => {
     const componentMap: ComponentMap = defaultComponentMap;
     const [step, setStep] = useState('confirmation');
 
-    let authIndex: number = 0,
+    let authIndex = 0,
         theFlow: Flow = getFlow(authIndex, CONSTANTS);
 
     function dispatch(action: FlowAction) {
         const {type, payload} = action;
 
-        if (!theFlow.hasOwnProperty(step)) throw new Error(`Referenced step '${step}' does not exist in the flow`);
+        if (!theFlow.hasOwnProperty(step))
+            throw new Error(
+                `Referenced step '${step}' does not exist in the flow`
+            );
 
         switch (type) {
             case FlowDispatchTypes.NEXT:
                 setStep(theFlow[step]![FlowDispatchTypes.NEXT]);
                 break;
             case FlowDispatchTypes.BACK:
-                if (theFlow.hasOwnProperty(step) && theFlow[step]!.hasOwnProperty(FlowDispatchTypes.BACK)) {
+                if (
+                    theFlow.hasOwnProperty(step) &&
+                    theFlow[step]!.hasOwnProperty(FlowDispatchTypes.BACK)
+                ) {
                     setStep(theFlow[step]![FlowDispatchTypes.BACK]!);
                 }
                 break;
@@ -38,9 +48,10 @@ const FlowController: React.FC<IConstants> = (CONSTANTS: IConstants) => {
                 if ('menu' === step) {
                     authIndex = payload;
                     theFlow = getFlow(payload, CONSTANTS);
-                    console.log(theFlow);
                 } else {
-                    throw new Error('Please don\'t try to set the authentication method from outside the Authentication Menu screen');
+                    throw new Error(
+                        "Please don't try to set the authentication method from outside the Authentication Menu screen"
+                    );
                 }
                 break;
             default:
@@ -48,15 +59,17 @@ const FlowController: React.FC<IConstants> = (CONSTANTS: IConstants) => {
         }
     }
 
-    const prevStep: string = theFlow[step]![FlowDispatchTypes.BACK] ?? '';
-
-    let TheComponent = renderScreen(step);
-    let componentStoreMethods: ComponentStoreMethods = useComponentStore(step);
+    const prevStep: string = theFlow[step]![FlowDispatchTypes.BACK]! ?? '';
+    const TheComponent = renderScreen(step);
+    const componentStoreMethods: ComponentStoreMethods =
+        useComponentStore(step);
 
     function renderScreen(step: string) {
         Object.assign(componentMap, CONSTANTS.component_map);
 
-        const component: any = React.lazy(() => import(__dirname + componentMap[step]!.path));
+        const component: any = React.lazy(
+            () => import(__dirname + componentMap[step]!.path)
+        );
 
         return component;
     }
@@ -66,12 +79,18 @@ const FlowController: React.FC<IConstants> = (CONSTANTS: IConstants) => {
             <Suspense fallback="">
                 <div className="KernelContainer">
                     <div className="KernelContent" data-cy={step}>
-                        <TheComponent {...componentMap[step].props} CONSTANTS={CONSTANTS} store={componentStoreMethods} prevScreen={prevStep} authIndex={authIndex} />
+                        <TheComponent
+                            {...componentMap[step].props}
+                            CONSTANTS={CONSTANTS}
+                            store={componentStoreMethods}
+                            prevScreen={prevStep}
+                            authIndex={authIndex}
+                        />
                     </div>
                 </div>
             </Suspense>
-        </FlowDispatchContext.Provider> 
+        </FlowDispatchContext.Provider>
     );
-}
+};
 
 export default FlowController;
