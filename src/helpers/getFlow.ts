@@ -12,20 +12,29 @@ function getFlow(index: number, CONSTANTS: IConstants): Flow {
     return createFlow(index, options, useMenu);
 }
 
-function createFlow(index: number, options: AuthOption[], useMenu: boolean): Flow {
+function createFlow(
+    index: number,
+    options: AuthOption[],
+    useMenu: boolean
+): Flow {
     const initial: any = createInitialSteps(index, options, useMenu);
     injectAuthMethod(index, initial, options, useMenu);
 
     return initial;
 }
 
-function injectAuthMethod(index: number, flow: any, options: AuthOption[], useMenu: boolean) {
+function injectAuthMethod(
+    index: number,
+    flow: any,
+    options: AuthOption[],
+    useMenu: boolean
+) {
     const beginAt: string = useMenu ? 'menu' : 'confirmation';
     const sequence: string[] = options[index].sequence;
 
     if (!sequence.length) throw new Error('You done goofed');
 
-    let currentPoint: string = sequence[0];
+    const currentPoint: string = sequence[0];
 
     flow[beginAt][FlowDispatchTypes.NEXT] = currentPoint;
     flow[currentPoint] = {
@@ -35,10 +44,9 @@ function injectAuthMethod(index: number, flow: any, options: AuthOption[], useMe
     foldSequence(currentPoint, sequence, flow);
 }
 
-function foldSequence(currentPoint: string , sequence: string[], flow: any) {
-
+function foldSequence(currentPoint: string, sequence: string[], flow: any) {
     for (let i = 1; i < sequence.length; i++) {
-        let temp: string = currentPoint;
+        const temp: string = currentPoint;
         currentPoint = sequence[i];
 
         flow[temp][FlowDispatchTypes.NEXT] = currentPoint;
@@ -53,7 +61,11 @@ function foldSequence(currentPoint: string , sequence: string[], flow: any) {
     };
 }
 
-function createInitialSteps(index: number, options: AuthOption[], useMenu: boolean) {
+function createInitialSteps(
+    index: number,
+    options: AuthOption[],
+    useMenu: boolean
+) {
     const firstScreen = options[index].sequence[0];
     const ret: any = {
         confirmation: {
@@ -70,7 +82,7 @@ function createInitialSteps(index: number, options: AuthOption[], useMenu: boole
         ret['menu'] = {
             [FlowDispatchTypes.BACK]: 'verificationRequirement',
             [FlowDispatchTypes.NEXT]: firstScreen
-        }
+        };
     }
 
     return ret;

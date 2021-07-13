@@ -1,8 +1,9 @@
-@import "mixins/_fonts";
-@import "mixins/_buttonList";
-@import "mixins/_colors";
+@import 'mixins/_fonts.scss';
+@import 'mixins/_buttonList.scss';
+@import 'mixins/_colors.scss';
 
-#root, #dialog-box {
+#root,
+#dialog-box {
     @include the-font;
     button {
         border-radius: 24px;
@@ -21,69 +22,71 @@
     display: flex;
     flex-grow: 1;
     &.column {
-      flex-direction: column;
+        flex-direction: column;
     }
     &.row {
-      flex-direction: row;
+        flex-direction: row;
     }
 }
 
 .centered-flex-content {
-  align-items: center;
+    align-items: center;
 }
 
 .screen {
-  margin: 0 auto;
-  flex-direction: column;
-  align-items: center;
-  display: flex;
-  flex-shrink: 0;
+    margin: 0 auto;
+    flex-direction: column;
+    align-items: center;
+    display: flex;
+    flex-shrink: 0;
 
-  input {
-    width: 300px;
-    margin-top: 20px;
-    margin-bottom: 20px;
-    text-align: center;
-  }
+    input {
+        width: 300px;
+        margin-top: 20px;
+        margin-bottom: 20px;
+        text-align: center;
+    }
 }
 
 .buttonListNew {
-  @include buttonListNew;
-  padding-top: 30px;
-  &.row {
-    flex-direction: row;
-  }
-  &.stack {
-    justify-content: space-between;
-    height: 120px;
-    flex-direction: column;
-  }
-  &.tight {
-    padding: 0;
-    margin: 0;
-  }
-  &.loose * {
-    padding: 10px;
-    margin: 10px;
-  }
-  button, button:hover {
-    background-color: $primary-color;
-    color: $primary-offset;
-    &.secondary {
-      background-color: $secondary-color !important;
-      color: $secondary-offset !important;
+    @include buttonListNew;
+    padding-top: 30px;
+    &.row {
+        flex-direction: row;
     }
-  }
+    &.stack {
+        justify-content: space-between;
+        height: 120px;
+        flex-direction: column;
+    }
+    &.tight {
+        padding: 0;
+        margin: 0;
+    }
+    &.loose * {
+        padding: 10px;
+        margin: 10px;
+    }
+    button,
+    button:hover {
+        background-color: $primary-color;
+        color: $primary-offset;
+        &.secondary {
+            background-color: $secondary-color !important;
+            color: $secondary-offset !important;
+        }
+    }
 }
 
-.full-width, .full-width * {
-  width: 100%;
+.full-width,
+.full-width * {
+    width: 100%;
 }
 
 .rtl {
-  direction: rtl !important;
+    direction: rtl !important;
 }
 
 .hidden {
-  display: none !important;
+    display: none !important;
 }

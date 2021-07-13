@@ -4,8 +4,10 @@ export const defaultComponentMap: ComponentMap = {
     confirmation: {
         path: '/commonComponents/ConfirmationScreen',
         props: {
-            reviewText: 'Please have the customer review the following information',
-            agreement: 'I agree that the following personal information will be shared with this organization as part of the "Know Your Customer" verification.',
+            reviewText:
+                'Please have the customer review the following information',
+            agreement:
+                'I agree that the following personal information will be shared with this organization as part of the "Know Your Customer" verification.',
             info_includes: 'Information shared includes your:',
             buttonText: 'Accept'
         }
@@ -25,10 +27,10 @@ export const defaultComponentMap: ComponentMap = {
         path: '/commonComponents/VerificationRequirementScreen',
         props: {
             header: 'Verification Required',
-            instructions: 'Please select the requirement for verifying credentials',
+            instructions:
+                'Please select the requirement for verifying credentials',
             backButtonText: 'Back',
             nextButtonText: 'Continue'
         }
     }
 };
-

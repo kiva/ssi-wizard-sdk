@@ -1,5 +1,5 @@
-@import "mixins/_fonts";
-@import "mixins/_colors";
+@import 'mixins/_fonts.scss';
+@import 'mixins/_colors.scss';
 
 .Confirmation {
     &.screen {
@@ -16,43 +16,43 @@
 }
 
 .legal-terms-section {
-  width: 550px;
-  background-color: #FFF;
-  margin-bottom: 20px;
-  padding: 10px;
-  margin: 10px;
-  border: 2px solid $secondary-color;
-  font-family: 'Montserrat', Helvetica, sans-serif;
-
-  p {
-    padding: 0 0 10px;
-  }
-
-  .legal-terms1 {
-    max-width: 500px;
-    margin: 0 auto;
-    margin-top:10px;
-    margin-bottom: 15px;
-    strong {
-      font-weight: bold;
-      color: $primary-color;
-      text-transform: uppercase;
-    }
-  }
-
-  .legal-terms2 {
-    max-width: 500px;
-    margin: 0 auto;
-    margin-top:20px;
-    padding-bottom: 20px;
-    text-align: justify;
-    display: flex;
-    flex-direction: row;
-    justify-content: space-around;
-    align-items: center;
+    width: 550px;
+    background-color: #fff;
+    margin-bottom: 20px;
+    padding: 10px;
+    margin: 10px;
+    border: 2px solid $secondary-color;
+    font-family: 'Montserrat', Helvetica, sans-serif;
 
     p {
-        width:40%;
+        padding: 0 0 10px;
     }
-  }
+
+    .legal-terms1 {
+        max-width: 500px;
+        margin: 0 auto;
+        margin-top: 10px;
+        margin-bottom: 15px;
+        strong {
+            font-weight: bold;
+            color: $primary-color;
+            text-transform: uppercase;
+        }
+    }
+
+    .legal-terms2 {
+        max-width: 500px;
+        margin: 0 auto;
+        margin-top: 20px;
+        padding-bottom: 20px;
+        text-align: justify;
+        display: flex;
+        flex-direction: row;
+        justify-content: space-around;
+        align-items: center;
+
+        p {
+            width: 40%;
+        }
+    }
 }

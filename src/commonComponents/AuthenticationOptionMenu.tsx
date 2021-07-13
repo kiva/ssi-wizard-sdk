@@ -11,12 +11,18 @@ import classNames from 'classnames';
 import FlowDispatchContext from '../contexts/FlowDispatchContext';
 import FlowDispatchTypes from '../enums/FlowDispatchTypes';
 
-import "../css/AuthOptionMenu.scss";
+import '../css/AuthOptionMenu.scss';
 
-import {AuthOptionProps, AuthOptionState, MenuOptionProps} from "../interfaces/AuthOptionInterfaces";
+import {
+    AuthOptionProps,
+    AuthOptionState,
+    MenuOptionProps
+} from '../interfaces/AuthOptionInterfaces';
 
-export default class AuthenticationOptionMenu extends React.Component<AuthOptionProps, AuthOptionState> {
-
+export default class AuthenticationOptionMenu extends React.Component<
+    AuthOptionProps,
+    AuthOptionState
+> {
     static contextType = FlowDispatchContext;
     private dispatch: any;
 
@@ -25,7 +31,7 @@ export default class AuthenticationOptionMenu extends React.Component<AuthOption
 
         this.state = {
             optionSelected: this.props.authIndex
-        }
+        };
     }
 
     componentDidMount() {
@@ -43,26 +49,35 @@ export default class AuthenticationOptionMenu extends React.Component<AuthOption
     renderMenu() {
         return (
             <div id="auth_option_menu" className="flex-block column">
-                <Typography className="auth_instructions" component="h2" variant="h6">
+                <Typography
+                    className="auth_instructions"
+                    component="h2"
+                    variant="h6">
                     {this.props.instructions}
                 </Typography>
                 <div id="auth_options" className="flex-block row">
-                    {this.props.CONSTANTS.verification_options.map((option, idx) => {
-                        return (
-                            <MenuOption
-                                key={option.id}
-                                id={option.id}
-                                title={option.title}
-                                description={option.description}
-                                selected={idx === this.state.optionSelected}
-                                recommended={idx === 0}
-                                option_index={idx}
-                                setAuthType={this.selectOption}
-                            />
-                        );
-                    })}
+                    {this.props.CONSTANTS.verification_options.map(
+                        (option, idx) => {
+                            return (
+                                <MenuOption
+                                    key={option.id}
+                                    id={option.id}
+                                    title={option.title}
+                                    description={option.description}
+                                    selected={idx === this.state.optionSelected}
+                                    recommended={idx === 0}
+                                    option_index={idx}
+                                    setAuthType={this.selectOption}
+                                />
+                            );
+                        }
+                    )}
                 </div>
-                <Button id="select-auth-method" onClick={() => this.dispatch({type: FlowDispatchTypes.NEXT})}>
+                <Button
+                    id="select-auth-method"
+                    onClick={() =>
+                        this.dispatch({type: FlowDispatchTypes.NEXT})
+                    }>
                     {this.props.selectButtonText}
                 </Button>
             </div>
@@ -72,7 +87,6 @@ export default class AuthenticationOptionMenu extends React.Component<AuthOption
     render() {
         return this.renderMenu();
     }
-
 }
 
 class MenuOption extends React.Component<MenuOptionProps> {
@@ -82,21 +96,21 @@ class MenuOption extends React.Component<MenuOptionProps> {
                 onClick={() => this.props.setAuthType(this.props.option_index)}
                 className={classNames({
                     recommended: this.props.recommended,
-                    "flex-block": true,
+                    'flex-block': true,
                     auth_option: true,
                     selected: this.props.selected
-                })}
-            >
+                })}>
                 <CardContent>
                     <Typography component="h2" variant="h4">
                         {this.props.title}
                     </Typography>
-                    <p>
-                        {this.props.description}
-                    </p>
+                    <p>{this.props.description}</p>
                 </CardContent>
                 <CardActions className="radio-container">
-                    <MenuRadio checked={this.props.selected} inputProps={{ 'aria-label': this.props.id }} />
+                    <MenuRadio
+                        checked={this.props.selected}
+                        inputProps={{'aria-label': this.props.id}}
+                    />
                 </CardActions>
             </Card>
         );

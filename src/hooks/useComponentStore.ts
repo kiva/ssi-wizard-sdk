@@ -1,17 +1,30 @@
 import {useRef} from 'react';
-import {ComponentStoreGet, ComponentStoreSet, ComponentStoreMethods, ComponentStore} from '../interfaces/FlowRouterInterfaces';
+import {
+    ComponentStoreGet,
+    ComponentStoreSet,
+    ComponentStoreMethods,
+    ComponentStore
+} from '../interfaces/FlowRouterInterfaces';
 
 export default useComponentStore;
 
 function useComponentStore(step: string): ComponentStoreMethods {
     const componentStore = useRef<ComponentStore>(initComponentStore());
 
-    const get: ComponentStoreGet = (dataKey: string, dfault?: any, uniqueComponentKey?: string) => {
+    const get: ComponentStoreGet = (
+        dataKey: string,
+        dfault?: any,
+        uniqueComponentKey?: string
+    ) => {
         if (!uniqueComponentKey) {
             uniqueComponentKey = step;
         }
 
-        return (componentStore.current[uniqueComponentKey] && componentStore.current[uniqueComponentKey][dataKey]) ?? dfault;
+        return (
+            (componentStore.current[uniqueComponentKey] &&
+                componentStore.current[uniqueComponentKey][dataKey]) ??
+            dfault
+        );
     };
 
     const set: ComponentStoreSet = (dataKey: string, value: any) => {
