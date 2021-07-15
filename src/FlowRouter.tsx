@@ -1,6 +1,5 @@
-import React, {useState, useRef, Suspense} from 'react';
+import React, {useState, Suspense} from 'react';
 import FlowDispatchTypes from './enums/FlowDispatchTypes';
-import FlowDispatchContext from './contexts/FlowDispatchContext';
 import {Flow} from './interfaces/FlowSelectorInterfaces';
 import {IConstants} from './interfaces/IConstants';
 import {defaultComponentMap} from './globals/defaultComponentMap';
@@ -75,21 +74,20 @@ const FlowController: React.FC<IConstants> = (CONSTANTS: IConstants) => {
     }
 
     return (
-        <FlowDispatchContext.Provider value={() => dispatch}>
-            <Suspense fallback="">
-                <div className="KernelContainer">
-                    <div className="KernelContent" data-cy={step}>
-                        <TheComponent
-                            {...componentMap[step].props}
-                            CONSTANTS={CONSTANTS}
-                            store={componentStoreMethods}
-                            prevScreen={prevStep}
-                            authIndex={authIndex}
-                        />
-                    </div>
+        <Suspense fallback="">
+            <div className="KernelContainer">
+                <div className="KernelContent" data-cy={step}>
+                    <TheComponent
+                        {...componentMap[step].props}
+                        CONSTANTS={CONSTANTS}
+                        store={componentStoreMethods}
+                        prevScreen={prevStep}
+                        authIndex={authIndex}
+                        dispatch={dispatch}
+                    />
                 </div>
-            </Suspense>
-        </FlowDispatchContext.Provider>
+            </div>
+        </Suspense>
     );
 };
 

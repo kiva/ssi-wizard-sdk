@@ -10,7 +10,7 @@ export interface ConfirmationProps extends ICommonProps {
 interface CredentialKeyDefinition {
     name: string;
     rendered?: boolean;
-    dataType: string;
+    dataType?: string;
     wide?: boolean;
     alternateKey?: string;
     alternateName?: string;
@@ -27,4 +27,40 @@ export interface CredentialKeyFieldsProps {
 export interface CredentialKeyFieldState {
     columnOne: string[];
     columnTwo: string[];
+}
+
+export interface ConfirmationScreenProps extends ICommonProps {
+    header: string;
+    backButtonText: string;
+    nextButtonText: string;
+    instructions: string;
+}
+
+export interface ProofRequestProfile {
+    schema_id: string;
+    comment: string;
+    proof_request: ProofRequestDefinition;
+}
+export interface ProofRequestDefinition {
+    name: string;
+    version: string;
+    requested_attributes: RequestedAttributes;
+    requested_predicates: PredicateDefinition;
+}
+export interface RequestedAttributes {
+    [index: string]: AttributeDefinition;
+}
+
+interface AttributeDefinition {
+    name: string;
+    restrictions: any[];
+}
+interface PredicateDefinition {
+    [index: string]: PredicateInfo;
+}
+interface PredicateInfo {
+    name: string;
+    p_type: string;
+    p_value: any;
+    restrictions: any[];
 }
