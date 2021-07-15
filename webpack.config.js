@@ -2,7 +2,7 @@ const ESLintPlugin = require('eslint-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = {
-    entry: './src/index.tsx',
+    entry: __dirname + '/src/index.tsx',
     ...(process.env.production || !process.env.development
         ? {}
         : {devtool: 'eval-source-map'}),

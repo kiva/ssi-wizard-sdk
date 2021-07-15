@@ -1,4 +1,4 @@
-import React, {useState, Suspense} from 'react';
+import React, {useState, useRef, Suspense} from 'react';
 import FlowDispatchTypes from './enums/FlowDispatchTypes';
 import FlowDispatchContext from './contexts/FlowDispatchContext';
 import {Flow} from './interfaces/FlowSelectorInterfaces';

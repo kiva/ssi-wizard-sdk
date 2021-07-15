@@ -93,6 +93,7 @@ export default class VerificationRequirementScreen extends React.Component<
     }
 
     render() {
+        console.log(JSON.stringify(this.state.proofOptions[this.state.verificationRequired]));
         if (this.state.proofOptionsError) {
             return (
                 <div className="centered status-report">
