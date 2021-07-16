@@ -7,15 +7,10 @@ const HOST = process.env.HOST || '0.0.0.0';
 
 const Webpack = require('webpack');
 const WebpackDevServer = require('webpack-dev-server');
-const webpackConfig = require('../webpack.config');
+const webpackConfig = require('../webpack.dev.config');
 
 const compiler = Webpack(webpackConfig);
 const devServerOptions = {...webpackConfig.devServer, open: true};
 const server = new WebpackDevServer(compiler, devServerOptions);
 
-server.listen(webpackConfig.devServer.port, '127.0.0.1', () => {
-    console.log('Doing the thing');
-});
-
-// console.log(server);
-// Webpack(webpackConfig);
+server.listen(webpackConfig.devServer.port, '127.0.0.1');
