@@ -1,5 +1,9 @@
 import Grid from '@material-ui/core/Grid';
+<<<<<<< HEAD
 import React, {useState, useEffect} from 'react';
+=======
+import React, {useState, useRef, useEffect} from 'react';
+>>>>>>> 942a49d0ba464c66854f48dd14f340f0a863ccdf
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import ErrorIcon from '@material-ui/icons/Error';
@@ -10,14 +14,24 @@ import InputLabel from '@material-ui/core/InputLabel';
 import MenuItem from '@material-ui/core/MenuItem';
 import '../css/Common.scss';
 import '../css/ConfirmationScreen.scss';
+<<<<<<< HEAD
 
+=======
+>>>>>>> 942a49d0ba464c66854f48dd14f340f0a863ccdf
 import {
     CredentialKeyFieldsProps,
     CredentialKeyMap,
     CredentialKeyFieldState,
+<<<<<<< HEAD
     ConfirmationProps,
     ProofRequestProfile,
     RequestedAttributes
+=======
+    ConfirmationProps, 
+    ProofRequestProfile,
+    RequestedAttributes
+    
+>>>>>>> 942a49d0ba464c66854f48dd14f340f0a863ccdf
 } from '../interfaces/ConfirmationInterfaces';
 import axios from 'axios';
 import FlowDispatchTypes from '../enums/FlowDispatchTypes';
@@ -109,18 +123,26 @@ export default function ConfirmationScreen(props: ConfirmationProps) {
                 alignItems="center">
                 <Grid item>
                     <FormControl className="form-control">
-                        <InputLabel>Verification Requirement</InputLabel>
+                        <InputLabel>
+                            Verification Requirement
+                        </InputLabel>
                         <Select
                             className="verification-requirement-select"
                             value={verificationRequired}
                             onChange={handleChange}>
-                            {proofOptions.map((option, index) => {
-                                return (
-                                    <MenuItem value={index} key={index}>{`${
-                                        index + 1
-                                    } - ${option.comment}`}</MenuItem>
-                                );
-                            })}
+                            {proofOptions.map(
+                                (option, index) => {
+                                    return (
+                                        <MenuItem
+                                            value={index}
+                                            key={index}>{`${
+                                            index + 1
+                                        } - ${
+                                            option.comment
+                                        }`}</MenuItem>
+                                    );
+                                }
+                            )}
                         </Select>
                     </FormControl>
                 </Grid>
@@ -186,9 +208,8 @@ function PII(props: CredentialKeyFieldsProps) {
             const currentArray = i % 2 === 0 ? columnOne : columnTwo;
             currentArray.push(props.fields[field].name);
             i++;
-        }
-
-        return {columnOne, columnTwo};
+        };
+        return { columnOne, columnTwo };
     }
 
     return (
