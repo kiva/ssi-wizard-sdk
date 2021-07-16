@@ -2,8 +2,8 @@ import React, {useState} from 'react';
 import CardContent from '@material-ui/core/CardContent';
 import Card from '@material-ui/core/Card';
 import Typography from '@material-ui/core/Typography';
-import Radio, { RadioProps } from '@material-ui/core/Radio';
-import { withStyles } from '@material-ui/core/styles';
+import Radio, {RadioProps} from '@material-ui/core/Radio';
+import {withStyles} from '@material-ui/core/styles';
 import CardActions from '@material-ui/core/CardActions';
 import Button from '@material-ui/core/Button';
 import classNames from 'classnames';
@@ -85,7 +85,6 @@ function MenuOption(props: MenuOptionProps) {
         </Card>
     );
 }
-
 
 // TODO: Maybe link this up with the "colorMap" config
 const MenuRadio = withStyles({
