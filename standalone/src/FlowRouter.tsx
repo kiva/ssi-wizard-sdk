@@ -1,4 +1,4 @@
-import React, {useState, useRef, Suspense} from 'react';
+import React, {useState, useEffect, useRef, Suspense} from 'react';
 import FlowDispatchTypes from './enums/FlowDispatchTypes';
 import FlowDispatchContext from './contexts/FlowDispatchContext';
 import {Flow} from './interfaces/FlowSelectorInterfaces';
@@ -16,9 +16,10 @@ import getFlow from './helpers/getFlow';
 const FlowController: React.FC<IConstants> = (CONSTANTS: IConstants) => {
     const componentMap: ComponentMap = defaultComponentMap;
     const [step, setStep] = useState('confirmation');
+    const authIndex = useRef<number>(0);
 
-    let authIndex = 0,
-        theFlow: Flow = getFlow(authIndex, CONSTANTS);
+    let theFlow: Flow = getFlow(authIndex.current, CONSTANTS),
+        prevStep = theFlow[step]![FlowDispatchTypes.BACK] ?? '';
 
     function dispatch(action: FlowAction) {
         const {type, payload} = action;
@@ -42,11 +43,11 @@ const FlowController: React.FC<IConstants> = (CONSTANTS: IConstants) => {
                 break;
             case FlowDispatchTypes.RESTART:
                 setStep('confirmation');
-                authIndex = 0;
+                authIndex.current = 0;
                 break;
             case FlowDispatchTypes.SET_AUTH_METHOD:
                 if ('menu' === step) {
-                    authIndex = payload;
+                    authIndex.current = payload;
                     theFlow = getFlow(payload, CONSTANTS);
                 } else {
                     throw new Error(
@@ -59,7 +60,6 @@ const FlowController: React.FC<IConstants> = (CONSTANTS: IConstants) => {
         }
     }
 
-    const prevStep: string = theFlow[step]![FlowDispatchTypes.BACK]! ?? '';
     const TheComponent = renderScreen(step);
     const componentStoreMethods: ComponentStoreMethods =
         useComponentStore(step);
@@ -68,10 +68,18 @@ const FlowController: React.FC<IConstants> = (CONSTANTS: IConstants) => {
         Object.assign(componentMap, CONSTANTS.component_map);
 
         const component: any = React.lazy(
-            () => import(__dirname + componentMap[step]!.path)
+            () => import(__dirname + '/screens/' + componentMap[step].fileName)
         );
 
         return component;
+    }
+
+    function getAdditionalProps(step: string) {
+        const props: any = componentMap[step].props;
+        if (componentMap[step].hasOwnProperty('dataHelper')) {
+            props.dataHelper = componentMap[step].dataHelper;
+        }
+        return props;
     }
 
     return (
@@ -80,11 +88,11 @@ const FlowController: React.FC<IConstants> = (CONSTANTS: IConstants) => {
                 <div className="KernelContainer">
                     <div className="KernelContent" data-cy={step}>
                         <TheComponent
-                            {...componentMap[step].props}
+                            {...getAdditionalProps(step)}
                             CONSTANTS={CONSTANTS}
                             store={componentStoreMethods}
                             prevScreen={prevStep}
-                            authIndex={authIndex}
+                            authIndex={authIndex.current}
                         />
                     </div>
                 </div>

@@ -2,22 +2,23 @@ const ESLintPlugin = require('eslint-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = {
-    entry: './src/index.tsx',
+    entry: __dirname + '/src/index.tsx',
     ...(process.env.production || !process.env.development
         ? {}
         : {devtool: 'eval-source-map'}),
     output: {
-        path: __dirname + '/dist',
+        path: process.cwd() + '/dist',
         filename: 'bundle.js'
     },
     resolve: {
-        extensions: ['.ts', '.tsx', '.js']
+        extensions: ['.ts', '.tsx', '.js', '.json']
     },
     module: {
         rules: [
             {
                 test: /\.(ts|js)x?$/i,
-                loader: 'ts-loader',
+                loader: __dirname + '/node_modules/ts-loader/dist/index.js',
+                exclude: /node_modules/,
                 options: {
                     transpileOnly: true
                 }
@@ -25,15 +26,19 @@ module.exports = {
             {
                 test: /\.((c|sa|sc)ss)$/i,
                 use: [
-                    'style-loader',
+                    __dirname + '/node_modules/style-loader/dist/cjs.js',
                     {
-                        loader: 'css-loader',
+                        loader:
+                            __dirname +
+                            '/node_modules/css-loader/dist/index.js',
                         options: {
                             importLoaders: 1
                         }
                     },
                     {
-                        loader: 'sass-loader'
+                        loader:
+                            __dirname +
+                            '/node_modules/sass-loader/dist/index.js'
                     }
                 ]
             }
