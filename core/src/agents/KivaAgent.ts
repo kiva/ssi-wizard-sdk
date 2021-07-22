@@ -2,6 +2,7 @@ import axios, {AxiosRequestConfig, AxiosInstance} from 'axios';
 import BaseAgent from './BaseAgent';
 import {map} from 'lodash';
 import {IAgent} from '../interfaces/AgentInterfaces';
+import {CredentialKeyMap} from '../interfaces/ConfirmationInterfaces';
 import {ProofRequestProfile} from '../interfaces/VerificationRequirementProps';
 
 export default class KivaAgent extends BaseAgent implements IAgent {
@@ -27,7 +28,7 @@ export default class KivaAgent extends BaseAgent implements IAgent {
         return super.profiles(
             this.axiosInstance.get('/v2/kiva/api/profiles/proofs', {}),
             (profiles: any) => {
-                return map(profiles.data, (value, key) => {
+                return _.map(profiles.data, (value, key) => {
                     return {
                         schema_id: key,
                         ...value
@@ -72,7 +73,6 @@ export default class KivaAgent extends BaseAgent implements IAgent {
         return axiosData.data;
     }
 
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     establishConnection = async (ignore: string) => {
         return super.establish(
             this.axiosInstance.post('/v2/kiva/api/connection', {}),
@@ -83,7 +83,6 @@ export default class KivaAgent extends BaseAgent implements IAgent {
         );
     };
 
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     getConnection = async (ignore: string) => {
         return super.check(
             this.axiosInstance.get(
@@ -93,7 +92,6 @@ export default class KivaAgent extends BaseAgent implements IAgent {
         );
     };
 
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     checkVerification = async (ignore: string) => {
         return super.prove(
             this.axiosInstance.get(

@@ -1,4 +1,4 @@
-import {ComponentStoreMethods} from './FlowRouterInterfaces';
+import {ComponentStoreMethods, FlowAction} from './FlowRouterInterfaces';
 import {IConstants} from './IConstants';
 
 export default interface ICommonProps {
@@ -6,4 +6,6 @@ export default interface ICommonProps {
     store: ComponentStoreMethods;
     prevScreen: string;
     authIndex: number;
+    dataHelper?: any;
+    dispatch: any;
 }

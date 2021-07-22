@@ -1,3 +1,5 @@
+import React, {FunctionComponent} from 'react';
+
 export type ComponentStoreGet = (
     dataKey: string,
     dfault?: any,
@@ -28,11 +30,10 @@ export interface ComponentMap {
     [index: string]: ComponentDefinition;
     menu: ComponentDefinition;
     confirmation: ComponentDefinition;
-    verificationRequirement: ComponentDefinition;
-    details: ComponentDefinition;
 }
 
 interface ComponentDefinition {
-    path: string;
+    component: FunctionComponent | string;
     props: any;
+    dataHelper?: any;
 }

@@ -1,9 +1,10 @@
-import React, {useState, useEffect, useRef, Suspense} from 'react';
+import React, {useState, useRef, Suspense} from 'react';
 import FlowDispatchTypes from './enums/FlowDispatchTypes';
 import FlowDispatchContext from './contexts/FlowDispatchContext';
 import {Flow} from './interfaces/FlowSelectorInterfaces';
 import {IConstants} from './interfaces/IConstants';
 import {defaultComponentMap} from './globals/defaultComponentMap';
+import ConfirmationScreen from './screens/ConfirmationScreen';
 
 import {
     ComponentStoreMethods,
@@ -14,12 +15,12 @@ import useComponentStore from './hooks/useComponentStore';
 import getFlow from './helpers/getFlow';
 
 const FlowController: React.FC<IConstants> = (CONSTANTS: IConstants) => {
-    const componentMap: ComponentMap = defaultComponentMap;
     const [step, setStep] = useState('confirmation');
     const authIndex = useRef<number>(0);
 
-    let theFlow: Flow = getFlow(authIndex.current, CONSTANTS),
-        prevStep = theFlow[step]![FlowDispatchTypes.BACK] ?? '';
+    let theFlow: Flow = getFlow(authIndex.current, CONSTANTS);
+
+    const prevStep = theFlow[step]![FlowDispatchTypes.BACK] ?? '';
 
     function dispatch(action: FlowAction) {
         const {type, payload} = action;
@@ -65,19 +66,22 @@ const FlowController: React.FC<IConstants> = (CONSTANTS: IConstants) => {
         useComponentStore(step);
 
     function renderScreen(step: string) {
-        Object.assign(componentMap, CONSTANTS.component_map);
+        const definition = CONSTANTS.component_map[step].component;
+        let component: React.FC;
 
-        const component: any = React.lazy(
-            () => import(__dirname + '/screens/' + componentMap[step].fileName)
-        );
+        if ('string' === typeof definition) {
+            component = React.lazy(() => import(__dirname + '/screens/' + definition));
+        } else {
+            component = definition;
+        }
 
         return component;
     }
 
     function getAdditionalProps(step: string) {
-        const props: any = componentMap[step].props;
-        if (componentMap[step].hasOwnProperty('dataHelper')) {
-            props.dataHelper = componentMap[step].dataHelper;
+        const props: any = CONSTANTS.component_map[step].props;
+        if (CONSTANTS.component_map[step].hasOwnProperty('dataHelper')) {
+            props.dataHelper = CONSTANTS.component_map[step].dataHelper;
         }
         return props;
     }

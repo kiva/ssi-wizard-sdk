@@ -1,0 +1,91 @@
+@import 'mixins/_colors';
+
+.alternate-search-field {
+    width: 100%;
+    &.required::after {
+        content: '*';
+        position: absolute;
+        right: 0;
+        padding-top: 20px;
+        color: red;
+    }
+}
+
+.expandable {
+    display: block;
+    border-top: 1px solid gray;
+    padding: 10px 0 20px;
+    &.expanded {
+        padding: 10px 0 0 0;
+    }
+    .accordion-arrow {
+        position: absolute;
+    }
+}
+
+h3.align-center {
+    text-align: center;
+}
+
+#instructions {
+    max-width: 750px;
+    font-size: 1em;
+    margin-bottom: 30px;
+}
+
+.or {
+    &::before {
+        content: 'OR';
+        position: relative;
+        left: 47%;
+        top: 14px;
+        background: #fff;
+        margin: 0 auto;
+        padding: 0 12px;
+        font-size: 1.6em;
+        font-weight: 500;
+    }
+    h2,
+    h2.expanded {
+        padding-top: 20px;
+    }
+}
+
+.alternate-search-row {
+    margin-top: -10px;
+    margin-bottom: 35px;
+    &.labelled {
+        margin-top: 0;
+    }
+    &.hidden {
+        display: none;
+    }
+}
+
+.row-subheader {
+    font-size: 1em;
+    font-weight: 500;
+    color: #454545;
+    margin-bottom: 15px;
+    &.hidden {
+        display: none;
+    }
+}
+
+.buttonListNew {
+    &.stack {
+        margin-top: 30px;
+        .back {
+            background: $secondary-color !important;
+            opacity: 0.5;
+            color: $secondary-offset;
+        }
+        &.together {
+            justify-content: space-around;
+        }
+    }
+    &.centered {
+        margin-left: auto;
+        margin-right: auto;
+    }
+}

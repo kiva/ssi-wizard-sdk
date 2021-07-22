@@ -9,7 +9,7 @@
 /coverage
 
 # config files for Standalone
-/standalone/src/config.ts
+**/src/config.ts
 
 # production
 **/build

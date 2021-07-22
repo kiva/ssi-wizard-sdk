@@ -1,8 +1,7 @@
 {
-    "name": "@kiva/ssirius-standalone",
+    "name": "@kiva/ssirius-core",
     "version": "0.0.1",
     "dependencies": {
-        "@kiva/ssirius-core": "file:../core",
         "@material-ui/core": "^4.11.4",
         "@material-ui/icons": "^4.11.2",
         "axios": "^0.21.1",
@@ -17,7 +16,7 @@
         "webpack-merge": "^5.8.0"
     },
     "scripts": {
-        "start": "webpack-cli serve --mode=development --env development --open --hot",
+        "start": "node ./bin/cli.js start --config=src/config.ts",
         "build": "webpack --mode=production --env production --progress",
         "test": "echo \"Testing...\"",
         "lint": "eslint src/**/*.{ts,tsx} --quiet --fix",
@@ -40,9 +39,6 @@
             "last 1 firefox version",
             "last 1 safari version"
         ]
-    },
-    "bin": {
-        "ssirius": "./bin/cli.js"
     },
     "main": "./dist/bundle.js",
     "description": "An open-source package to streamline the creation of Verifiable Credential transaction UIs",

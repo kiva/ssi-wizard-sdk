@@ -40,11 +40,6 @@ const SDK = GuardianSDK.init({
     auth_method: 'SMS'
 });
 
-const disabledFunction = () => {
-    console.log('Please wait for the request to complete');
-    return false;
-};
-
 export default class SMSOTPScreen extends React.Component<SMSProps, OTPState> {
     private email: string;
     private profile: ProofRequestProfile;
@@ -203,7 +198,7 @@ class PhoneNumberScreen extends React.Component<PhoneScreenProps, PhoneState> {
 
     sendTwilioRequest = (body: any): void => {
         SDK.fetchKyc(body, this.props.auth_token)
-            .then(() => {
+            .then(response => {
                 this.props.setContainerState({
                     smsSent: true,
                     phoneNumber: this.state.phoneNumber,
@@ -219,13 +214,11 @@ class PhoneNumberScreen extends React.Component<PhoneScreenProps, PhoneState> {
     };
 
     renderInProgress() {
+        // eslint
         return (
             <div>
                 <SMSStatus status="progress" />
-                <SMSScreenButtons
-                    onClickBack={() => disabledFunction}
-                    onSubmit={() => disabledFunction}
-                />
+                <SMSScreenButtons />
             </div>
         );
     }
@@ -259,7 +252,6 @@ class PhoneNumberScreen extends React.Component<PhoneScreenProps, PhoneState> {
                             error: ''
                         });
                     }}
-                    onSubmit={() => disabledFunction}
                 />
             </div>
         );
@@ -436,7 +428,6 @@ class OTPScreen extends React.Component<OTPScreenProps, OTPInputState> {
                 <SMSStatus status="error" errorText={this.state.smsError} />
                 <SMSScreenButtons
                     onClickBack={() => this.handleErrorBack()}
-                    onSubmit={() => disabledFunction}
                 />
             </div>
         );
@@ -446,10 +437,7 @@ class OTPScreen extends React.Component<OTPScreenProps, OTPInputState> {
         return (
             <div>
                 <SMSStatus status="verifying" />
-                <SMSScreenButtons
-                    onClickBack={() => disabledFunction}
-                    onSubmit={() => disabledFunction}
-                />
+                <SMSScreenButtons />
             </div>
         );
     }
@@ -458,10 +446,7 @@ class OTPScreen extends React.Component<OTPScreenProps, OTPInputState> {
         return (
             <div>
                 <SMSStatus status="success" />
-                <SMSScreenButtons
-                    onClickBack={() => disabledFunction}
-                    onSubmit={() => disabledFunction}
-                />
+                <SMSScreenButtons />
             </div>
         );
     }

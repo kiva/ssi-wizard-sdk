@@ -2,7 +2,7 @@ import {ComponentMap} from '../interfaces/FlowRouterInterfaces';
 
 export const defaultComponentMap: ComponentMap = {
     confirmation: {
-        path: '/commonComponents/ConfirmationScreen',
+        component: 'ConfirmationScreen',
         props: {
             reviewText:
                 'Please have the customer review the following information',
@@ -13,24 +13,10 @@ export const defaultComponentMap: ComponentMap = {
         }
     },
     menu: {
-        path: '/commonComponents/AuthenticationOptionMenu',
+        component: 'AuthenticationOptionMenu',
         props: {
             instructions: 'Select a verification method',
             selectButtonText: 'Select'
-        }
-    },
-    details: {
-        path: '/commonComponents/ResultDetails',
-        props: {}
-    },
-    verificationRequirement: {
-        path: '/commonComponents/VerificationRequirementScreen',
-        props: {
-            header: 'Verification Required',
-            instructions:
-                'Please select the requirement for verifying credentials',
-            backButtonText: 'Back',
-            nextButtonText: 'Continue'
         }
     }
 };

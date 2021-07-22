@@ -69,18 +69,14 @@ function createInitialSteps(
     const firstScreen = options[index].sequence[0];
     const ret: any = {
         confirmation: {
-            [FlowDispatchTypes.NEXT]: 'verificationRequirement'
-        },
-        verificationRequirement: {
-            [FlowDispatchTypes.BACK]: 'confirmation',
             [FlowDispatchTypes.NEXT]: firstScreen
         }
     };
 
     if (useMenu) {
-        ret.verificationRequirement[FlowDispatchTypes.NEXT] = 'menu';
+        ret.confirmation[FlowDispatchTypes.NEXT] = 'menu';
         ret['menu'] = {
-            [FlowDispatchTypes.BACK]: 'verificationRequirement',
+            [FlowDispatchTypes.BACK]: 'confirmation',
             [FlowDispatchTypes.NEXT]: firstScreen
         };
     }

@@ -11,6 +11,7 @@ import QRCode from 'qrcode';
 import classNames from 'classnames';
 
 import {QRProps, QRState, QRButtonProps} from '../interfaces/QRInterfaces';
+import {IAgent} from '../interfaces/AgentInterfaces';
 import {ProofRequestProfile} from '../interfaces/VerificationRequirementProps';
 
 import FlowDispatchContext from '../contexts/FlowDispatchContext';
@@ -32,6 +33,7 @@ export default class AgencyQR extends React.Component<QRProps, QRState> {
 
     constructor(props: QRProps) {
         super(props);
+        console.log(props);
         this.state = {
             retrievingInviteUrl: true,
             inviteUrl: '',
@@ -134,15 +136,9 @@ export default class AgencyQR extends React.Component<QRProps, QRState> {
 
     pollVerification = async (selectedVerificationOptionId: string) => {
         try {
-            if (!selectedVerificationOptionId) {
-                selectedVerificationOptionId =
-                    this.selectedVerificationOptionId;
-            }
-
             const verificationStatus: any = await agent.checkVerification(
-                selectedVerificationOptionId
+                this.selectedVerificationOptionId
             );
-
             if (agent.isVerified(verificationStatus)) {
                 this.acceptProof(agent.getProof(verificationStatus));
             } else if (

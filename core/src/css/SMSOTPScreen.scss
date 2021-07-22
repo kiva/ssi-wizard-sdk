@@ -1,0 +1,84 @@
+@import 'mixins/_fonts';
+@import 'mixins/_colors';
+
+.centered {
+    text-align: center;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.status-text {
+    font-size: 2em !important;
+    padding-top: 25px;
+    padding-bottom: 50px;
+}
+
+.status-report {
+    max-width: 500px;
+}
+
+.error-description {
+    font-size: 1.4em !important;
+    padding-top: 20px;
+}
+
+.dialog-icon {
+    margin-top: 20px;
+    width: 56px !important;
+    height: 56px !important;
+    &.error {
+        fill: $error-color;
+    }
+    &.warning {
+        fill: $warning-color;
+        z-index: 1;
+        margin-bottom: 20px;
+        background-color: $warning-offset;
+        border-radius: 40px;
+    }
+    &.verified {
+        fill: #27c9ce;
+    }
+    &.verifying {
+        color: $primary-color;
+    }
+}
+
+.phone-number-input {
+    min-width: 100%;
+}
+
+.smsButtons {
+    button {
+        margin: 100px 50px;
+        text-transform: none;
+        font-size: 1.2em !important;
+        width: 200px;
+    }
+}
+
+#otp-row {
+    flex-direction: row;
+}
+
+.otp-digit-input {
+    width: 100px;
+    padding: 0 15px !important;
+    input {
+        font-size: 2em;
+    }
+}
+
+button {
+    @include the-font;
+    margin: 10px 200px;
+    &.back {
+        background: $secondary-color !important;
+        opacity: 0.5;
+        color: $secondary-offset !important;
+    }
+    &.next {
+        background: $primary-color !important;
+        color: $primary-offset;
+    }
+}

@@ -5,9 +5,14 @@ import Paper from '@material-ui/core/Paper';
 
 import classNames from 'classnames';
 
+import _ from 'lodash';
 import {DetailsProps, PhotoAttach} from '../interfaces/DetailsInterfaces';
+import {CredentialKeyMap} from '../interfaces/ConfirmationInterfaces';
+
+const CredentialKeys: CredentialKeyMap = CONSTANTS.credentialKeyMap;
 
 const wideKeys: string[] = [];
+const itemList: any = {};
 
 export default class ResultDetails extends React.Component<DetailsProps> {
     private personalInfo: any = this.props.store.get(
