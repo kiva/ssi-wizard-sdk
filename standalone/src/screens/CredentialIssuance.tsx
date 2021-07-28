@@ -1,7 +1,7 @@
 import React, {useState, useRef, useEffect} from 'react';
 import KivaAgent from '../agents/KivaAgent';
 import Grid from '@material-ui/core/Grid';
-import {toast} from 'react-hot-toast';
+import toast from 'react-hot-toast';
 import Typography from '@material-ui/core/Typography';
 import CheckCircleIcon from '@material-ui/icons/CheckCircle';
 import CreditCardIcon from '@material-ui/icons/CreditCard';

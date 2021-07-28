@@ -9,7 +9,7 @@ import MenuItem from '@material-ui/core/MenuItem';
 import OutlinedInput from '@material-ui/core/OutlinedInput';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
-import {toast} from 'react-hot-toast';
+import toast from 'react-hot-toast';
 
 import '../css/Common.scss';
 import '../css/SearchMenu.scss';

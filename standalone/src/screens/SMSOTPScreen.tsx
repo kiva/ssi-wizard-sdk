@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {toast} from 'react-hot-toast';
+import toast from 'react-hot-toast';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import TextField from '@material-ui/core/TextField';

@@ -6,7 +6,7 @@ import Button from '@material-ui/core/Button';
 import classNames from 'classnames';
 import ArrowDropUpIcon from '@material-ui/icons/ArrowDropUp';
 import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
-import {toast} from 'react-hot-toast';
+import toast from 'react-hot-toast';
 
 import '../css/Common.scss';
 import '../css/AlternateSearch.scss';

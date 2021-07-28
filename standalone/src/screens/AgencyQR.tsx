@@ -1,5 +1,5 @@
 import React, {useState, useRef, useEffect} from 'react';
-import {toast} from 'react-hot-toast';
+import toast from 'react-hot-toast';
 import {v4 as uuid4} from 'uuid';
 import Typography from '@material-ui/core/Typography';
 import CircularProgress from '@material-ui/core/CircularProgress';

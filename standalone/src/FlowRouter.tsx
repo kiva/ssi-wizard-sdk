@@ -2,6 +2,7 @@ import React, {useState, useRef, Suspense} from 'react';
 import FlowDispatchTypes from './enums/FlowDispatchTypes';
 import {Flow} from './interfaces/FlowSelectorInterfaces';
 import {IConstants} from './interfaces/IConstants';
+import {Toaster} from 'react-hot-toast';
 
 import {
     ComponentStoreMethods,
@@ -82,6 +83,7 @@ const FlowController: React.FC<IConstants> = (CONSTANTS: IConstants) => {
     return (
         <Suspense fallback="">
             <div className="KernelContainer">
+                <Toaster />
                 <div className="KernelContent" data-cy={step}>
                     <TheComponent
                         {...getAdditionalProps(step)}
