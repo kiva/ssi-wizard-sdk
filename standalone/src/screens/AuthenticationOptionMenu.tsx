@@ -10,6 +10,7 @@ import classNames from 'classnames';
 
 import FlowDispatchTypes from '../enums/FlowDispatchTypes';
 
+import '../css/Common.scss';
 import '../css/AuthOptionMenu.scss';
 
 import {

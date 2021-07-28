@@ -1,4 +1,5 @@
 import * as React from 'react';
+import '../css/Common.scss';
 import '../css/ResultDetails.scss';
 import Button from '@material-ui/core/Button';
 import Paper from '@material-ui/core/Paper';

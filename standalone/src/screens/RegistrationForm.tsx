@@ -18,6 +18,7 @@ import {
 
 import FlowDispatchTypes from '../enums/FlowDispatchTypes';
 
+import '../css/Common.scss';
 import '../css/RegistrationForm.scss';
 import 'react-phone-input-2/lib/high-res.css';
 

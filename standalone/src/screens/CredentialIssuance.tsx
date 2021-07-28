@@ -10,6 +10,7 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 import {v4 as uuid4} from 'uuid';
 import ErrorIcon from '@material-ui/icons/Error';
 import QRCode from 'qrcode';
+import '../css/Common.scss';
 import '../css/QRScreen.scss';
 import {QRScreenButtons} from '../components/QRScreenButtons';
 import {CredentialIssuanceProps} from '../interfaces/CredentialIssuanceInterfaces';

@@ -6,6 +6,8 @@ import 'react-html5-camera-photo/build/css/index.css';
 import ImageUpload from '../components/ImageUpload';
 import Typography from '@material-ui/core/Typography';
 
+import '../css/Common.scss';
+
 import {
     PhotoAttach,
     WebcamCaptureButtonProps
