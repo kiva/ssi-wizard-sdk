@@ -167,5 +167,11 @@
     "presets": [
       "react-app"
     ]
-  }
+  },
+  "repository": {
+    "url": "ssh://git@github.com:kiva/ssi-wizard-sdk.git"
+  },
+  "keywords": [],
+  "author": "Kiva Microfunds",
+  "license": "https://github.com/kiva/ssi-wizard-sdk/blob/main/LICENSE"
 }
