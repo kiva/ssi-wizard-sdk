@@ -1,4 +1,6 @@
-import React, {useState} from 'react';
+/* eslint-disable jsx-a11y/anchor-is-valid */
+
+import React, {useState, useEffect} from 'react';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import FormControl from '@material-ui/core/FormControl';
@@ -29,7 +31,11 @@ export default function SearchMenu(props: SearchProps) {
     );
     const [error, setError] = useState(false);
     const [errorReason, setErrorReason] = useState<string>('');
-    const [searchType, setSearchType] = useState<string>('filters');
+    const [searchType, setSearchType] = useState<string>(props.store.get('searchType', 'filters'));
+
+    useEffect(() => {
+        props.store.set('searchType', searchType);
+    }, [searchType, props.store]);
 
     const handleFieldChange =
         (filterKey: string) =>
@@ -65,21 +71,22 @@ export default function SearchMenu(props: SearchProps) {
     };
 
     const handleSubmission = (event: any): void => {
-        event.preventDefault();
+            event.preventDefault();
 
-        if (!inputIsEmpty(filters.value)) return;
+            if (!inputIsEmpty(filters.value)) return;
 
-        const filterConfig: DropdownConfigDefinition =
-            props.dropdownConfig[filters.type];
+            const filterConfig: DropdownConfigDefinition =
+                props.dropdownConfig[filters.type];
 
-        if (filterConfig.validation(filters.value)) {
-            props.store.set('filters', filters);
-            props.dispatch({type: FlowDispatchTypes.NEXT});
-        } else {
-            setError(true);
-            setErrorReason(filterConfig.errorMsg);
-        }
-    };
+            if (filterConfig.validation(filters.value)) {
+                props.store.set('filters', filters);
+                console.log(props.store.get('filters'))
+                props.dispatch({type: FlowDispatchTypes.NEXT});
+            } else {
+                setError(true);
+                setErrorReason(filterConfig.errorMsg);
+            }
+        };
 
     if ('filters' === searchType) {
         return (

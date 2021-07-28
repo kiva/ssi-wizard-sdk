@@ -7,8 +7,10 @@ export default function setPostBody(
     device: any,
     get: ComponentStoreGet
 ): FingerprintEkycBody {
+    console.log(get('searchType', {}, 'searchMenu'))
     const body: FingerprintEkycBody = {image, position, device};
     addCredentialsToBody(body, get);
+    console.log(body);
 
     return body;
 }
@@ -27,6 +29,8 @@ function addCredentialsToBody(
 
 function insertFilters(body: FingerprintEkycBody, get: ComponentStoreGet) {
     const filterData: any = get('filters', {}, 'searchMenu');
+    console.log('Aloha');
+    console.log(filterData);
 
     if (
         !filterData ||

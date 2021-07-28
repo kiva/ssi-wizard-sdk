@@ -1,3 +1,5 @@
+/* eslint-disable jsx-a11y/anchor-is-valid */
+
 import React, {useState, useEffect} from 'react';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
@@ -15,9 +17,9 @@ import ICommonProps from '../interfaces/ICommonProps';
 import Fingers from '../globals/fingerMap';
 import FlowDispatchTypes from '../enums/FlowDispatchTypes';
 
-const failed = './src/images/np_fingerprint_failed.png';
-const success = './src/images/np_fingerprint_verified.png';
-const in_progress = './src/images/np_fingerprint_inprogress.png';
+import failed from '../images/np_fingerprint_failed.png';
+import success from '../images/np_fingerprint_verified.png';
+import in_progress from '../images/np_fingerprint_inprogress.png';
 
 const FINGER_STORE = 'selectedFinger';
 
@@ -42,12 +44,11 @@ export default function ScanFingerprintScreen(props: ICommonProps) {
         api: 'http://localhost:9907'
     });
     const SDK = GuardianSDK.init({
-        url: 'https://sandbox-gateway.protocol-prod.kiva.org',
+        url: 'https://sandbox-gateway.protocol-prod.kiva.org/v2/kyc',
         auth_method: 'Fingerprint'
     });
 
     useEffect(() => {
-        console.log('runnin');
         resetFingerprintImage();
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
@@ -132,7 +133,7 @@ export default function ScanFingerprintScreen(props: ICommonProps) {
             }, SLOW_INTERNET_THRESHOLD);
 
             const body: FingerprintEkycBody = postBody();
-
+console.log(body)
             const response = await SDK.fetchKyc(
                 body,
                 props.CONSTANTS.auth_token

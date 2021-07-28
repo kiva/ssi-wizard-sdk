@@ -35,7 +35,7 @@ import '../css/DialogBody.scss';
 import '../css/Common.scss';
 
 const SDK = GuardianSDK.init({
-    url: 'https://sandbox-gateway.protocol-prod.kiva.org',
+    url: 'https://sandbox-gateway.protocol-prod.kiva.org/v2/kyc/sms',
     auth_method: 'SMS'
 });
 
@@ -350,7 +350,7 @@ class OTPScreen extends React.Component<OTPScreenProps, OTPInputState> {
 
     sendTwilioRequest = async (body: any): Promise<void> => {
         try {
-            const data = await SDK.fetchKyc(body, auth.getToken());
+            const data = await SDK.fetchKyc(body, this.props.auth_token);
             this.setState(
                 {
                     requestInProgress: false,

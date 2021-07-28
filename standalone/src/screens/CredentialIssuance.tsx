@@ -45,7 +45,7 @@ export default function CredentialIssuance(props: CredentialIssuanceProps) {
         const deps = props.dependencies;
 
         for (const key in deps) {
-            deps[key].map((storeKey: string) => {
+            for (const storeKey in deps[key]) {
                 const storedValue = props.store.get(storeKey, false, key);
                 if (storedValue) {
                     credentialCreationData = {
@@ -55,7 +55,7 @@ export default function CredentialIssuance(props: CredentialIssuanceProps) {
                             : {[storeKey]: storedValue})
                     };
                 }
-            });
+            }
         }
 
         props.store.set(CREDENTIAL_STORE_KEY, credentialCreationData);

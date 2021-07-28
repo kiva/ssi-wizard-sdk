@@ -139,6 +139,7 @@ export default function AgencyQR(props: QRProps) {
                 !!agent.isRejected &&
                 agent.isRejected(verificationStatus)
             ) {
+                // eslint-disable-next-line
                 throw `${props.rejected} ${profile.current.comment}`;
             } else if (!cancel) {
                 setTimeout(() => {
