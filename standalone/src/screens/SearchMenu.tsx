@@ -1,6 +1,6 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 
-import * as React from 'react';
+import React, {useState, useEffect} from 'react';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import FormControl from '@material-ui/core/FormControl';
@@ -10,144 +10,108 @@ import OutlinedInput from '@material-ui/core/OutlinedInput';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import {toast} from 'react-hot-toast';
-import AlternateSearch from './AlternateSearch';
 
 import '../css/Common.scss';
 import '../css/SearchMenu.scss';
 
+import AlternateSearch from './AlternateSearch';
 import {
+    DropdownConfigDefinition,
     SearchProps,
-    SearchState,
     SearchInputData
 } from '../interfaces/SearchInterfaces';
-
-import FlowDispatchContext from '../contexts/FlowDispatchContext';
 import FlowDispatchTypes from '../enums/FlowDispatchTypes';
 
-export default class SearchMenu extends React.Component<
-    SearchProps,
-    SearchState
-> {
-    static contextType = FlowDispatchContext;
-    private dispatch: any;
+export default function SearchMenu(props: SearchProps) {
+    const [filters, setFilters] = useState<SearchInputData>(
+        props.store.get('filters', {
+            type: Object.keys(props.dropdownConfig)[0],
+            value: ''
+        })
+    );
+    const [error, setError] = useState(false);
+    const [errorReason, setErrorReason] = useState<string>('');
+    const [searchType, setSearchType] = useState<string>(props.store.get('searchType', 'filters'));
 
-    constructor(props: SearchProps) {
-        super(props);
-        this.state = {
-            filters: this.props.store.get('filters', {
-                type: 'filters',
-                value: ''
-            }),
-            error: false,
-            errorReason: '',
-            altSearch: false
-        };
-    }
+    useEffect(() => {
+        props.store.set('searchType', searchType);
+    }, [searchType, props.store]);
 
-    componentDidMount() {
-        this.dispatch = this.context();
-    }
-
-    toggleSearchType = () => {
-        const altSearch: boolean = !this.state.altSearch;
-        this.setState({altSearch});
-    };
-
-    handleFieldChange =
+    const handleFieldChange =
         (filterKey: string) =>
         (event: any): void => {
             event.preventDefault();
             const value = event.target.value;
-            this.setState({
-                filters: {
-                    ...this.state.filters,
-                    [filterKey]: value
-                }
-            });
+            const updatedFilters: SearchInputData = {
+                ...props.store.get('filters', filters),
+                [filterKey]: value
+            };
+            setFilters(updatedFilters);
+            props.store.set('filters', updatedFilters);
         };
 
-    switchToAltSearchMenu = () => {
-        const filters: SearchInputData = this.state.filters;
-        this.props.store.set('filters', filters);
-        this.toggleSearchType();
+    const toggleSearchType = () => {
+        const type: string = props.store.get('searchType', searchType);
+        if ('filters' === type) {
+            props.store.set('filters', filters);
+            setSearchType('search');
+        } else if ('search' === type) {
+            setSearchType('filters');
+        }
     };
 
-    handleSubmission =
-        (stateData: any) =>
-        (event: any): void => {
+    const inputIsEmpty = (value: string) => {
+        if (value && '' === value.trim()) {
+            toast.error('Please fill out the field', {
+                duration: 3000
+            });
+            return false;
+        }
+        return true;
+    };
+
+    const handleSubmission = (event: any): void => {
             event.preventDefault();
-            const filters: SearchInputData = this.state.filters;
-            if (filters.value && filters.value.trim() === '') {
-                toast.error('Please enter text in the input field', {
-                    duration: 3000
-                });
-                return;
-            }
 
-            const errorState: any = {
-                error: true
-            };
-            if (
-                filters.type === 'nationalId' &&
-                !this.validateNIN(filters.value)
-            ) {
-                errorState['errorReason'] = 'Invalid NIN';
-            } else if (
-                filters.type === 'voterId' &&
-                !this.validateVoterID(filters.value)
-            ) {
-                errorState['errorReason'] = 'Invalid Voter ID';
-            }
+            if (!inputIsEmpty(filters.value)) return;
 
-            if (errorState.errorReason) {
-                this.setState(errorState);
+            const filterConfig: DropdownConfigDefinition =
+                props.dropdownConfig[filters.type];
+
+            if (filterConfig.validation(filters.value)) {
+                props.store.set('filters', filters);
+                console.log(props.store.get('filters'))
+                props.dispatch({type: FlowDispatchTypes.NEXT});
             } else {
-                this.props.store.set('filters', filters);
-                this.dispatch({type: FlowDispatchTypes.NEXT});
+                setError(true);
+                setErrorReason(filterConfig.errorMsg);
             }
         };
 
-    validateVoterID(input: string): boolean {
-        const voterIdDigits: string[] = input.split('');
-
-        return (
-            voterIdDigits.length === 7 &&
-            voterIdDigits.every((n: string) => !isNaN(Number(n)))
-        );
-    }
-
-    validateNIN(input: string): boolean {
-        const parsed = input.match(/[A-Z0-9]/g);
-
-        return !!parsed && parsed.length === 8 && input.length === 8;
-    }
-
-    renderSearch() {
+    if ('filters' === searchType) {
         return (
             <div data-cy="standard-search" className="flex-block">
                 <Grid
                     container
                     direction="column"
-                    justify="center"
+                    justifyContent="center"
                     alignItems="center">
                     <Grid item>
                         <Typography component="h2" variant="h6" gutterBottom>
-                            Please enter a valid ID in the field below
+                            {props.instructions}
                         </Typography>
                     </Grid>
                     <form name="ekycIdForm">
                         <Grid
                             container
                             direction="row"
-                            justify="center"
+                            justifyContent="center"
                             alignItems="center">
                             <Grid item id="id-select-menu">
                                 <FormControl variant="outlined">
                                     <Select
-                                        value={this.state.filters.type}
-                                        onChange={this.handleFieldChange(
-                                            'type'
-                                        )}
+                                        value={filters.type}
+                                        onChange={handleFieldChange('type')}
                                         id="select-searchId"
                                         displayEmpty
                                         input={
@@ -158,16 +122,19 @@ export default class SearchMenu extends React.Component<
                                             />
                                         }>
                                         <MenuItem value="none" disabled>
-                                            ID
+                                            Select ID Type
                                         </MenuItem>
-                                        <MenuItem value={'nationalId'}>
-                                            <div className="id-type">NIN</div>
-                                        </MenuItem>
-                                        <MenuItem value={'voterId'}>
-                                            <div className="id-type">
-                                                Voter ID
-                                            </div>
-                                        </MenuItem>
+                                        {Object.entries(
+                                            props.dropdownConfig
+                                        ).map(config => {
+                                            return (
+                                                <MenuItem
+                                                    key={config[0]}
+                                                    value={config[0]}>
+                                                    {config[1].name}
+                                                </MenuItem>
+                                            );
+                                        })}
                                     </Select>
                                 </FormControl>
                             </Grid>
@@ -175,24 +142,21 @@ export default class SearchMenu extends React.Component<
                                 <FormControl>
                                     <TextField
                                         className="inspectletIgnore"
+                                        id="id-input"
                                         data-cy="id-input"
+                                        autoFocus={true}
                                         label={
-                                            this.state.filters.value.trim() ===
-                                            ''
-                                                ? 'Enter a value'
+                                            filters.value.trim() === ''
+                                                ? props.placeholder
                                                 : ''
                                         }
-                                        value={this.state.filters.value}
-                                        onChange={this.handleFieldChange(
-                                            'value'
-                                        )}
+                                        value={filters.value}
+                                        onChange={handleFieldChange('value')}
                                         inputProps={{'aria-label': 'bare'}}
                                         margin="normal"
                                         name="inputId"
-                                        error={!!this.state.error}
-                                        helperText={
-                                            this.state.errorReason || ''
-                                        }
+                                        error={error}
+                                        helperText={errorReason || ''}
                                     />
                                 </FormControl>
                             </Grid>
@@ -201,27 +165,24 @@ export default class SearchMenu extends React.Component<
                             <Button
                                 type="submit"
                                 id="scan-fingerprint"
-                                onClick={this.handleSubmission(
-                                    this.props.filters
-                                )}
-                                onSubmit={this.handleSubmission(
-                                    this.props.filters
-                                )}>
-                                Scan
+                                onClick={(e: any) => handleSubmission(e)}
+                                onSubmit={(e: any) => handleSubmission(e)}>
+                                {props.nextText}
                             </Button>
                             <Button
                                 className="secondary"
-                                onClick={() =>
-                                    this.dispatch({
+                                onClick={() => {
+                                    console.log('Hello');
+                                    props.dispatch({
                                         type: FlowDispatchTypes.BACK
-                                    })
-                                }>
-                                Back
+                                    });
+                                }}>
+                                {props.backText}
                             </Button>
                             <a
                                 id="alternate-search"
-                                onClick={() => this.switchToAltSearchMenu()}>
-                                Don't know the ID?
+                                onClick={() => toggleSearchType()}>
+                                {props.alternateSearchInstructions}
                             </a>
                         </div>
                     </form>
@@ -230,28 +191,5 @@ export default class SearchMenu extends React.Component<
         );
     }
 
-    renderAltSearch() {
-        return (
-            <AlternateSearch
-                {...this.props}
-                toggleSearchType={this.toggleSearchType}
-                search={this.props.store.get('search', {
-                    firstName: '',
-                    lastName: '',
-                    mothersFirstName: '',
-                    fathersFirstName: '',
-                    birthDate: ''
-                })}
-            />
-        );
-    }
-
-    // TODO: Make the credential options configurable (i.e. don't limit to NIN and Voter ID)
-    render() {
-        console.log(this.state);
-        if (this.state.altSearch) {
-            return this.renderAltSearch();
-        }
-        return this.renderSearch();
-    }
+    return <AlternateSearch toggleSearchType={toggleSearchType} {...props} />;
 }

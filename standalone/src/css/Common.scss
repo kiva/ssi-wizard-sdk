@@ -1,81 +1,148 @@
-@import 'mixins/_fonts.scss';
-@import 'mixins/_buttonList.scss';
-@import 'mixins/_colors.scss';
+@import 'mixins/_fonts';
+@import 'mixins/_buttonList';
+@import 'mixins/_colors';
 
-#root,
-#dialog-box {
-    @include the-font;
-    button {
-        border-radius: 24px;
-        border: 0;
-        height: 48px;
-        padding: 0 30px;
+#root, #dialog-box {
+  @include the-font;
+  button {
+    border-radius: 24px;
+    border: 0;
+    height: 48px;
+    padding: 0 30px;
+    &.back {
+      background: $secondary-color !important;
+      opacity: 0.5;
+      color: $secondary-offset;
     }
-    h2 {
-        @include the-font;
-        color: #454545;
-        font-weight: 400;
+    &.next {
+      background: $primary-color !important;
+      color: $primary-offset;
     }
+    &.verified {
+        background: $primary-color;
+        color: $primary-offset;
+    }
+    &.error {
+        background: $error-color;
+        color: $error-offset;
+    }
+    &#recapture {
+        background: $secondary-color;
+        color: $secondary-offset;
+    }
+    &#cancel-request {
+        background: $secondary-color;
+        color: $secondary-offset;
+        width: 200px;
+    }
+    &#continue-request {
+        background: $warning-color;
+        color: $warning-offset;
+        width: 200px;
+    }
+    .dialog-title {
+        text-align: center;
+        margin-bottom: 0;
+        color: $primary-color !important;
+    }
+  }
+
+  .otp-icon {
+    background: #fff;
+    border-radius: 50%;
+    fill: #27c9ce;
+    width: 56px;
+    height: 56px;
+    position: relative;
+    top: 15px;
+    left: -10px;
+  }
+      
+  .dialog-icon {
+    width: 56px;
+    height: 56px;
+    &.error {
+        fill: $error-color;
+    }
+    &.warning {
+        fill: $warning-color;
+        z-index: 1;
+        margin-bottom: 20px;
+        background-color: $warning-offset;
+        border-radius: 40px;
+    }
+    &.verified {
+        fill: #27c9ce;
+    }
+    &.verifying {
+        color: $primary-color;
+    }
+  }
+
+  h2 {
+      @include the-font;
+      color: #454545;
+      font-weight: 400;
+  }
 }
 
 .flex-block {
     display: flex;
     flex-grow: 1;
     &.column {
-        flex-direction: column;
+      flex-direction: column;
     }
     &.row {
-        flex-direction: row;
+      flex-direction: row;
     }
 }
 
 .centered-flex-content {
-    align-items: center;
+  align-items: center;
 }
 
 .screen {
-    margin: 0 auto;
-    flex-direction: column;
-    align-items: center;
-    display: flex;
-    flex-shrink: 0;
+  margin: 0 auto;
+  flex-direction: column;
+  align-items: center;
+  display: flex;
+  flex-shrink: 0;
 
-    input {
-        width: 300px;
-        margin-top: 20px;
-        margin-bottom: 20px;
-        text-align: center;
-    }
+  input {
+    width: 300px;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    text-align: center;
+  }
 }
 
 .buttonListNew {
-    @include buttonListNew;
-    padding-top: 30px;
-    &.row {
-        flex-direction: row;
+  @include buttonListNew;
+  padding-top: 30px;
+  &.row {
+    flex-direction: row;
+  }
+  &.stack {
+    justify-content: space-between;
+    height: 120px;
+    flex-direction: column;
+  }
+  &.tight {
+    padding: 0;
+    margin: 0;
+  }
+  &.loose * {
+    padding: 10px;
+    margin: 10px;
+  }
+  button {
+    background-color: $primary-color;
+    color: $primary-offset;
+    &.secondary {
+      background-color: $secondary-color !important;
+      color: $secondary-offset !important;
     }
-    &.stack {
-        justify-content: space-between;
-        height: 120px;
-        flex-direction: column;
-    }
-    &.tight {
-        padding: 0;
-        margin: 0;
-    }
-    &.loose * {
-        padding: 10px;
-        margin: 10px;
-    }
-    button,
-    button:hover {
-        background-color: $primary-color;
-        color: $primary-offset;
-        &.secondary {
-            background-color: $secondary-color !important;
-            color: $secondary-offset !important;
-        }
-    }
+  }
 }
 
 .full-width,

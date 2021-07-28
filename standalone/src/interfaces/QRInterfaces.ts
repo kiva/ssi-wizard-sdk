@@ -1,4 +1,4 @@
-import {ProofRequestProfile} from './VerificationRequirementProps';
+import {ProofRequestProfile} from './VerificationInterfaces';
 import ICommonProps from './ICommonProps';
 
 export interface QRProps extends ICommonProps {

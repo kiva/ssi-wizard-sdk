@@ -5,6 +5,7 @@ export interface AuthOption {
     title: string;
     description: string;
     sequence: string[];
+    type: string;
 }
 
 export interface MenuOptionProps {
@@ -16,6 +17,7 @@ export interface MenuOptionProps {
     setAuthType(option: number): void;
     recommended: boolean;
     option_index: number;
+    type: string;
 }
 
 export interface AuthOptionProps extends ICommonProps {

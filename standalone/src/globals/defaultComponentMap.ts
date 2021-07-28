@@ -1,8 +1,11 @@
 import {ComponentMap} from '../interfaces/FlowRouterInterfaces';
+// import ConfirmationScreen from '../screens/ConfirmationScreen';
+// import AuthenticationOptionMenu from '../screens/AuthenticationOptionMenu';
+// import ResultDetails from '../screens/ResultDetails';
 
 export const defaultComponentMap: ComponentMap = {
     confirmation: {
-        fileName: 'ConfirmationScreen',
+        component: 'ConfirmationScreen',
         props: {
             reviewText:
                 'Please have the customer review the following information',
@@ -13,14 +16,14 @@ export const defaultComponentMap: ComponentMap = {
         }
     },
     menu: {
-        fileName: 'AuthenticationOptionMenu',
+        component: 'AuthenticationOptionMenu',
         props: {
             instructions: 'Select a verification method',
             selectButtonText: 'Select'
         }
     },
     details: {
-        fileName: 'ResultDetails',
+        component: 'ResultDetails',
         props: {
             no_data: 'We could not process the data returned',
             record_type: '',

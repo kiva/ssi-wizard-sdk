@@ -56,6 +56,22 @@ export default class BaseAgent implements IBaseAgent {
         return this.baseFunction(request, callback, error);
     }
 
+    async offer(
+        request: Promise<any>,
+        callback: (data: any) => any,
+        error?: string
+    ): Promise<any> {
+        return this.baseFunction(request, callback, error);
+    }
+
+    async issue(
+        request: Promise<any>,
+        callback: (data: any) => any,
+        error?: string
+    ): Promise<any> {
+        return this.baseFunction(request, callback, error);
+    }
+
     determineErrorString(error: any, errorMsg?: string): string {
         if (errorMsg) return errorMsg;
 

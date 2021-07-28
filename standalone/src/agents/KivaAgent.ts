@@ -2,13 +2,18 @@ import axios, {AxiosRequestConfig, AxiosInstance} from 'axios';
 import BaseAgent from './BaseAgent';
 import {map} from 'lodash';
 import {IAgent} from '../interfaces/AgentInterfaces';
-import {CredentialKeyMap} from '../interfaces/ConfirmationInterfaces';
-import {ProofRequestProfile} from '../interfaces/VerificationRequirementProps';
+import {ProofRequestProfile} from '../interfaces/VerificationInterfaces';
 
 export default class KivaAgent extends BaseAgent implements IAgent {
     public axiosInstance: AxiosInstance;
     private _connectionId?: string;
     private _verificationId?: string;
+    private _proofProfile?: string;
+    private _credentialId?: string;
+
+    static init(token?: string) {
+        return new KivaAgent(token);
+    }
 
     constructor(token?: string) {
         super();
@@ -24,11 +29,15 @@ export default class KivaAgent extends BaseAgent implements IAgent {
         this.axiosInstance = axios.create(axiosConfig);
     }
 
+    setProofProfile = (credentialDefinition: string) => {
+        this._proofProfile = credentialDefinition;
+    };
+
     fetchProofOptions() {
         return super.profiles(
             this.axiosInstance.get('/v2/kiva/api/profiles/proofs', {}),
             (profiles: any) => {
-                return _.map(profiles.data, (value, key) => {
+                return map(profiles.data, (value, key) => {
                     return {
                         schema_id: key,
                         ...value
@@ -60,10 +69,24 @@ export default class KivaAgent extends BaseAgent implements IAgent {
         return false;
     }
 
+    isOffered(response: any): boolean {
+        if (response.state === 'offer_sent') {
+            return true;
+        }
+        return false;
+    }
+
+    isIssued(response: any): boolean {
+        if (response.state === 'credential_issued') {
+            return true;
+        }
+        return false;
+    }
+
     formatProof(response: any): void {
         // TODO: Define an actual credential schema structure so that we can know that we're mapping data to actual PII map keys
         const proof: any = {};
-        for (let key in response) {
+        for (const key in response) {
             proof[key] = response[key].raw;
         }
         return proof;
@@ -73,6 +96,7 @@ export default class KivaAgent extends BaseAgent implements IAgent {
         return axiosData.data;
     }
 
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     establishConnection = async (ignore: string) => {
         return super.establish(
             this.axiosInstance.post('/v2/kiva/api/connection', {}),
@@ -83,6 +107,7 @@ export default class KivaAgent extends BaseAgent implements IAgent {
         );
     };
 
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     getConnection = async (ignore: string) => {
         return super.check(
             this.axiosInstance.get(
@@ -92,6 +117,7 @@ export default class KivaAgent extends BaseAgent implements IAgent {
         );
     };
 
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     checkVerification = async (ignore: string) => {
         return super.prove(
             this.axiosInstance.get(
@@ -123,4 +149,26 @@ export default class KivaAgent extends BaseAgent implements IAgent {
             data.presentation.requested_proof.revealed_attrs
         );
     }
+
+    createCredential = async (entityData: any) => {
+        return super.offer(
+            this.axiosInstance.post('issue', {
+                profile: this._proofProfile,
+                connectionId: this._connectionId,
+                entityData
+            }),
+            (credentialData: any) => {
+                this._credentialId = credentialData.data.credential_exchange_id;
+                return credentialData.data;
+            }
+        );
+    };
+
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    checkCredentialStatus = (ignore: string) => {
+        return super.issue(
+            this.axiosInstance.get('issue/' + this._credentialId),
+            this.getData
+        );
+    };
 }
