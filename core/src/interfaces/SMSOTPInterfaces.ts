@@ -1,4 +1,4 @@
-import {ProofRequestProfile} from './VerificationRequirementProps';
+import {ProofRequestProfile} from './VerificationInterfaces';
 import {ComponentStoreMethods} from './FlowRouterInterfaces';
 import ICommonProps from './ICommonProps';
 
@@ -14,7 +14,7 @@ export interface SMSProps extends ICommonProps {
     phoneIntls: CountryCodeConfig;
 }
 
-interface CountryCodeConfig {
+export interface CountryCodeConfig {
     only: boolean;
     countries: string[];
 }

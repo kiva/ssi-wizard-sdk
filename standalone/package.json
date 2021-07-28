@@ -2,8 +2,8 @@
     "name": "@kiva/ssirius-standalone",
     "version": "0.0.1",
     "dependencies": {
-        "@kiva/ssirius-core": "file:../core",
         "@material-ui/core": "^4.11.4",
+        "@material-ui/data-grid": "^4.0.0-alpha.34",
         "@material-ui/icons": "^4.11.2",
         "axios": "^0.21.1",
         "classnames": "^2.3.1",
@@ -12,9 +12,9 @@
         "react": "^17.0.2",
         "react-dom": "^17.0.2",
         "react-hot-toast": "^2.0.0",
+        "react-html5-camera-photo": "^1.5.5",
         "react-phone-input-2": "^2.14.0",
-        "uuid": "^3.4.0",
-        "webpack-merge": "^5.8.0"
+        "uuid": "^3.4.0"
     },
     "scripts": {
         "start": "webpack-cli serve --mode=development --env development --open --hot",
@@ -42,12 +42,11 @@
         ]
     },
     "bin": {
-        "ssirius": "./bin/cli.js"
+        "ssirius": "bin/cli.js"
     },
     "main": "./dist/bundle.js",
     "description": "An open-source package to streamline the creation of Verifiable Credential transaction UIs",
     "devDependencies": {
-        "@types/lodash": "^4.14.171",
         "@types/node": "^16.0.1",
         "@types/qrcode": "^1.4.1",
         "@types/react": "^17.0.14",
@@ -66,6 +65,7 @@
         "eslint-plugin-react": "^7.24.0",
         "eslint-plugin-react-hooks": "^4.2.0",
         "eslint-webpack-plugin": "^2.5.4",
+        "file-loader": "^6.2.0",
         "fs-extra": "^10.0.0",
         "html-webpack-plugin": "^5.3.2",
         "node-sass": "^6.0.1",

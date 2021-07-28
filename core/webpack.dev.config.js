@@ -4,7 +4,12 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = {
     ...prod_config,
+    devtool: 'eval-source-map',
     entry: __dirname + '/src/index.tsx',
+    output: {
+        path: process.cwd() + '/dist',
+        filename: 'bundle.js'
+    },
     mode: 'development',
     plugins: [
         new ESLintPlugin({
@@ -17,7 +22,6 @@ module.exports = {
                         <meta charset="utf-8">
                         <title>SSIrius</title>
                         <meta name="viewport" content="width=device-width, initial-scale=1">
-                        <script src="bundle.js" />
                     </head>
                     <body>
                         <div id="root"></div>
@@ -27,7 +31,7 @@ module.exports = {
         })
     ],
     devServer: {
-        port: 7567,
+        port: 5555,
         open: true,
         historyApiFallback: true
     }

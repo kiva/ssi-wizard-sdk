@@ -5,19 +5,16 @@ import {defaultComponentMap} from './globals/defaultComponentMap';
 import App from './App';
 import merge from 'webpack-merge';
 
-export default function ssirius(
-    CONSTANTS: IConstants,
-    rootElement: string
-): void {
-    const config_default: IConstants = {
-        component_map: defaultComponentMap,
-        verification_options: [],
-        direction: 'ltr'
-    };
-
-    const combined = merge(config_default, CONSTANTS);
-
-    console.log(combined);
+export default function ssirius(CONSTANTS: any, rootElement: string): void {
+    const combined: IConstants = merge(
+        {
+            component_map: defaultComponentMap,
+            verification_options: [],
+            credentialKeyMap: {},
+            direction: 'ltr'
+        },
+        CONSTANTS
+    );
 
     ReactDOM.render(
         <React.StrictMode>

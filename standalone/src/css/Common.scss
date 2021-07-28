@@ -1,6 +1,6 @@
-@import 'mixins/_fonts.scss';
-@import 'mixins/_buttonList.scss';
-@import 'mixins/_colors.scss';
+@import 'mixins/_fonts';
+@import 'mixins/_buttonList';
+@import 'mixins/_colors';
 
 #root,
 #dialog-box {
@@ -67,14 +67,9 @@
         padding: 10px;
         margin: 10px;
     }
-    button,
-    button:hover {
-        background-color: $primary-color;
-        color: $primary-offset;
-        &.secondary {
-            background-color: $secondary-color !important;
-            color: $secondary-offset !important;
-        }
+    button.secondary {
+        background-color: $secondary-color !important;
+        color: $secondary-offset !important;
     }
 }
 

@@ -1,5 +1,5 @@
-import {ProofRequestProfile} from './VerificationRequirementProps';
-import {ComponentStoreMethods} from './FlowRouterInterfaces';
+import {ProofRequestProfile} from './VerificationInterfaces';
+import {ComponentStoreMethods, FlowAction} from './FlowRouterInterfaces';
 import ICommonProps from './ICommonProps';
 
 export interface SMSProps extends ICommonProps {
@@ -14,7 +14,7 @@ export interface SMSProps extends ICommonProps {
     phoneIntls: CountryCodeConfig;
 }
 
-interface CountryCodeConfig {
+export interface CountryCodeConfig {
     only: boolean;
     countries: string[];
 }
@@ -62,6 +62,7 @@ export interface OTPScreenProps {
     auth_token?: string;
     phoneIntls: CountryCodeConfig;
     specificError?: string;
+    dispatch: (action: FlowAction) => void;
 }
 
 export interface OTPInputProps {
@@ -90,6 +91,7 @@ export interface PhoneScreenProps {
     invalid_number: string;
     auth_token?: string;
     phoneIntls: CountryCodeConfig;
+    dispatch: (action: FlowAction) => void;
 }
 
 export interface SMSPostBody {

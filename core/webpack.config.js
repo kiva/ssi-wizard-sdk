@@ -10,12 +10,14 @@ module.exports = {
         library: {
             name: 'ssirius',
             type: 'commonjs',
-            export: 'default',
-            auxiliaryComment: 'Excelsior'
+            export: 'default'
         }
     },
     resolve: {
         extensions: ['.ts', '.tsx', '.js', '.json']
+    },
+    optimization: {
+        minimize: false
     },
     module: {
         rules: [

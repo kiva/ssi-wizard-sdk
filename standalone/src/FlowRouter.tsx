@@ -1,15 +1,11 @@
 import React, {useState, useRef, Suspense} from 'react';
 import FlowDispatchTypes from './enums/FlowDispatchTypes';
-import FlowDispatchContext from './contexts/FlowDispatchContext';
 import {Flow} from './interfaces/FlowSelectorInterfaces';
 import {IConstants} from './interfaces/IConstants';
-import {defaultComponentMap} from './globals/defaultComponentMap';
-import ConfirmationScreen from './screens/ConfirmationScreen';
 
 import {
     ComponentStoreMethods,
-    FlowAction,
-    ComponentMap
+    FlowAction
 } from './interfaces/FlowRouterInterfaces';
 import useComponentStore from './hooks/useComponentStore';
 import getFlow from './helpers/getFlow';
@@ -21,6 +17,8 @@ const FlowController: React.FC<IConstants> = (CONSTANTS: IConstants) => {
     let theFlow: Flow = getFlow(authIndex.current, CONSTANTS);
 
     const prevStep = theFlow[step]![FlowDispatchTypes.BACK] ?? '';
+    const componentStoreMethods: ComponentStoreMethods =
+        useComponentStore(step);
 
     function dispatch(action: FlowAction) {
         const {type, payload} = action;
@@ -45,6 +43,7 @@ const FlowController: React.FC<IConstants> = (CONSTANTS: IConstants) => {
             case FlowDispatchTypes.RESTART:
                 setStep('confirmation');
                 authIndex.current = 0;
+                componentStoreMethods.reset();
                 break;
             case FlowDispatchTypes.SET_AUTH_METHOD:
                 if ('menu' === step) {
@@ -62,18 +61,12 @@ const FlowController: React.FC<IConstants> = (CONSTANTS: IConstants) => {
     }
 
     const TheComponent = renderScreen(step);
-    const componentStoreMethods: ComponentStoreMethods =
-        useComponentStore(step);
 
     function renderScreen(step: string) {
         const definition = CONSTANTS.component_map[step].component;
-        let component: React.FC;
-
-        if ('string' === typeof definition) {
-            component = React.lazy(() => import(__dirname + '/screens/' + definition));
-        } else {
-            component = definition;
-        }
+        const component = React.lazy(
+            () => import(__dirname + '/screens/' + definition)
+        );
 
         return component;
     }
@@ -87,21 +80,20 @@ const FlowController: React.FC<IConstants> = (CONSTANTS: IConstants) => {
     }
 
     return (
-        <FlowDispatchContext.Provider value={() => dispatch}>
-            <Suspense fallback="">
-                <div className="KernelContainer">
-                    <div className="KernelContent" data-cy={step}>
-                        <TheComponent
-                            {...getAdditionalProps(step)}
-                            CONSTANTS={CONSTANTS}
-                            store={componentStoreMethods}
-                            prevScreen={prevStep}
-                            authIndex={authIndex.current}
-                        />
-                    </div>
+        <Suspense fallback="">
+            <div className="KernelContainer">
+                <div className="KernelContent" data-cy={step}>
+                    <TheComponent
+                        {...getAdditionalProps(step)}
+                        CONSTANTS={CONSTANTS}
+                        store={componentStoreMethods}
+                        prevScreen={prevStep}
+                        authIndex={authIndex.current}
+                        dispatch={dispatch}
+                    />
                 </div>
-            </Suspense>
-        </FlowDispatchContext.Provider>
+            </div>
+        </Suspense>
     );
 };
 

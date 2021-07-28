@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, {useEffect, useState} from 'react';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import CircularProgress from '@material-ui/core/CircularProgress';
@@ -10,8 +10,16 @@ import '../css/DialogBody.scss';
 
 import {DialogBodyProps} from '../interfaces/DialogInterfaces';
 
-export default class DialogBody extends React.Component<DialogBodyProps> {
-    renderInProgress() {
+export default function DialogBody(props: DialogBodyProps) {
+    const [showCancelDialog, setShowCancelDialog] = useState<
+        boolean | undefined
+    >(props.allowCancel);
+
+    useEffect(() => {
+        setShowCancelDialog(props.allowCancel);
+    }, [props.allowCancel]);
+
+    function renderInProgress() {
         return (
             <div className="DialogBody">
                 <Typography
@@ -19,7 +27,7 @@ export default class DialogBody extends React.Component<DialogBodyProps> {
                     variant="h4"
                     gutterBottom
                     className="dialog-title">
-                    Verifying...
+                    {props.verifyingText}
                 </Typography>
                 <div>
                     <CircularProgress className="dialog-icon verifying" />
@@ -28,33 +36,32 @@ export default class DialogBody extends React.Component<DialogBodyProps> {
         );
     }
 
-    renderCancel() {
+    function renderCancel() {
         return (
             <div className="DialogBody">
                 <ErrorIcon className="dialog-icon warning" />
                 <div className="DialogBodyErrorMessage">
-                    Your internet connection appears to be slow. You can
-                    continue to wait, or cancel and try again.
+                    {props.slowInternetWarning}
                 </div>
                 <div className="buttonListNew row tight">
                     <Button
-                        onClick={this.props.cancel}
+                        onClick={props.cancel}
                         id="cancel-request"
                         data-cy="cancel">
-                        Try Again
+                        {props.tryAgainText}
                     </Button>
                     <Button
-                        onClick={this.props.dismissCancel}
+                        onClick={() => setShowCancelDialog(false)}
                         data-cy="continue"
                         id="continue-request">
-                        Continue
+                        {props.continueText}
                     </Button>
                 </div>
             </div>
         );
     }
 
-    renderSuccess() {
+    function renderSuccess() {
         return (
             <div className="DialogBody">
                 <Typography
@@ -62,50 +69,48 @@ export default class DialogBody extends React.Component<DialogBodyProps> {
                     variant="h4"
                     gutterBottom
                     className="dialog-title">
-                    ID Verified
+                    {props.verificationNotice}
                 </Typography>
                 <CheckCircleIcon className="dialog-icon verified" />
             </div>
         );
     }
 
-    renderError(buttonText?: string) {
+    function renderError(buttonText?: string) {
         return (
             <div className="DialogBody">
                 <ErrorIcon className="dialog-icon error" />
                 <div className="DialogBodyErrorMessage">
                     <div
                         dangerouslySetInnerHTML={{
-                            __html: this.props.errorMessage || ''
+                            __html: props.errorMessage || ''
                         }}
                     />
                 </div>
                 <Button
-                    onClick={this.props.clickFunction}
+                    onClick={() => props.clickFunction(false)}
                     data-cy="dialog-button"
                     className="error">
-                    {buttonText || 'Continue'}
+                    {buttonText || props.continueText}
                 </Button>
             </div>
         );
     }
 
-    render() {
-        if (this.props.rejection && this.props.errorMessage) {
-            return this.renderError('Please try again');
-        }
-        if (!this.props.complete) {
-            if (this.props.allowCancel) {
-                return this.renderCancel();
-            } else {
-                return this.renderInProgress();
-            }
+    if (props.errorMessage) {
+        return renderError(props.tryAgainText);
+    }
+    if (!props.complete) {
+        if (showCancelDialog) {
+            return renderCancel();
         } else {
-            if (this.props.success) {
-                return this.renderSuccess();
-            } else {
-                return this.renderError();
-            }
+            return renderInProgress();
+        }
+    } else {
+        if (props.success) {
+            return renderSuccess();
+        } else {
+            return renderError();
         }
     }
 }

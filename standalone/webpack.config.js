@@ -41,6 +41,19 @@ module.exports = {
                             '/node_modules/sass-loader/dist/index.js'
                     }
                 ]
+            },
+            {
+                test: /\.(png|svg|jpe?g|gif)$/,
+                use: [
+                    {
+                        loader: 'file-loader',
+                        options: {
+                            name: '[name].[ext]',
+                            outputPath: 'images/',
+                            publicPath: 'images/'
+                        }
+                    }
+                ]
             }
         ]
     },
@@ -55,6 +68,9 @@ module.exports = {
                         <meta charset="utf-8">
                         <title>SSIrius</title>
                         <meta name="viewport" content="width=device-width, initial-scale=1">
+                        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500">
+                        <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+                        <link href="https://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet">
                     </head>
                     <body>
                         <div id="root"></div>

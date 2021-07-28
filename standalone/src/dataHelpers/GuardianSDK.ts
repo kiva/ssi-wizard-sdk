@@ -41,7 +41,7 @@ export default class GuardianSDK {
             const response: any = await axios.post(ekycUri, requestBody, {
                 headers,
                 // TODO: Decide if there should be a unique cancel token that is responsible for cancelling all requests within this utility class
-                cancelToken: new CancelToken((cancel): void => {
+                cancelToken: new CancelToken((cancel: any): void => {
                     this.cancel = cancel;
                 })
             });

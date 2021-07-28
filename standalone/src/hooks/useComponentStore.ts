@@ -39,6 +39,7 @@ function useComponentStore(step: string): ComponentStoreMethods {
     };
 
     const reset = () => {
+        console.log('Hello');
         componentStore.current = initComponentStore();
     };
 

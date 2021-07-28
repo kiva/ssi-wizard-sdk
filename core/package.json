@@ -6,16 +6,15 @@
         "@material-ui/icons": "^4.11.2",
         "axios": "^0.21.1",
         "classnames": "^2.3.1",
-        "lodash": "^4.17.21",
-        "qrcode": "^1.4.4",
+        "lajhem": "file:../../lajhem",
         "react": "^17.0.2",
         "react-dom": "^17.0.2",
         "react-hot-toast": "^2.0.0",
-        "react-phone-input-2": "^2.14.0",
-        "uuid": "^3.4.0",
         "webpack-merge": "^5.8.0"
     },
     "scripts": {
+        "lajhem": "ssirius start --config=cricket.ts",
+        "mars": "ssirius build --config=cricket.ts --local",
         "start": "node ./bin/cli.js start --config=src/config.ts",
         "build": "webpack --mode=production --env production --progress",
         "test": "echo \"Testing...\"",
@@ -40,6 +39,10 @@
             "last 1 safari version"
         ]
     },
+    "bin": {
+        "ssirius-core": "bin/cli.js"
+    },
+    "typings": "ssirius.d.ts",
     "main": "./dist/bundle.js",
     "description": "An open-source package to streamline the creation of Verifiable Credential transaction UIs",
     "devDependencies": {

@@ -2,12 +2,18 @@ import axios, {AxiosRequestConfig, AxiosInstance} from 'axios';
 import BaseAgent from './BaseAgent';
 import {map} from 'lodash';
 import {IAgent} from '../interfaces/AgentInterfaces';
-import {ProofRequestProfile} from '../interfaces/VerificationRequirementProps';
+import {ProofRequestProfile} from '../interfaces/VerificationInterfaces';
 
 export default class KivaAgent extends BaseAgent implements IAgent {
     public axiosInstance: AxiosInstance;
     private _connectionId?: string;
     private _verificationId?: string;
+    private _proofProfile?: string;
+    private _credentialId?: string;
+
+    static init(token?: string) {
+        return new KivaAgent(token);
+    }
 
     constructor(token?: string) {
         super();
@@ -22,6 +28,10 @@ export default class KivaAgent extends BaseAgent implements IAgent {
         const axiosConfig: AxiosRequestConfig = config;
         this.axiosInstance = axios.create(axiosConfig);
     }
+
+    setProofProfile = (credentialDefinition: string) => {
+        this._proofProfile = credentialDefinition;
+    };
 
     fetchProofOptions() {
         return super.profiles(
@@ -54,6 +64,20 @@ export default class KivaAgent extends BaseAgent implements IAgent {
 
     isRejected(response: any): boolean {
         if (response.state === 'verified' && response.verified === 'false') {
+            return true;
+        }
+        return false;
+    }
+
+    isOffered(response: any): boolean {
+        if (response.state === 'offer_sent') {
+            return true;
+        }
+        return false;
+    }
+
+    isIssued(response: any): boolean {
+        if (response.state === 'credential_issued') {
             return true;
         }
         return false;
@@ -125,4 +149,26 @@ export default class KivaAgent extends BaseAgent implements IAgent {
             data.presentation.requested_proof.revealed_attrs
         );
     }
+
+    createCredential = async (entityData: any) => {
+        return super.offer(
+            this.axiosInstance.post('issue', {
+                profile: this._proofProfile,
+                connectionId: this._connectionId,
+                entityData
+            }),
+            (credentialData: any) => {
+                this._credentialId = credentialData.data.credential_exchange_id;
+                return credentialData.data;
+            }
+        );
+    };
+
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    checkCredentialStatus = (ignore: string) => {
+        return super.issue(
+            this.axiosInstance.get('issue/' + this._credentialId),
+            this.getData
+        );
+    };
 }

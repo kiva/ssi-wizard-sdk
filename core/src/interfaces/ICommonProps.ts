@@ -7,5 +7,5 @@ export default interface ICommonProps {
     prevScreen: string;
     authIndex: number;
     dataHelper?: any;
-    dispatch: any;
+    dispatch: (action: FlowAction) => void;
 }

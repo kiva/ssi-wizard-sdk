@@ -22,7 +22,3 @@ export interface AuthOptionProps extends ICommonProps {
     instructions: string;
     selectButtonText: string;
 }
-
-export interface AuthOptionState {
-    optionSelected: number;
-}
