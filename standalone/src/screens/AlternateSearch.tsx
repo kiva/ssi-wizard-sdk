@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, {useState} from 'react';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import TextField from '@material-ui/core/TextField';
@@ -6,77 +6,61 @@ import Button from '@material-ui/core/Button';
 import classNames from 'classnames';
 import ArrowDropUpIcon from '@material-ui/icons/ArrowDropUp';
 import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
-import {toast} from 'react-hot-toast';
-
-import FlowDispatchContext from '../contexts/FlowDispatchContext';
-import FlowDispatchTypes from '../enums/FlowDispatchTypes';
+import toast from 'react-hot-toast';
 
 import '../css/Common.scss';
 import '../css/AlternateSearch.scss';
 
 import {
     AltSearchProps,
-    AltSearchState,
+    AltSearchErrors,
     AltSearchInputData
 } from '../interfaces/SearchInterfaces';
+import FlowDispatchTypes from '../enums/FlowDispatchTypes';
 
-export default class AlternateSearch extends React.Component<
-    AltSearchProps,
-    AltSearchState
-> {
-    static contextType = FlowDispatchContext;
-    private dispatch: any;
+export default function AlternateSearch(props: AltSearchProps) {
+    const [searchParams, setSearchParams] = useState<AltSearchInputData>(
+        props.store.get('search', {})
+    );
+    const [errors, setErrors] = useState<AltSearchErrors>({
+        firstName: false,
+        lastName: false,
+        mothersFirstName: false,
+        fathersFirstName: false,
+        birthDate: false
+    });
+    const [rows, setRows] = useState<Array<string | boolean>>([
+        searchParams.birthDate || false,
+        searchParams.mothersFirstName || searchParams.fathersFirstName || false
+    ]);
 
-    constructor(props: AltSearchProps) {
-        super(props);
-        this.state = {
-            search: props.search,
-            errors: {
-                firstName: false,
-                lastName: false,
-                mothersFirstName: false,
-                fathersFirstName: false,
-                birthDate: false
-            },
-            rows: [
-                props.search.birthDate || false,
-                props.search.mothersFirstName ||
-                    props.search.fathersFirstName ||
-                    false
-            ]
-        };
-    }
-
-    componentDidMount() {
-        this.dispatch = this.context();
-    }
-
-    validateInputs(data: AltSearchInputData): boolean {
-        const errors: any = {};
-        for (let input in data) {
-            let msg =
+    function validateInputs(data: AltSearchInputData): boolean {
+        let updatedErrors: any = {};
+        for (const input in data) {
+            const msg =
                 input === 'birthDate'
-                    ? this.validateBirthDate()
-                    : this.validateInputText(input);
+                    ? validateBirthDate()
+                    : validateInputText(input);
             if (msg) {
-                errors[input] = msg;
+                updatedErrors[input] = msg;
             }
         }
 
-        if (Object.keys(errors).length) {
-            this.setState({errors});
+        if (Object.keys(updatedErrors).length) {
+            updatedErrors = Object.assign(errors, updatedErrors);
+            setErrors(updatedErrors);
             return false;
         } else {
             return true;
         }
     }
 
-    validateDataRequirements(inputs: string[]): boolean {
+    function validateDataRequirements(inputs: string[]): boolean {
         if (
             inputs.indexOf('firstName') === -1 ||
             inputs.indexOf('lastName') === -1
         ) {
-            toast.error('Please enter your full name', {
+            toast.error(props.missingNamesError, {
                 duration: 3000
             });
             return false;
@@ -89,51 +73,50 @@ export default class AlternateSearch extends React.Component<
         ) {
             return true;
         } else {
-            toast.error(
-                "Please enter your birth date, or one of your parents' names",
-                {
-                    duration: 7000
-                }
-            );
+            toast.error(props.missingFuzzyDataError, {
+                duration: 7000
+            });
             return false;
         }
     }
 
-    validateBirthDate(): any {
-        const bday: string | undefined = this.state.search.birthDate;
+    function validateBirthDate(): any {
+        const bday: string | undefined = searchParams.birthDate;
         if (bday && !Date.parse(bday)) {
-            return 'Please enter a valid date';
+            return props.dateInputError;
         }
 
         // Input is valid
         return false;
     }
 
-    validateInputText(k: string): any {
-        const inputValue: string | undefined = this.state.search[k];
+    function validateInputText(k: string): any {
+        const inputValue: string | undefined = searchParams[k];
         if (!inputValue || inputValue.length <= 0 || inputValue.length > 50) {
-            return 'Your input must be between 0 and 50 characters in length';
+            return props.inputLengthError;
         }
 
         // Input is valid
         return false;
     }
 
-    handleFieldChange =
+    const handleFieldChange =
         (filterKey: string) =>
         (event: any): void => {
             event.preventDefault();
-            this.setState({
-                search: {
-                    ...this.state.search,
-                    [filterKey]: event.target.value
-                }
-            });
+            const updatedSearchParams: AltSearchInputData = {
+                ...props.store.get('search', searchParams),
+                [filterKey]: event.target.value
+            };
+
+            setSearchParams(updatedSearchParams);
         };
 
-    deleteEmptyValues(searchData: AltSearchInputData): AltSearchInputData {
+    function deleteEmptyValues(
+        searchData: AltSearchInputData
+    ): AltSearchInputData {
         const data = searchData;
-        for (let k in data) {
+        for (const k in data) {
             if (!data[k]) {
                 delete data[k];
             }
@@ -141,246 +124,220 @@ export default class AlternateSearch extends React.Component<
         return data;
     }
 
-    handleSubmission = () => (event: any) => {
+    const handleSubmission = () => (event: any) => {
         event.preventDefault();
-        const data: AltSearchInputData = this.deleteEmptyValues(
-            this.state.search
-        );
+        const data: AltSearchInputData = deleteEmptyValues(searchParams);
         const keys = Object.keys(data);
 
-        if (this.validateInputs(data) && this.validateDataRequirements(keys)) {
-            this.props.store.set('filters', data);
-            this.dispatch({type: FlowDispatchTypes.NEXT});
+        if (validateInputs(data) && validateDataRequirements(keys)) {
+            props.store.set('search', data);
+            props.dispatch({type: FlowDispatchTypes.NEXT});
         }
     };
 
-    handleRowClick = (index: number) => (): void => {
-        const rows = this.state.rows;
-        rows[index] = !rows[index];
-        this.setState({rows});
+    const handleRowClick = (index: number) => (): void => {
+        const currentRows = rows;
+        currentRows[index] = !rows[index];
+        setRows(currentRows);
     };
 
     // TODO:
     //     1) Figure out a way to break out form rows into their own component
     //     2) Add a fixed width to header text, because adding specific linebreaks will get tricky
     //     3) Figure out a scalable way to make the row toggling work i.e. not using specific indices
-    render() {
-        return (
-            <div data-cy="alternate-search" className="flex-block">
-                <Grid
-                    container
-                    direction="column"
-                    justify="center"
-                    alignItems="center">
-                    <form name="ekycFuzzySearchForm">
-                        <Grid item>
-                            <Typography
-                                id="instructions"
-                                component="h2"
-                                align="center">
-                                Please fill out your first name, last name, and
-                                a third field of your choice
-                            </Typography>
+    return (
+        <div data-cy="alternate-search" className="flex-block">
+            <Grid
+                container
+                direction="column"
+                justify="center"
+                alignItems="center">
+                <form name="ekycFuzzySearchForm">
+                    <Grid item>
+                        <Typography
+                            id="instructions"
+                            component="h2"
+                            align="center">
+                            {props.primaryInstructions}
+                        </Typography>
+                    </Grid>
+                    <Grid item>
+                        <Typography
+                            component="h2"
+                            variant="h6"
+                            gutterBottom
+                            align="center">
+                            {props.firstRowInstructions}
+                        </Typography>
+                    </Grid>
+                    <Grid
+                        container
+                        className="alternate-search-row"
+                        direction="row"
+                        justify="space-around"
+                        alignItems="center">
+                        <Grid item xs={12} md={5}>
+                            <TextField
+                                className="inspectletIgnore alternate-search-field required"
+                                data-cy="firstname-input"
+                                label={props.labelOne}
+                                value={searchParams.firstName || ''}
+                                onChange={handleFieldChange('firstName')}
+                                inputProps={{'aria-label': 'bare'}}
+                                margin="dense"
+                                name="inputFirstname"
+                                error={!!errors.firstName}
+                                helperText={errors.firstName}
+                            />
                         </Grid>
-                        <Grid item>
-                            <Typography
-                                component="h2"
-                                variant="h6"
-                                gutterBottom
-                                align="center">
-                                Enter first name and last name
-                            </Typography>
+                        <Grid item xs={12} md={5}>
+                            <TextField
+                                className="inspectletIgnore alternate-search-field required"
+                                data-cy="lastname-input"
+                                label={props.labelTwo}
+                                value={searchParams.lastName || ''}
+                                onChange={handleFieldChange('lastName')}
+                                inputProps={{'aria-label': 'bare'}}
+                                margin="dense"
+                                name="inputLastname"
+                                error={!!errors.lastName}
+                                helperText={errors.lastName}
+                            />
                         </Grid>
-                        <Grid
-                            container
-                            className="alternate-search-row"
-                            direction="row"
-                            justify="space-around"
-                            alignItems="center">
-                            <Grid item xs={12} md={5}>
-                                <TextField
-                                    className="inspectletIgnore alternate-search-field required"
-                                    data-cy="firstname-input"
-                                    label={`First name (required)`}
-                                    value={this.state.search.firstName || ''}
-                                    onChange={this.handleFieldChange(
-                                        'firstName'
-                                    )}
-                                    inputProps={{'aria-label': 'bare'}}
-                                    margin="dense"
-                                    name="inputFirstname"
-                                    error={!!this.state.errors.firstName}
-                                    helperText={this.state.errors.firstName}
-                                />
-                            </Grid>
-                            <Grid item xs={12} md={5}>
-                                <TextField
-                                    className="inspectletIgnore alternate-search-field required"
-                                    data-cy="lastname-input"
-                                    label={`Last name (required)`}
-                                    value={this.state.search.lastName || ''}
-                                    onChange={this.handleFieldChange(
-                                        'lastName'
-                                    )}
-                                    inputProps={{'aria-label': 'bare'}}
-                                    margin="dense"
-                                    name="inputLastname"
-                                    error={!!this.state.errors.lastName}
-                                    helperText={this.state.errors.lastName}
-                                />
-                            </Grid>
-                        </Grid>
-                        <Grid item onClick={this.handleRowClick(0)}>
-                            <Typography
-                                data-cy="dob-row-header"
-                                className={classNames({
-                                    expandable: true,
-                                    expanded: this.state.rows[0]
-                                })}
-                                component="h2"
-                                variant="h6"
-                                align="center">
-                                Enter your date of birth
-                                <AccordionArrow
-                                    fontSize="large"
-                                    className={
-                                        'accordion-arrow ' +
-                                        (this.state.rows[0] ? 'open' : 'closed')
-                                    }
-                                />
-                            </Typography>
-                        </Grid>
-                        <Grid
-                            container
+                    </Grid>
+                    <Grid item onClick={handleRowClick(0)}>
+                        <Typography
+                            data-cy="dob-row-header"
                             className={classNames({
-                                'alternate-search-row': true,
-                                labelled: true,
-                                hidden: !this.state.rows[0]
+                                expandable: true,
+                                expanded: rows[0]
                             })}
-                            direction="row"
-                            justify="space-around"
-                            alignItems="center">
-                            <Grid item xs={12} md={5}>
-                                <TextField
-                                    className="inspectletIgnore alternate-search-field"
-                                    data-cy="birthdate-input"
-                                    label="Date of birth"
-                                    type="date"
-                                    value={this.state.search.birthDate || ''}
-                                    onChange={this.handleFieldChange(
-                                        'birthDate'
-                                    )}
-                                    margin="dense"
-                                    name="inputBirthdate"
-                                    error={!!this.state.errors.birthDate}
-                                    helperText={this.state.errors.birthDate}
-                                    InputLabelProps={{
-                                        shrink: true
-                                    }}
-                                />
-                            </Grid>
+                            component="h2"
+                            variant="h6"
+                            align="center">
+                            {props.firstRowHeader}
+                            <AccordionArrow
+                                fontSize="large"
+                                className={
+                                    'accordion-arrow ' +
+                                    (rows[0] ? 'open' : 'closed')
+                                }
+                            />
+                        </Typography>
+                    </Grid>
+                    <Grid
+                        container
+                        className={classNames({
+                            'alternate-search-row': true,
+                            labelled: true,
+                            hidden: !rows[0]
+                        })}
+                        direction="row"
+                        justify="space-around"
+                        alignItems="center">
+                        <Grid item xs={12} md={5}>
+                            <TextField
+                                className="inspectletIgnore alternate-search-field"
+                                data-cy="birthdate-input"
+                                label={props.labelThree}
+                                type="date"
+                                value={searchParams.birthDate || ''}
+                                onChange={handleFieldChange('birthDate')}
+                                margin="dense"
+                                name="inputBirthdate"
+                                error={!!errors.birthDate}
+                                helperText={errors.birthDate}
+                                InputLabelProps={{
+                                    shrink: true
+                                }}
+                            />
                         </Grid>
-                        <Grid
-                            item
-                            className="or"
-                            onClick={this.handleRowClick(1)}>
-                            <Typography
-                                data-cy="parents-names-row-header"
-                                className={classNames({
-                                    expandable: true,
-                                    expanded: this.state.rows[1]
-                                })}
-                                component="h2"
-                                variant="h6"
-                                align="center">
-                                Enter one of your parents' birthdays
-                                <AccordionArrow
-                                    fontSize="large"
-                                    className={
-                                        'accordion-arrow ' +
-                                        (this.state.rows[1] ? 'open' : 'closed')
-                                    }
-                                />
-                            </Typography>
-                            <h3
-                                data-cy="parents-names-subheader"
-                                className={classNames({
-                                    'row-subheader': true,
-                                    'align-center': true,
-                                    hidden: !this.state.rows[1]
-                                })}>
-                                (Required if DOB is not entered)
-                            </h3>
-                        </Grid>
-                        <Grid
-                            container
+                    </Grid>
+                    <Grid item className="or" onClick={handleRowClick(1)}>
+                        <Typography
+                            data-cy="parents-names-row-header"
                             className={classNames({
-                                'alternate-search-row': true,
-                                hidden: !this.state.rows[1]
+                                expandable: true,
+                                expanded: rows[1]
                             })}
-                            direction="row"
-                            justify="space-around"
-                            alignItems="center">
-                            <Grid item xs={12} md={5}>
-                                <TextField
-                                    className="inspectletIgnore alternate-search-field"
-                                    data-cy="mothersfirstname-input"
-                                    label="Mother's First Name"
-                                    value={
-                                        this.state.search.mothersFirstName || ''
-                                    }
-                                    onChange={this.handleFieldChange(
-                                        'mothersFirstName'
-                                    )}
-                                    inputProps={{'aria-label': 'bare'}}
-                                    margin="dense"
-                                    name="inputMothersFirstName"
-                                    error={!!this.state.errors.mothersFirstName}
-                                    helperText={
-                                        this.state.errors.mothersFirstName
-                                    }
-                                />
-                            </Grid>
-                            <Grid item xs={12} md={5}>
-                                <TextField
-                                    className="inspectletIgnore alternate-search-field"
-                                    data-cy="fathersfirstname-input"
-                                    label="Father's First Name"
-                                    value={
-                                        this.state.search.fathersFirstName || ''
-                                    }
-                                    onChange={this.handleFieldChange(
-                                        'fathersFirstName'
-                                    )}
-                                    inputProps={{'aria-label': 'bare'}}
-                                    margin="dense"
-                                    name="inputFathersFirstName"
-                                    error={!!this.state.errors.fathersFirstName}
-                                    helperText={
-                                        this.state.errors.fathersFirstName
-                                    }
-                                />
-                            </Grid>
+                            component="h2"
+                            variant="h6"
+                            align="center">
+                            {props.secondRowHeader}
+                            <AccordionArrow
+                                fontSize="large"
+                                className={
+                                    'accordion-arrow ' +
+                                    (rows[1] ? 'open' : 'closed')
+                                }
+                            />
+                        </Typography>
+                        <h3
+                            data-cy="parents-names-subheader"
+                            className={classNames({
+                                'row-subheader': true,
+                                'align-center': true,
+                                hidden: !rows[1]
+                            })}>
+                            ({props.secondRowSubheader})
+                        </h3>
+                    </Grid>
+                    <Grid
+                        container
+                        className={classNames({
+                            'alternate-search-row': true,
+                            hidden: !rows[1]
+                        })}
+                        direction="row"
+                        justify="space-around"
+                        alignItems="center">
+                        <Grid item xs={12} md={5}>
+                            <TextField
+                                className="inspectletIgnore alternate-search-field"
+                                data-cy="mothersfirstname-input"
+                                label={props.labelFour}
+                                value={searchParams.mothersFirstName || ''}
+                                onChange={handleFieldChange('mothersFirstName')}
+                                inputProps={{'aria-label': 'bare'}}
+                                margin="dense"
+                                name="inputMothersFirstName"
+                                error={!!errors.mothersFirstName}
+                                helperText={errors.mothersFirstName}
+                            />
                         </Grid>
-                        <div className="buttonListNew stack centered">
-                            <Button
-                                type="submit"
-                                id="scan-fingerprint"
-                                onClick={this.handleSubmission()}
-                                onSubmit={this.handleSubmission()}>
-                                Scan Fingerprint
-                            </Button>
-                            <Button
-                                className="back"
-                                onClick={() => this.props.toggleSearchType()}>
-                                {`< BACK`}
-                            </Button>
-                        </div>
-                    </form>
-                </Grid>
-            </div>
-        );
-    }
+                        <Grid item xs={12} md={5}>
+                            <TextField
+                                className="inspectletIgnore alternate-search-field"
+                                data-cy="fathersfirstname-input"
+                                label={props.labelFive}
+                                value={searchParams.fathersFirstName || ''}
+                                onChange={handleFieldChange('fathersFirstName')}
+                                inputProps={{'aria-label': 'bare'}}
+                                margin="dense"
+                                name="inputFathersFirstName"
+                                error={!!errors.fathersFirstName}
+                                helperText={errors.fathersFirstName}
+                            />
+                        </Grid>
+                    </Grid>
+                    <div className="buttonListNew stack centered">
+                        <Button
+                            type="submit"
+                            id="scan-fingerprint"
+                            onClick={handleSubmission()}
+                            onSubmit={handleSubmission()}>
+                            {props.nextText}
+                        </Button>
+                        <Button
+                            className="back"
+                            onClick={() => props.toggleSearchType()}>
+                            {`< ${props.backText}`}
+                        </Button>
+                    </div>
+                </form>
+            </Grid>
+        </div>
+    );
 }
 
 function AccordionArrow(props: any) {

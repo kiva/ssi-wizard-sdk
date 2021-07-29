@@ -1,18 +1,14 @@
 import * as React from 'react';
+import '../css/Common.scss';
 import '../css/ResultDetails.scss';
 import Button from '@material-ui/core/Button';
 import Paper from '@material-ui/core/Paper';
 
 import classNames from 'classnames';
 
-import _ from 'lodash';
 import {DetailsProps, PhotoAttach} from '../interfaces/DetailsInterfaces';
-import {CredentialKeyMap} from '../interfaces/ConfirmationInterfaces';
-
-const CredentialKeys: CredentialKeyMap = CONSTANTS.credentialKeyMap;
 
 const wideKeys: string[] = [];
-const itemList: any = {};
 
 export default class ResultDetails extends React.Component<DetailsProps> {
     private personalInfo: any = this.props.store.get(
@@ -61,7 +57,7 @@ export default class ResultDetails extends React.Component<DetailsProps> {
         const items: any[] = [];
         const wideItemKeys: string[] = ['DID', 'publicKey', ...wideKeys];
 
-        for (var key in fields) {
+        for (const key in fields) {
             if (!fields.hasOwnProperty(key)) {
                 continue;
             }
@@ -84,7 +80,7 @@ export default class ResultDetails extends React.Component<DetailsProps> {
     }
 
     createPhotoData(photoAttach: string): string {
-        let ret: string = '';
+        let ret = '';
         try {
             const photoData: PhotoAttach = JSON.parse(photoAttach);
             const {data, encoding, type} = photoData;

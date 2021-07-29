@@ -1,18 +1,26 @@
 interface DialogCommonProps {
-    clickFunction(): void;
+    clickFunction(open: boolean): void;
     allowCancel?: boolean;
-    dismissCancel?: () => void;
     errorMessage: string;
     complete: boolean;
     success: boolean;
-    rejection?: boolean;
 }
 
-export interface DialogContainerProps extends DialogCommonProps {
+export interface DialogContainerProps
+    extends DialogCommonProps,
+        DialogTextElements {
     open: boolean;
     handleCancel?: () => void;
 }
 
-export interface DialogBodyProps extends DialogCommonProps {
+export interface DialogBodyProps extends DialogCommonProps, DialogTextElements {
     cancel?: () => void;
+}
+
+interface DialogTextElements {
+    tryAgainText: string;
+    verifyingText: string;
+    slowInternetWarning: string;
+    continueText: string;
+    verificationNotice: string;
 }
