@@ -1,5 +1,5 @@
-import * as React from 'react';
-import {toast} from 'react-hot-toast';
+import React, {useState, useRef, useEffect} from 'react';
+import toast from 'react-hot-toast';
 import {v4 as uuid4} from 'uuid';
 import Typography from '@material-ui/core/Typography';
 import CircularProgress from '@material-ui/core/CircularProgress';
@@ -10,39 +10,37 @@ import ErrorIcon from '@material-ui/icons/Error';
 import QRCode from 'qrcode';
 import classNames from 'classnames';
 
-import {QRProps, QRState, QRButtonProps} from '../interfaces/QRInterfaces';
-import {IAgent} from '../interfaces/AgentInterfaces';
-import {ProofRequestProfile} from '../interfaces/VerificationRequirementProps';
+import KivaAgent from '../agents/KivaAgent';
 
-import FlowDispatchContext from '../contexts/FlowDispatchContext';
+import {QRProps, QRButtonProps} from '../interfaces/QRInterfaces';
+import {ProofRequestProfile} from '../interfaces/VerificationInterfaces';
+
 import FlowDispatchTypes from '../enums/FlowDispatchTypes';
 
 import '../css/Common.scss';
 import '../css/QRScreen.scss';
 
 let cancel: boolean;
-let agent: any;
 
-const pollInterval: number = 200;
+const pollInterval = 1000;
 
-export default class AgencyQR extends React.Component<QRProps, QRState> {
-    static contextType = FlowDispatchContext;
-    private dispatch: any;
-    private profile: ProofRequestProfile;
-    private selectedVerificationOptionId: string;
+export default function AgencyQR(props: QRProps) {
+    const [retrievingInviteUrl, setRetrievingInviteUrl] =
+        useState<boolean>(false);
+    const [inviteUrl, setInviteUrl] = useState<string>('');
+    const [connectionError, setConnectionError] = useState<string>('');
+    const [verifying, setVerifying] = useState<boolean>(false);
+    const [isConnectionReady, setIsConnectionReady] = useState<boolean>(false);
+    const [agentConnected, setAgentConnected] = useState<boolean>(
+        props.store.get('agent_connected', false)
+    );
+    const [connectionId, setConnectionId] = useState<string>(
+        props.store.get('connection_id', '')
+    );
+    const agent = KivaAgent.init(props.CONSTANTS.auth_token);
 
-    constructor(props: QRProps) {
-        super(props);
-        this.state = {
-            retrievingInviteUrl: true,
-            inviteUrl: '',
-            connectionError: '',
-            verifying: false,
-            isConnectionReady: false,
-            agent_connected: this.props.store.get('agent_connected', false),
-            connectionId: this.props.store.get('connection_id', '')
-        };
-        this.profile = this.props.store.get(
+    const profile = useRef<ProofRequestProfile>(
+        props.store.get(
             'profile',
             {
                 comment: '',
@@ -50,170 +48,161 @@ export default class AgencyQR extends React.Component<QRProps, QRState> {
                 schema_id: ''
             },
             'verificationRequirement'
-        );
-        this.selectedVerificationOptionId =
-            this.props.CONSTANTS.verification_options[
-                this.props.store.get('authIndex', 0, 'menu')
-            ].id;
-    }
+        )
+    );
 
-    componentWillUnmount() {
-        cancel = true;
-    }
+    const selectedVerificationOptionId = useRef<string>(
+        props.CONSTANTS.verification_options[
+            props.store.get('authIndex', 0, 'menu')
+        ].id
+    );
 
-    componentDidMount() {
-        cancel = false;
-        this.dispatch = this.context();
-        this.startProcess();
-    }
-
-    determineCloudAgent = async (): Promise<void> => {
-        agent = await import(__dirname + '/' + this.props.dataHelper);
-    };
-
-    startProcess = (reset?: boolean) => {
-        if (!this.state.connectionId || reset) {
+    function startProcess(reset?: boolean) {
+        if (!connectionId || reset) {
             console.log('Attempting to get a connection');
-            this.startConnection();
-        } else if (this.state.agent_connected) {
+            startConnection();
+        } else if (agentConnected) {
             console.log('Starting a verification');
-            this.startVerification();
+            startVerification();
         }
-    };
+    }
 
-    startConnection = () => {
-        this.setState(
-            {
-                retrievingInviteUrl: true,
-                connectionError: ''
-            },
-            () => this.getInviteUrl()
-        );
-    };
+    useEffect(() => {
+        startProcess();
 
-    storeConnectionId = (connectionId: string): void => {
-        this.props.store.set('connection_id', connectionId);
-        this.setState({connectionId});
-    };
+        return () => {
+            cancel = true;
+        };
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
 
-    getInviteUrl = async () => {
+    function startConnection() {
+        setRetrievingInviteUrl(true);
+        setConnectionError('');
+
+        getInviteUrl();
+    }
+
+    function storeConnectionId(connectionId: string): void {
+        props.store.set('connection_id', connectionId);
+        setConnectionId(connectionId);
+    }
+
+    async function getInviteUrl() {
         try {
-            const connectionId: string = uuid4();
-            const agentModule = await import('./../agents/KivaAgent');
-            agent = new agentModule.default(this.props.CONSTANTS.auth_token);
-            const url: string = await agent.establishConnection(connectionId);
-            this.storeConnectionId(connectionId);
-            this.setInviteUrl(url);
-            this.pollConnection(connectionId);
+            const proposedConnectionId: string = uuid4();
+            const url: string = await agent.establishConnection(
+                proposedConnectionId
+            );
+            processInviteUrl(url);
+            pollConnection(proposedConnectionId);
         } catch (e) {
             console.log(e);
-            this.setConnectionError(e);
+            processConnectionError(e);
         }
-    };
+    }
 
-    pollConnection = async (connectionId: string) => {
+    async function pollConnection(generatedId: string) {
         try {
-            let connectionStatus: any = await agent.getConnection(connectionId);
+            const connectionStatus: any = await agent.getConnection(
+                generatedId
+            );
             if (agent.isConnected(connectionStatus)) {
-                this.props.store.set('agent_connected', true);
-                this.setState({
-                    isConnectionReady: true,
-                    agent_connected: true
-                });
+                props.store.set('agent_connected', true);
+                storeConnectionId(generatedId);
+                setIsConnectionReady(true);
+                setAgentConnected(true);
             } else if (!cancel) {
                 setTimeout(() => {
-                    this.pollConnection(connectionId);
+                    pollConnection(generatedId);
                 }, pollInterval);
             }
         } catch (e) {
             console.log(e);
-            this.setConnectionError(e);
+            processConnectionError(e);
         }
-    };
+    }
 
-    pollVerification = async (selectedVerificationOptionId: string) => {
+    async function pollVerification(verificationOptionId: string) {
         try {
-            let verificationStatus: any = await agent.checkVerification(
-                this.selectedVerificationOptionId
+            if (!verificationOptionId) {
+                verificationOptionId = selectedVerificationOptionId.current;
+            }
+
+            const verificationStatus: any = await agent.checkVerification(
+                verificationOptionId
             );
+
             if (agent.isVerified(verificationStatus)) {
-                this.acceptProof(agent.getProof(verificationStatus));
+                acceptProof(agent.getProof(verificationStatus));
             } else if (
                 !!agent.isRejected &&
                 agent.isRejected(verificationStatus)
             ) {
-                throw `${this.props.rejected} ${this.profile.comment}`;
+                // eslint-disable-next-line
+                throw `${props.rejected} ${profile.current.comment}`;
             } else if (!cancel) {
                 setTimeout(() => {
-                    this.pollVerification(this.selectedVerificationOptionId);
+                    pollVerification(verificationOptionId);
                 }, pollInterval);
             }
         } catch (e) {
             console.log(e);
-            this.setConnectionError(e);
+            processConnectionError(e);
         }
-    };
+    }
 
-    startVerification = () => {
-        if (this.state.verifying || !this.state.agent_connected) {
-            toast.error(this.props.no_connection_error, {
+    function startVerification() {
+        if (verifying || !agentConnected) {
+            toast.error(props.no_connection_error, {
                 duration: 3000
             });
         } else {
-            this.setState(
-                {
-                    verifying: true
-                },
-                () => {
-                    this.verify();
-                }
-            );
+            setVerifying(true);
+            verify();
         }
-    };
-
-    settleConnectionId = (connectionId?: string): string => {
-        const id: string = connectionId || this.state.connectionId;
-        return id;
-    };
-
-    acceptProof(verificationData: any) {
-        this.props.store.set('personalInfo', verificationData);
-        this.dispatch({type: FlowDispatchTypes.NEXT});
     }
 
-    verify = async () => {
+    function settleConnectionId(existingId?: string): string {
+        const id: string = existingId || connectionId;
+        return id;
+    }
+
+    function acceptProof(verificationData: any) {
+        props.store.set('personalInfo', verificationData);
+        props.dispatch({type: FlowDispatchTypes.NEXT});
+    }
+
+    async function verify() {
         try {
-            const id: string = this.settleConnectionId();
+            const id: string = settleConnectionId();
             const verification: any = await agent.sendVerification(
                 id,
-                this.profile
+                profile.current
             );
-            this.pollVerification(verification);
+            pollVerification(verification);
         } catch (e) {
             console.log(e);
-            this.setConnectionError(e);
+            setConnectionError(e);
         }
-    };
+    }
 
-    setInviteUrl = (inviteUrl: string | undefined): void => {
-        const updatedState: any = {
-            retrievingInviteUrl: false
-        };
+    function processInviteUrl(invitation?: string): void {
+        setRetrievingInviteUrl(false);
 
-        if (inviteUrl) {
-            updatedState.inviteUrl = inviteUrl;
+        if (invitation) {
+            setInviteUrl(invitation);
+            writeQRtoCanvas(invitation);
         } else {
-            updatedState.connectionError = this.props.no_invite;
+            processConnectionError(props.no_invite);
         }
+    }
 
-        this.setState(updatedState, this.writeQRtoCanvas);
-    };
-
-    writeQRtoCanvas() {
+    function writeQRtoCanvas(invitation: string) {
         try {
             QRCode.toCanvas(
                 document.getElementById('qr-code'),
-                this.state.inviteUrl || '',
+                invitation || '',
                 {
                     width: 400
                 }
@@ -223,30 +212,24 @@ export default class AgencyQR extends React.Component<QRProps, QRState> {
         }
     }
 
-    setConnectionError = (connectionError: string) => {
+    function processConnectionError(errorMessage: string) {
         cancel = true;
-        this.setState({
-            retrievingInviteUrl: false,
-            verifying: false,
-            connectionError
-        });
-    };
+        setRetrievingInviteUrl(false);
+        setVerifying(false);
+        setConnectionError(errorMessage);
+    }
 
-    resetFlow = (): void => {
-        this.props.store.set('connection_id', '');
-        this.props.store.set('agent_connected', false);
-        this.setState(
-            {
-                isConnectionReady: false,
-                verifying: false,
-                connectionId: '',
-                agent_connected: false
-            },
-            () => this.startProcess(true)
-        );
-    };
+    function resetFlow(): void {
+        props.store.set('connection_id', '');
+        props.store.set('agent_connected', false);
+        setIsConnectionReady(false);
+        setVerifying(false);
+        setConnectionId('');
+        setAgentConnected(false);
+        startProcess(true);
+    }
 
-    renderQRInvite() {
+    function renderQRInvite() {
         return (
             <div>
                 <Typography
@@ -255,14 +238,12 @@ export default class AgencyQR extends React.Component<QRProps, QRState> {
                     gutterBottom
                     className="qr-loading-title">
                     <strong>
-                        {this.state.agent_connected
-                            ? this.props.click_verify
-                            : this.props.scan_qr}
+                        {agentConnected ? props.click_verify : props.scan_qr}
                     </strong>
                     <br />
-                    {this.state.agent_connected
-                        ? this.props.connection_established
-                        : this.props.instructions}
+                    {agentConnected
+                        ? props.connection_established
+                        : props.instructions}
                 </Typography>
                 <div id="qr-box">
                     <canvas id="qr-code"></canvas>
@@ -271,7 +252,7 @@ export default class AgencyQR extends React.Component<QRProps, QRState> {
                             'qr-icon': true,
                             'dialog-icon': true,
                             verified: true,
-                            hidden: !this.state.agent_connected
+                            hidden: !agentConnected
                         })}
                     />
                 </div>
@@ -279,8 +260,8 @@ export default class AgencyQR extends React.Component<QRProps, QRState> {
         );
     }
 
-    renderRetrieving(text?: string) {
-        const header: string = text || this.props.retrieving_notice;
+    function renderRetrieving(text?: string) {
+        const header: string = text || props.retrieving_notice;
         return (
             <div className="centered-flex-content">
                 <Typography
@@ -297,7 +278,7 @@ export default class AgencyQR extends React.Component<QRProps, QRState> {
         );
     }
 
-    renderVerifying() {
+    function renderVerifying() {
         return (
             <div data-cy="verify-qr">
                 <Typography
@@ -305,7 +286,7 @@ export default class AgencyQR extends React.Component<QRProps, QRState> {
                     variant="h6"
                     gutterBottom
                     className="qr-loading-title">
-                    {this.props.verifying}...
+                    {props.verifying}...
                 </Typography>
                 <div id="qr-loader">
                     <CircularProgress className="dialog-icon verifying" />
@@ -314,7 +295,7 @@ export default class AgencyQR extends React.Component<QRProps, QRState> {
         );
     }
 
-    renderError() {
+    function renderError() {
         return (
             <div className="centered status-report">
                 <ErrorIcon className="dialog-icon error" />
@@ -323,94 +304,86 @@ export default class AgencyQR extends React.Component<QRProps, QRState> {
                     component="h2"
                     align="center"
                     className="error-description">
-                    {this.state.connectionError}
+                    {connectionError}
                 </Typography>
             </div>
         );
     }
 
-    renderBody() {
-        if (this.state.connectionError) {
-            return this.renderError();
-        } else if (this.state.verifying) {
-            return this.renderVerifying();
-        } else if (this.state.inviteUrl && !this.state.retrievingInviteUrl) {
-            return this.renderQRInvite();
+    function renderBody() {
+        if (connectionError) {
+            return renderError();
+        } else if (verifying) {
+            return renderVerifying();
+        } else if (inviteUrl && !retrievingInviteUrl) {
+            return renderQRInvite();
         } else {
-            return this.renderRetrieving();
+            return renderRetrieving();
         }
     }
 
-    render() {
-        const {isConnectionReady, verifying} = this.state;
-        return (
-            <div
-                id={this.selectedVerificationOptionId}
-                className="flex-block column">
-                <Grid
-                    container
-                    direction="column"
-                    justify="center"
-                    alignItems="center">
-                    {this.renderBody()}
-                </Grid>
-                <QRScreenButtons
-                    isConnectionReady={isConnectionReady}
-                    isVerifying={verifying}
-                    onClickBack={() =>
-                        this.dispatch({type: FlowDispatchTypes.BACK})
-                    }
-                    onSubmit={() => this.startVerification()}
-                    onReset={() => this.resetFlow()}
-                    reset={this.props.reset}
-                    back_text={this.props.back_text}
-                    next_text={this.props.next_text}
-                />
-            </div>
-        );
-    }
-}
-
-class QRScreenButtons extends React.Component<QRButtonProps> {
-    render() {
-        return (
+    return (
+        <div
+            id={selectedVerificationOptionId.current}
+            className="flex-block column">
             <Grid
                 container
-                className="qrButtons buttonListNew row"
-                direction="row"
+                direction="column"
                 justify="center"
                 alignItems="center">
-                <Grid item>
-                    <Button
-                        data-cy="qr-back"
-                        className="back secondary"
-                        onClick={this.props.onClickBack}>
-                        {this.props.back_text}
-                    </Button>
-                </Grid>
-                <Grid item>
-                    <Button
-                        data-cy="reset-flow"
-                        className="qr-reset"
-                        onClick={this.props.onReset}>
-                        {this.props.reset}
-                    </Button>
-                </Grid>
-                <Grid item>
-                    <Button
-                        disabled={
-                            !this.props.isConnectionReady ||
-                            this.props.isVerifying
-                        }
-                        type="submit"
-                        data-cy="qr-scan-next"
-                        className="next button-verify"
-                        onSubmit={this.props.onSubmit}
-                        onClick={this.props.onSubmit}>
-                        {this.props.next_text}
-                    </Button>
-                </Grid>
+                {renderBody()}
             </Grid>
-        );
-    }
+            <QRScreenButtons
+                isConnectionReady={isConnectionReady}
+                isVerifying={verifying}
+                onClickBack={() =>
+                    props.dispatch({type: FlowDispatchTypes.BACK})
+                }
+                onSubmit={() => startVerification()}
+                onReset={() => resetFlow()}
+                reset={props.reset}
+                back_text={props.back_text}
+                next_text={props.next_text}
+            />
+        </div>
+    );
+}
+
+function QRScreenButtons(props: QRButtonProps) {
+    return (
+        <Grid
+            container
+            className="qrButtons buttonListNew row"
+            direction="row"
+            justify="center"
+            alignItems="center">
+            <Grid item>
+                <Button
+                    data-cy="qr-back"
+                    className="back secondary"
+                    onClick={props.onClickBack}>
+                    {props.back_text}
+                </Button>
+            </Grid>
+            <Grid item>
+                <Button
+                    data-cy="reset-flow"
+                    className="qr-reset"
+                    onClick={props.onReset}>
+                    {props.reset}
+                </Button>
+            </Grid>
+            <Grid item>
+                <Button
+                    disabled={!props.isConnectionReady || props.isVerifying}
+                    type="submit"
+                    data-cy="qr-scan-next"
+                    className="next button-verify"
+                    onSubmit={props.onSubmit}
+                    onClick={props.onSubmit}>
+                    {props.next_text}
+                </Button>
+            </Grid>
+        </Grid>
+    );
 }

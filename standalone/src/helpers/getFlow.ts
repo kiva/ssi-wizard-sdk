@@ -41,10 +41,11 @@ function injectAuthMethod(
         [FlowDispatchTypes.BACK]: beginAt
     };
 
-    foldSequence(currentPoint, sequence, flow);
+    foldSequence(currentPoint, options[index], flow);
 }
 
-function foldSequence(currentPoint: string, sequence: string[], flow: any) {
+function foldSequence(currentPoint: string, option: AuthOption, flow: any) {
+    const sequence = option.sequence;
     for (let i = 1; i < sequence.length; i++) {
         const temp: string = currentPoint;
         currentPoint = sequence[i];
@@ -55,10 +56,12 @@ function foldSequence(currentPoint: string, sequence: string[], flow: any) {
         };
     }
 
-    flow[currentPoint][FlowDispatchTypes.NEXT] = 'details';
-    flow['details'] = {
-        [FlowDispatchTypes.BACK]: currentPoint
-    };
+    if ('verify' === option.type) {
+        flow[currentPoint][FlowDispatchTypes.NEXT] = 'details';
+        flow['details'] = {
+            [FlowDispatchTypes.BACK]: currentPoint
+        };
+    }
 }
 
 function createInitialSteps(

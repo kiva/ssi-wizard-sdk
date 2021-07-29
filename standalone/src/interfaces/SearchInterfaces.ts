@@ -1,8 +1,6 @@
 import ICommonProps from './ICommonProps';
 
 export interface SearchInputData {
-    // TODO: Don't allow additional keys
-    [index: string]: string;
     type: string;
     value: string;
 }
@@ -10,14 +8,14 @@ export interface SearchInputData {
 // TODO: Make this make sense
 export interface AltSearchInputData {
     [index: string]: string | undefined;
-    firstName?: string | undefined;
-    lastName?: string | undefined;
-    mothersFirstName?: string | undefined;
-    fathersFirstName?: string | undefined;
-    birthDate?: string | undefined;
+    firstName?: string;
+    lastName?: string;
+    mothersFirstName?: string;
+    fathersFirstName?: string;
+    birthDate?: string;
 }
 
-interface AltSearchErrors {
+export interface AltSearchErrors {
     firstName: boolean;
     lastName: boolean;
     mothersFirstName: boolean;
@@ -25,27 +23,42 @@ interface AltSearchErrors {
     birthDate: boolean;
 }
 
-export interface AltSearchProps extends ICommonProps {
-    search: AltSearchInputData;
+interface AltSearchTextProps {
+    missingNamesError: string;
+    dateInputError: string;
+    missingFuzzyDataError: string;
+    inputLengthError: string;
+    primaryInstructions: string;
+    firstRowInstructions: string;
+    labelOne: string;
+    labelTwo: string;
+    labelThree: string;
+    labelFour: string;
+    labelFive: string;
+    nextText: string;
+    backText: string;
+    firstRowHeader: string;
+    secondRowHeader: string;
+    secondRowSubheader: string;
+}
+
+export interface AltSearchProps extends ICommonProps, AltSearchTextProps {
     toggleSearchType(): void;
 }
 
-export interface AltSearchState {
-    search: AltSearchInputData;
-    errors: AltSearchErrors;
-    rows: Array<string | boolean>;
+export interface SearchProps extends ICommonProps, AltSearchTextProps {
+    dropdownConfig: DropdownConfig;
+    instructions: string;
+    placeholder: string;
+    alternateSearchInstructions: string;
 }
 
-export interface SearchProps extends Filters, ICommonProps {
-    setFiltersValue(data: SearchInputData): void;
+interface DropdownConfig {
+    [index: string]: DropdownConfigDefinition;
 }
 
-export interface Filters {
-    filters: SearchInputData;
-}
-
-export interface SearchState extends Filters {
-    error: boolean;
-    errorReason: string;
-    altSearch: boolean;
+export interface DropdownConfigDefinition {
+    validation(input: string): boolean;
+    name: string;
+    errorMsg: string;
 }

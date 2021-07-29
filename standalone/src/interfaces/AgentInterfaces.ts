@@ -20,7 +20,10 @@ export interface IAgent {
     getConnection(connectionId: string): Promise<any>;
     isConnected(response: any): boolean;
     isVerified(response: any): boolean;
+    isOffered(response: any): boolean;
+    isIssued(response: any): boolean;
     getProof(response: any): any;
     formatProof(response: any): any;
     isRejected?: (response: any) => boolean;
+    setProofProfile?: (credentialDefinition: string) => void;
 }

@@ -11,6 +11,7 @@ export interface IConstants {
     proof_profile_url?: string;
     auth_token?: string;
     component_map: ComponentMap;
+    slowInternetThreshold?: number;
 }
 
 interface CredentialKeyDefinition {
@@ -20,8 +21,9 @@ interface CredentialKeyDefinition {
     wide?: boolean;
     alternateKey?: string;
     alternateName?: string;
+    options?: string[];
 }
 
-interface CredentialKeyMap {
+export interface CredentialKeyMap {
     [index: string]: CredentialKeyDefinition;
 }
