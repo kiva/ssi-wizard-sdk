@@ -24,7 +24,6 @@ export default function ConfirmationScreen(props: ConfirmationProps) {
 
     useEffect(() => {
         props.store.set('credentialKeyMap', credentialKeys);
-        console.log(props.store.get('credentialKeyMap'));
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [credentialKeys]);
 

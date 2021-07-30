@@ -13,6 +13,7 @@ export interface IConstants {
     component_map: ComponentMap;
     slowInternetThreshold?: number;
     standaloneConf?: StandaloneConfig;
+    credentialDefinition?: string;
 }
 
 interface CredentialKeyDefinition {

@@ -153,7 +153,7 @@ export default class KivaAgent extends BaseAgent implements IAgent {
 
     createCredential = async (entityData: any) => {
         return super.offer(
-            this.axiosInstance.post('issue', {
+            this.axiosInstance.post('/v2/kiva/api/issue', {
                 profile: this._proofProfile,
                 connectionId: this._connectionId,
                 entityData
@@ -168,7 +168,7 @@ export default class KivaAgent extends BaseAgent implements IAgent {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     checkCredentialStatus = (ignore: string) => {
         return super.issue(
-            this.axiosInstance.get('issue/' + this._credentialId),
+            this.axiosInstance.get('/v2/kiva/api/issue/' + this._credentialId),
             this.getData
         );
     };

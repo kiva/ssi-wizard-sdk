@@ -20,6 +20,7 @@ const pollInterval = 200;
 
 let cancelConnectionPolling: boolean;
 let cancelCredentialPolling: boolean;
+let agent: any;
 
 const CREDENTIAL_STORE_KEY = 'credentialCreationData';
 
@@ -39,14 +40,18 @@ export default function CredentialIssuance(props: CredentialIssuanceProps) {
     const [issued, setIssued] = useState<boolean>(
         props.store.get('isIssued', false)
     );
-    const agent = KivaAgent.init(props.CONSTANTS.auth_token);
+    if (!agent) {
+        agent = KivaAgent.init(props.CONSTANTS.auth_token);
+    }
+    console.log(credentialData.current);
 
     function constructInitialData() {
         let credentialCreationData = props.store.get(CREDENTIAL_STORE_KEY, {});
         const deps = props.dependencies;
 
         for (const key in deps) {
-            for (const storeKey in deps[key]) {
+            for (let i = 0; i < deps[key].length; i++) {
+                const storeKey = deps[key][i];
                 const storedValue = props.store.get(storeKey, false, key);
                 if (storedValue) {
                     credentialCreationData = {
@@ -55,6 +60,7 @@ export default function CredentialIssuance(props: CredentialIssuanceProps) {
                             ? storedValue
                             : {[storeKey]: storedValue})
                     };
+                    console.log(credentialCreationData);
                 }
             }
         }
@@ -183,6 +189,7 @@ export default function CredentialIssuance(props: CredentialIssuanceProps) {
 
     const createCredential = async () => {
         try {
+            agent.setProofProfile(props.CONSTANTS.credentialDefinition || '');
             const credential: any = await agent.createCredential(
                 credentialData.current
             );
