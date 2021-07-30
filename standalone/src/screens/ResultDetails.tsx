@@ -58,7 +58,7 @@ export default class ResultDetails extends React.Component<DetailsProps> {
         const wideItemKeys: string[] = ['DID', 'publicKey', ...wideKeys];
 
         for (const key in fields) {
-            if (!fields.hasOwnProperty(key)) {
+            if (!fields.hasOwnProperty(key) || !fields[key].rendered) {
                 continue;
             }
             const value = fields[key];

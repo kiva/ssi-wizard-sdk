@@ -127,8 +127,9 @@ export default class KivaAgent extends BaseAgent implements IAgent {
         );
     };
 
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     sendVerification = async (
-        connectionId: string,
+        ignore: string,
         profile: ProofRequestProfile
     ): Promise<string> => {
         return super.send(
