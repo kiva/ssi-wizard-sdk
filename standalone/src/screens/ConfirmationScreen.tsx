@@ -1,5 +1,5 @@
 import Grid from '@material-ui/core/Grid';
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
@@ -21,6 +21,12 @@ import FlowDispatchTypes from '../enums/FlowDispatchTypes';
 export default function ConfirmationScreen(props: ConfirmationProps) {
     const enableProofProfileMenu = !!props.CONSTANTS.proof_profile_url;
     const [credentialKeys, setCredentialKeys] = useState<CredentialKeyMap | null>(enableProofProfileMenu ? getProfileDataIfAvailable() : props.CONSTANTS.credentialKeyMap);
+
+    useEffect(() => {
+        props.store.set('credentialKeyMap', credentialKeys);
+        console.log(props.store.get('credentialKeyMap'));
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [credentialKeys]);
 
     function getProfileDataIfAvailable() {
         const profile = props.store.get('profile', false);

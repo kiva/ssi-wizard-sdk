@@ -54,11 +54,12 @@ export default class ResultDetails extends React.Component<DetailsProps> {
     }
 
     renderFields(title: string, fields: any) {
+        console.log(fields);
         const items: any[] = [];
         const wideItemKeys: string[] = ['DID', 'publicKey', ...wideKeys];
 
         for (const key in fields) {
-            if (!fields.hasOwnProperty(key) || !fields[key].rendered) {
+            if (this.shouldContinue(fields, key)) {
                 continue;
             }
             const value = fields[key];
@@ -77,6 +78,17 @@ export default class ResultDetails extends React.Component<DetailsProps> {
             );
         }
         return <div className="ProfileItemContainer">{items}</div>;
+    }
+
+    shouldContinue(fields: any, key: any) {
+        const credentialKeyMap = this.props.store.get('credentialKeyMap', {}, 'confirmation');
+
+        if (!fields.hasOwnProperty(key)
+            || (credentialKeyMap.hasOwnProperty(key) && !credentialKeyMap[key].rendered)) {
+            return true;
+        }
+
+        return false;
     }
 
     createPhotoData(photoAttach: string): string {
