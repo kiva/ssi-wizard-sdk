@@ -8,8 +8,8 @@
 # testing
 /coverage
 
-# config files for Standalone
-/standalone/src/config.ts
+# config files for app builds
+**/src/config.ts
 
 # production
 **/build

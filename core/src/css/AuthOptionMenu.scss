@@ -1,0 +1,77 @@
+@import 'mixins/_fonts.scss';
+@import 'mixins/_colors.scss';
+
+#auth_option_menu {
+    max-width: 1000px;
+    align-self: center;
+    margin: 0 auto;
+    .auth_instructions {
+        justify-content: center;
+        margin: 10px auto;
+    }
+    #auth_options {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        grid-row-gap: 20px;
+        .auth_option {
+            width: 300px;
+            justify-content: space-between;
+            flex-direction: column;
+            margin: 0 20px;
+            > div {
+                padding-top: 0;
+            }
+            h2 {
+                font-size: 1.75rem;
+            }
+            &::before {
+                content: '';
+                height: 25px;
+                padding: 2px 0 5px 10px;
+                margin-bottom: 10px;
+            }
+        }
+        .issue {
+            &::before {
+                content: 'Issue';
+                background: $issue-color;
+                color: $issue-offset;
+                width: 130px;
+                padding-top: 8px;
+                border-radius: 0 0 20px 0;
+                font-weight: 500;
+            }
+            &.selected {
+                border: 2px solid $issue-color;
+            }
+        }
+        .verify {
+            &::before {
+                content: 'Verify';
+                background: $verification-color;
+                color: $verification-offset;
+                width: 130px;
+                padding-top: 8px;
+                border-radius: 0 0 20px 0;
+                font-weight: 500;
+            }
+            &.selected {
+                border: 2px solid $verification-color;
+            }
+        }
+    }
+    .radio-container {
+        background: $secondary-color;
+        * {
+            margin: 0 auto;
+        }
+    }
+}
+
+#select-auth-method {
+    @include the-font;
+    background: $primary-color;
+    color: $primary-offset;
+    width: 300px;
+    margin: 40px auto;
+}
