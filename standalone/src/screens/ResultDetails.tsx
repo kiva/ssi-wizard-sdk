@@ -54,7 +54,6 @@ export default class ResultDetails extends React.Component<DetailsProps> {
     }
 
     renderFields(title: string, fields: any) {
-        console.log(fields);
         const items: any[] = [];
         const wideItemKeys: string[] = ['DID', 'publicKey', ...wideKeys];
 

@@ -43,7 +43,6 @@ export default function CredentialIssuance(props: CredentialIssuanceProps) {
     if (!agent) {
         agent = KivaAgent.init(props.CONSTANTS.auth_token);
     }
-    console.log(credentialData.current);
 
     function constructInitialData() {
         let credentialCreationData = props.store.get(CREDENTIAL_STORE_KEY, {});
@@ -60,7 +59,6 @@ export default function CredentialIssuance(props: CredentialIssuanceProps) {
                             ? storedValue
                             : {[storeKey]: storedValue})
                     };
-                    console.log(credentialCreationData);
                 }
             }
         }
