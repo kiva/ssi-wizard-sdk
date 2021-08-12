@@ -204,8 +204,6 @@ module.exports = function (webpackEnv) {
       filename: isEnvProduction
         ? 'static/js/[name].[contenthash:8].js'
         : isEnvDevelopment && 'static/js/bundle.js',
-      // TODO: remove this when upgrading to webpack 5
-      futureEmitAssets: true,
       // There are also additional JS chunk files if you use code splitting.
       chunkFilename: isEnvProduction
         ? 'static/js/[name].[contenthash:8].chunk.js'
@@ -306,6 +304,7 @@ module.exports = function (webpackEnv) {
       runtimeChunk: {
         name: entrypoint => `runtime-${entrypoint.name}`,
       },
+      chunkIds: 'named'
     },
     resolve: {
       // This allows you to set a fallback for where webpack should look for modules.
