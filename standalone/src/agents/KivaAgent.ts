@@ -2,7 +2,7 @@ import axios, {AxiosRequestConfig, AxiosInstance} from 'axios';
 import BaseAgent from './BaseAgent';
 import {map} from 'lodash';
 import {IAgent} from '../interfaces/AgentInterfaces';
-import {ProofRequestProfile} from '../interfaces/VerificationInterfaces';
+import {ProofRequestProfile} from '../interfaces/ConfirmationInterfaces';
 
 export default class KivaAgent extends BaseAgent implements IAgent {
     public axiosInstance: AxiosInstance;

@@ -13,7 +13,7 @@ import classNames from 'classnames';
 import KivaAgent from '../agents/KivaAgent';
 
 import {QRProps, QRButtonProps} from '../interfaces/QRInterfaces';
-import {ProofRequestProfile} from '../interfaces/VerificationInterfaces';
+import {ProofRequestProfile} from '../interfaces/ConfirmationInterfaces';
 
 import FlowDispatchTypes from '../enums/FlowDispatchTypes';
 

@@ -1,4 +1,4 @@
-import {ProofRequestProfile} from './VerificationInterfaces';
+import {ProofRequestProfile} from './ConfirmationInterfaces';
 import {ComponentStoreMethods, FlowAction} from './FlowRouterInterfaces';
 import ICommonProps from './ICommonProps';
 

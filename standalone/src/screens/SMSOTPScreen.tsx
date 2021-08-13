@@ -28,7 +28,7 @@ import {
     OTPScreenProps,
     SMSPostBody
 } from '../interfaces/SMSOTPInterfaces';
-import {ProofRequestProfile} from '../interfaces/VerificationInterfaces';
+import {ProofRequestProfile} from '../interfaces/ConfirmationInterfaces';
 
 import '../css/SMSOTPScreen.scss';
 import '../css/DialogBody.scss';
