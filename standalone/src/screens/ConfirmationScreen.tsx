@@ -1,44 +1,23 @@
 import Grid from '@material-ui/core/Grid';
-import React, {useState, useEffect} from 'react';
+import * as React from 'react';
 
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
-import ProofProfileMenu from '../components/ProofProfileMenu';
 
 import '../css/Common.scss';
 import '../css/ConfirmationScreen.scss';
 
 import {
     CredentialKeyFieldsProps,
-    CredentialKeyMap,
     CredentialKeyFieldState,
     ConfirmationProps
 } from '../interfaces/ConfirmationInterfaces';
-import getDataFrom from '../helpers/getDataFrom';
 
 import FlowDispatchTypes from '../enums/FlowDispatchTypes';
 
 export default function ConfirmationScreen(props: ConfirmationProps) {
-    const enableProofProfileMenu = !!props.CONSTANTS.proof_profile_url;
-    const [credentialKeys, setCredentialKeys] = useState<CredentialKeyMap | null>(enableProofProfileMenu ? getProfileDataIfAvailable() : props.CONSTANTS.credentialKeyMap);
-
-    useEffect(() => {
-        props.store.set('credentialKeyMap', credentialKeys);
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [credentialKeys]);
-
-    function getProfileDataIfAvailable() {
-        const profile = props.store.get('profile', false);
-        if (profile) {
-            return getDataFrom(profile);
-        }
-
-        return null;
-    }
-
     return (
         <div className="Confirmation screen">
-            {enableProofProfileMenu && <ProofProfileMenu setCredentialKeys={setCredentialKeys} {...props} />}
             <Grid
                 container
                 direction="column"
@@ -56,7 +35,7 @@ export default function ConfirmationScreen(props: ConfirmationProps) {
 
                     <p>{props.info_includes}</p>
                 </div>
-                {credentialKeys && <PII fields={credentialKeys} />}
+                <PII fields={props.CONSTANTS.credentialKeyMap} />
             </div>
             <Grid
                 container
