@@ -13,6 +13,19 @@
             @include the-font;
         }
     }
+    .pr-loader {
+        display: flex;
+        justify-content: center;
+    }
+    .loader-text {
+        margin-top: 10px;
+    }
+    .dialog-icon.error {
+        width: 100% !important;
+    }
+    .status-report {
+        margin-bottom: 10px;
+    }
 }
 
 .legal-terms-section {

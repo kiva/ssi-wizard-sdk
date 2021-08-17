@@ -21,6 +21,7 @@ import '../css/Common.scss';
 import '../css/QRScreen.scss';
 
 let cancel: boolean;
+let agent: any;
 
 const pollInterval = 1000;
 
@@ -37,7 +38,9 @@ export default function AgencyQR(props: QRProps) {
     const [connectionId, setConnectionId] = useState<string>(
         props.store.get('connection_id', '')
     );
-    const agent = KivaAgent.init(props.CONSTANTS.auth_token);
+    if (!agent) {
+        agent = KivaAgent.init(props.CONSTANTS.auth_token);
+    }
 
     const profile = useRef<ProofRequestProfile>(
         props.store.get(
@@ -47,7 +50,7 @@ export default function AgencyQR(props: QRProps) {
                 proof_request: {},
                 schema_id: ''
             },
-            'verificationRequirement'
+            'confirmation'
         )
     );
 

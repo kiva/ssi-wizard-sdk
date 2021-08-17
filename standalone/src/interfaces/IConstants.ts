@@ -12,6 +12,8 @@ export interface IConstants {
     auth_token?: string;
     component_map: ComponentMap;
     slowInternetThreshold?: number;
+    standaloneConf?: StandaloneConfig;
+    credentialDefinition?: string;
 }
 
 interface CredentialKeyDefinition {
@@ -26,4 +28,11 @@ interface CredentialKeyDefinition {
 
 export interface CredentialKeyMap {
     [index: string]: CredentialKeyDefinition;
+}
+
+interface StandaloneConfig {
+    isStandalone: boolean;
+    headerImage?: string;
+    org?: string;
+    footerText?: string;
 }

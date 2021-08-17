@@ -157,3 +157,125 @@
 .hidden {
     display: none !important;
 }
+
+@import "mixins/_fonts";
+@import "mixins/_colors";
+
+.KernelContent {
+  min-height: 500px;
+  background: white;
+}
+
+.KernelContainer {
+  overflow: hidden;
+}
+
+h4 {
+  font-weight: bold;
+  font-size: 25px;
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.AppHeader {
+  height: 100px;
+  text-align:center;
+  line-height: 100px;
+  border-bottom: 1px solid #f2f2f2;
+  margin-bottom:20px;
+  color: $primary-color;
+  font-weight: lighter;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-items: center;
+  justify-content: center;
+  align-content: center;
+  h1 {
+    font-weight: bold;
+    font-size: 30px;
+  }
+  img {
+    width:50px;
+    margin: 0 20px;
+    border-radius: 100px;
+  }
+}
+
+.AppFooter {
+  height: 80px;
+  font-size: 12px;
+  text-align:center;
+  line-height: 80px;
+  strong {
+    font-weight: bold;
+  }
+}
+
+.footer {
+  height: 150px;
+  background: #f5f5f5;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  justify-items: center;
+  align-content: center;
+  padding-top: 20px;
+
+  .firstColumn {
+    display: flex;
+    flex-direction: column;
+    height: 130px;
+    width: 400px;
+    align-items: flex-start;
+    justify-content: flex-start;
+
+    .partners {
+      margin: 0px;
+      width:400px;
+      padding: 5px 20px;
+      flex-direction: row;
+      justify-content: space-around;
+      display:flex;
+
+      * {
+        background-size: 100%;
+        background-position: center center;
+        background-repeat: no-repeat;
+        height: 90px;
+        width: 70px;
+      }
+    }
+
+    .instructions {
+      margin: 0px;
+      font-size: 12px;
+      font-weight: bold;
+      margin-bottom: 5px;
+    }
+  }
+
+  .secondColumn {
+    border-left: 1px solid #000;
+    height: 80px;
+    align-items: center;
+    justify-content: center;
+    width: 500px;
+    margin-left: 20px;
+
+    display: flex;
+    flex-direction: row;
+    justify-items: center;
+    align-content: center;
+
+    p {
+      font-weight: bold;
+      display: block;
+      width: 80%;
+      font-size: 13px;
+      color: #454545;
+    }
+  }
+}
+

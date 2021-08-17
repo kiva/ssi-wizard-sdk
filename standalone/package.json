@@ -1,6 +1,6 @@
 {
   "name": "@kiva/ssirius-standalone",
-  "version": "0.0.4",
+  "version": "0.0.7",
   "dependencies": {
     "@babel/core": "7.12.3",
     "@material-ui/core": "^4.11.4",
