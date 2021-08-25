@@ -11,10 +11,13 @@ import {
 import useComponentStore from './hooks/useComponentStore';
 import useTranslator from './hooks/useTranslator';
 import getFlow from './helpers/getFlow';
+import AppHeader from './components/AppHeader';
 
 const FlowController: React.FC<IConstants> = (CONSTANTS: IConstants) => {
     const [step, setStep] = useState('confirmation');
     const authIndex = useRef<number>(0);
+    const Header = useHeaderIfAsked(CONSTANTS);
+    const Footer = useFooterIfAsked(CONSTANTS);
 
     let theFlow: Flow = getFlow(authIndex.current, CONSTANTS);
 
@@ -87,6 +90,7 @@ const FlowController: React.FC<IConstants> = (CONSTANTS: IConstants) => {
         <Suspense fallback="">
             <div className="KernelContainer">
                 <Toaster />
+                {Header}
                 <div className="KernelContent" data-cy={step}>
                     <TheComponent
                         {...getAdditionalProps(step)}
@@ -98,9 +102,32 @@ const FlowController: React.FC<IConstants> = (CONSTANTS: IConstants) => {
                         t={t}
                     />
                 </div>
+                {Footer}
             </div>
         </Suspense>
     );
 };
 
 export default FlowController;
+
+function isEnabled(props: IConstants) {
+    return !!props.standaloneConf && props.standaloneConf.isStandalone;
+}
+
+function useFooterIfAsked(props: IConstants) {
+    if (isEnabled(props) && !!props.standaloneConf!.org) {
+        return <div className="AppFooter">
+            Powered by <strong>{props.standaloneConf!.org}</strong>
+        </div>;
+    }
+    return null;
+}
+
+function useHeaderIfAsked(props: IConstants) {
+    if (isEnabled(props)
+        && props.standaloneConf!.headerImage
+        && props.standaloneConf!.org) {
+            return <AppHeader {...props} />;
+    }
+    return null;
+}
