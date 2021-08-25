@@ -54,7 +54,16 @@
                 "endDate": "End Date (if applicable)",
                 "photo~attach": "Photo",
                 "team": "Team",
-                "companyEmail": "Company Email"
+                "companyEmail": "Company Email",
+                "code": "Code",
+                "value": "Note Value",
+                "issued": "Date Issued",
+                "expiry": "Expiration Date",
+                "department": "Department",
+                "firstDay": "Start Date",
+                "school": "School Attended",
+                "mentor": "Intern Mentor",
+                "lastDay": "End Date"
             },
             "Errors": {
                 "unknown": "An unknown error occurred.",
