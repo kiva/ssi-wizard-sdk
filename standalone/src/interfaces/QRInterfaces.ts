@@ -1,5 +1,6 @@
 import {ProofRequestProfile} from './ConfirmationInterfaces';
 import ICommonProps from './ICommonProps';
+import {TFunction} from 'i18next';
 
 export interface QRProps extends ICommonProps {
     setConnectionId(id: string): Promise<void>;
@@ -8,28 +9,6 @@ export interface QRProps extends ICommonProps {
     connected: boolean;
     agentType: string;
     profile: ProofRequestProfile;
-    no_connection_error: string;
-    no_invite: string;
-    click_verify: string;
-    retrieving_notice: string;
-    scan_qr: string;
-    connection_established: string;
-    instructions: string;
-    reset: string;
-    back_text: string;
-    next_text: string;
-    rejected: string;
-    verifying: string;
-}
-
-export interface QRState {
-    inviteUrl: string | undefined;
-    connectionError: string;
-    retrievingInviteUrl: boolean;
-    verifying: boolean;
-    isConnectionReady: boolean;
-    agent_connected: boolean;
-    connectionId: string;
 }
 
 export interface QRButtonProps {
@@ -38,7 +17,5 @@ export interface QRButtonProps {
     onReset(): void;
     isConnectionReady: boolean;
     isVerifying: boolean;
-    reset: string;
-    back_text: string;
-    next_text: string;
+    t: TFunction;
 }

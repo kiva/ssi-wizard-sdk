@@ -23,34 +23,12 @@ export interface AltSearchErrors {
     birthDate: boolean;
 }
 
-interface AltSearchTextProps {
-    missingNamesError: string;
-    dateInputError: string;
-    missingFuzzyDataError: string;
-    inputLengthError: string;
-    primaryInstructions: string;
-    firstRowInstructions: string;
-    labelOne: string;
-    labelTwo: string;
-    labelThree: string;
-    labelFour: string;
-    labelFive: string;
-    nextText: string;
-    backText: string;
-    firstRowHeader: string;
-    secondRowHeader: string;
-    secondRowSubheader: string;
-}
-
-export interface AltSearchProps extends ICommonProps, AltSearchTextProps {
+export interface AltSearchProps extends ICommonProps {
     toggleSearchType(): void;
 }
 
-export interface SearchProps extends ICommonProps, AltSearchTextProps {
+export interface SearchProps extends ICommonProps {
     dropdownConfig: DropdownConfig;
-    instructions: string;
-    placeholder: string;
-    alternateSearchInstructions: string;
 }
 
 interface DropdownConfig {

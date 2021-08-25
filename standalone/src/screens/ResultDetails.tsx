@@ -49,7 +49,7 @@ export default class ResultDetails extends React.Component<DetailsProps> {
             }
             return piiString;
         } catch {
-            return this.props.no_data;
+            return this.props.t('Errors.results.noData');
         }
     }
 
@@ -101,14 +101,14 @@ export default class ResultDetails extends React.Component<DetailsProps> {
             <Paper className="ProfileCardContainer" elevation={1}>
                 <div className="ProfileCard">
                     <div className="Column2">
-                        <h3>{this.props.record_type}</h3>
+                        <h3>eKYC</h3>
                         <img
                             className="PictureProfile"
                             alt=""
                             src={pictureData}
                         />
                         {this.renderFields(
-                            this.props.authority_body,
+                            this.props.t('DeployKeys.authAgencyAcronym'),
                             this.personalInfo
                         )}
                         <div className="important-buttons">
@@ -121,7 +121,7 @@ export default class ResultDetails extends React.Component<DetailsProps> {
                                         window.close();
                                     }
                                 }}>
-                                Back
+                                {this.props.t('Standard.back')}
                             </Button>
                         </div>
                     </div>

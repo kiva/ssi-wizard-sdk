@@ -18,9 +18,5 @@ export interface DialogBodyProps extends DialogCommonProps, DialogTextElements {
 }
 
 interface DialogTextElements {
-    tryAgainText: string;
-    verifyingText: string;
-    slowInternetWarning: string;
-    continueText: string;
-    verificationNotice: string;
+    t: Function
 }

@@ -27,7 +27,7 @@ export default function DialogBody(props: DialogBodyProps) {
                     variant="h4"
                     gutterBottom
                     className="dialog-title">
-                    {props.verifyingText}
+                    {props.t('Standard.verifying')}
                 </Typography>
                 <div>
                     <CircularProgress className="dialog-icon verifying" />
@@ -41,20 +41,20 @@ export default function DialogBody(props: DialogBodyProps) {
             <div className="DialogBody">
                 <ErrorIcon className="dialog-icon warning" />
                 <div className="DialogBodyErrorMessage">
-                    {props.slowInternetWarning}
+                    {props.t('Dialog.text.slowInternetWarning')}
                 </div>
                 <div className="buttonListNew row tight">
                     <Button
                         onClick={props.cancel}
                         id="cancel-request"
                         data-cy="cancel">
-                        {props.tryAgainText}
+                        {props.t('Dialog.buttons.tryAgain')}
                     </Button>
                     <Button
                         onClick={() => setShowCancelDialog(false)}
                         data-cy="continue"
                         id="continue-request">
-                        {props.continueText}
+                        {props.t('Standard.continue')}
                     </Button>
                 </div>
             </div>
@@ -69,7 +69,7 @@ export default function DialogBody(props: DialogBodyProps) {
                     variant="h4"
                     gutterBottom
                     className="dialog-title">
-                    {props.verificationNotice}
+                    {props.t('Dialog.text.idVerified')}
                 </Typography>
                 <CheckCircleIcon className="dialog-icon verified" />
             </div>
@@ -91,14 +91,14 @@ export default function DialogBody(props: DialogBodyProps) {
                     onClick={() => props.clickFunction(false)}
                     data-cy="dialog-button"
                     className="error">
-                    {buttonText || props.continueText}
+                    {buttonText || props.t('Standard.continue')}
                 </Button>
             </div>
         );
     }
 
     if (props.errorMessage) {
-        return renderError(props.tryAgainText);
+        return renderError(props.t('Dialog.buttons.tryAgain'));
     }
     if (!props.complete) {
         if (showCancelDialog) {

@@ -15,7 +15,6 @@ import getPostBody from '../helpers/getPostBody';
 
 import {FingerprintEkycBody} from '../interfaces/ScanFingerprintInterfaces';
 import ICommonProps from '../interfaces/ICommonProps';
-import Fingers from '../globals/fingerMap';
 import FlowDispatchTypes from '../enums/FlowDispatchTypes';
 
 import failed from '../images/np_fingerprint_failed.png';
@@ -75,7 +74,9 @@ export default function ScanFingerprintScreen(props: ICommonProps) {
     }
 
     function buildFingerCaption(fingerType: string): string {
-        return Fingers.hasOwnProperty(fingerType) ? Fingers[fingerType] : '';
+        return props.t(`Fingers.${fingerType}_full`, {
+            finger: props.t('Fingers.finger')
+        });
     }
 
     // 1 - 5 Right thumb through right four fingers
@@ -134,7 +135,7 @@ export default function ScanFingerprintScreen(props: ICommonProps) {
             }, SLOW_INTERNET_THRESHOLD);
 
             const body: FingerprintEkycBody = postBody();
-console.log(body)
+
             const response = await SDK.fetchKyc(
                 body,
                 props.CONSTANTS.auth_token
@@ -265,7 +266,7 @@ console.log(body)
                             variant="h6"
                             gutterBottom
                             className="fingerprint-selection">
-                            Place{' '}
+                            {props.t('FingerprintScan.text.place') + ' '}
                             <strong>
                                 {buildFingerCaption(selectedFinger)}
                             </strong>
@@ -273,8 +274,8 @@ console.log(body)
                             <a
                                 data-cy="select-new-finger"
                                 onClick={() => setSelectingNewFinger(true)}>
-                                Use a different finger
-                            </a>{' '}
+                                {props.t('FingerprintScan.text.useDifferentFinger')}
+                            </a>
                             <br />
                         </Typography>
                     </Grid>
@@ -289,7 +290,7 @@ console.log(body)
                                 className="enhanced"
                                 href="#"
                                 onClick={() => resetFingerprintImage()}>
-                                Recapture Fingerprint
+                                {props.t('FingerprintScan.text.recaptureFingerprint')}
                             </a>
                             <br />
                         </Typography>
@@ -317,7 +318,7 @@ console.log(body)
                                 data-cy="fpscan-next"
                                 className="next"
                                 onClick={(e: any) => beginRequest(e)}>
-                                NEXT
+                                {props.t('Standard.next')}
                             </Button>
                         </Grid>
                     </Grid>
@@ -337,11 +338,7 @@ console.log(body)
                 errorMessage={processResultMessage}
                 handleCancel={cancelEkycRequest || undefined}
                 allowCancel={slowInternet}
-                tryAgainText="Try Again"
-                verifyingText="Verifying"
-                slowInternetWarning="The internet connectivity is poor, so eKYC verification will take longer than normal."
-                continueText="Continue"
-                verificationNotice="Identity Verified"
+                t={props.t}
             />
         );
     }

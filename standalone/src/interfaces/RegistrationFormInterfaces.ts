@@ -2,6 +2,7 @@ import ICommonProps from './ICommonProps';
 import {ComponentStoreMethods, FlowAction} from './FlowRouterInterfaces';
 import {CountryCodeConfig} from './SMSOTPInterfaces';
 import {CredentialKeyMap} from './IConstants';
+import {TFunction} from 'i18next';
 
 export interface InputProps {
     name: string;
@@ -24,6 +25,7 @@ export interface ButtonProps {
     onClickBack(): void;
     onSubmit: (event: any) => boolean | undefined;
     onPopulateForm(): void;
+    t: TFunction;
 }
 
 interface CredentialDependencies {

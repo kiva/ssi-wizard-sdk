@@ -139,8 +139,11 @@ export default function AgencyQR(props: QRProps) {
                 !!agent.isRejected &&
                 agent.isRejected(verificationStatus)
             ) {
+                const errorMessage = props.t('Errors.qr.rejectedProof', {
+                    proofRequestComment: profile.current.comment
+                });
                 // eslint-disable-next-line
-                throw `${props.rejected} ${profile.current.comment}`;
+                throw errorMessage;
             } else if (!cancel) {
                 setTimeout(() => {
                     pollVerification(verificationOptionId);
@@ -154,7 +157,7 @@ export default function AgencyQR(props: QRProps) {
 
     function startVerification() {
         if (verifying || !agentConnected) {
-            toast.error(props.no_connection_error, {
+            toast.error(props.t('Errors.qr.notConnected'), {
                 duration: 3000
             });
         } else {
@@ -194,7 +197,7 @@ export default function AgencyQR(props: QRProps) {
             setInviteUrl(invitation);
             writeQRtoCanvas(invitation);
         } else {
-            processConnectionError(props.no_invite);
+            processConnectionError(props.t('Errors.qr.noInviteUrl'));
         }
     }
 
@@ -238,12 +241,12 @@ export default function AgencyQR(props: QRProps) {
                     gutterBottom
                     className="qr-loading-title">
                     <strong>
-                        {agentConnected ? props.click_verify : props.scan_qr}
+                        {agentConnected ? props.t('QR.text.clickVerify') : props.t('QR.text.scanQR')}
                     </strong>
                     <br />
                     {agentConnected
-                        ? props.connection_established
-                        : props.instructions}
+                        ? props.t('QR.text.connected')
+                        : props.t('QR.text.scanQRInstructions')}
                 </Typography>
                 <div id="qr-box">
                     <canvas id="qr-code"></canvas>
@@ -261,7 +264,7 @@ export default function AgencyQR(props: QRProps) {
     }
 
     function renderRetrieving(text?: string) {
-        const header: string = text || props.retrieving_notice;
+        const header: string = text || props.t('QR.text.retrieving');
         return (
             <div className="centered-flex-content">
                 <Typography
@@ -286,7 +289,7 @@ export default function AgencyQR(props: QRProps) {
                     variant="h6"
                     gutterBottom
                     className="qr-loading-title">
-                    {props.verifying}...
+                    {props.t('Standard.verifying')}...
                 </Typography>
                 <div id="qr-loader">
                     <CircularProgress className="dialog-icon verifying" />
@@ -341,9 +344,7 @@ export default function AgencyQR(props: QRProps) {
                 }
                 onSubmit={() => startVerification()}
                 onReset={() => resetFlow()}
-                reset={props.reset}
-                back_text={props.back_text}
-                next_text={props.next_text}
+                t={props.t}
             />
         </div>
     );
@@ -362,7 +363,7 @@ function QRScreenButtons(props: QRButtonProps) {
                     data-cy="qr-back"
                     className="back secondary"
                     onClick={props.onClickBack}>
-                    {props.back_text}
+                    {props.t('Standard.back')}
                 </Button>
             </Grid>
             <Grid item>
@@ -370,7 +371,7 @@ function QRScreenButtons(props: QRButtonProps) {
                     data-cy="reset-flow"
                     className="qr-reset"
                     onClick={props.onReset}>
-                    {props.reset}
+                    {props.t('QR.text.resetConnection')}
                 </Button>
             </Grid>
             <Grid item>
@@ -381,7 +382,7 @@ function QRScreenButtons(props: QRButtonProps) {
                     className="next button-verify"
                     onSubmit={props.onSubmit}
                     onClick={props.onSubmit}>
-                    {props.next_text}
+                    {props.t('Standard.next')}
                 </Button>
             </Grid>
         </Grid>

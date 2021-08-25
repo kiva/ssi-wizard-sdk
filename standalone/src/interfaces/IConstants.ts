@@ -12,6 +12,7 @@ export interface IConstants {
     auth_token?: string;
     component_map: ComponentMap;
     slowInternetThreshold?: number;
+    languages: string[];
 }
 
 interface CredentialKeyDefinition {

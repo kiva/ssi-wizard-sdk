@@ -1,6 +1,7 @@
 import {ProofRequestProfile} from './ConfirmationInterfaces';
 import {ComponentStoreMethods, FlowAction} from './FlowRouterInterfaces';
 import ICommonProps from './ICommonProps';
+import {TFunction} from 'i18next';
 
 export interface SMSProps extends ICommonProps {
     phoneNumber: string;
@@ -9,8 +10,6 @@ export interface SMSProps extends ICommonProps {
     email: string;
     smsSent: boolean;
     profile: ProofRequestProfile;
-    invalid_number: string;
-    invalid_otp: string;
     phoneIntls: CountryCodeConfig;
 }
 
@@ -42,6 +41,7 @@ export interface PhoneState {
 export interface SMSButtonProps {
     onSubmit(): void;
     onClickBack(): void;
+    t: TFunction;
 }
 
 export interface PhoneNumberInputProps {
@@ -49,6 +49,7 @@ export interface PhoneNumberInputProps {
     handlePhoneNumberChange: (input: string) => void;
     handleEnter: (keyCode: number) => void;
     phoneIntls: CountryCodeConfig;
+    t: TFunction;
 }
 
 export interface OTPScreenProps {
@@ -58,11 +59,11 @@ export interface OTPScreenProps {
     setContainerState(data: SMSData): void;
     profile: ProofRequestProfile;
     store: ComponentStoreMethods;
-    invalid_otp: string;
     auth_token?: string;
     phoneIntls: CountryCodeConfig;
     specificError?: string;
     dispatch: (action: FlowAction) => void;
+    t: TFunction;
 }
 
 export interface OTPInputProps {
@@ -79,6 +80,7 @@ export interface OTPInputState {
 export interface SMSStatusProps {
     status: string;
     errorText?: string;
+    t: TFunction;
 }
 
 export interface PhoneScreenProps {
@@ -88,10 +90,10 @@ export interface PhoneScreenProps {
     smsSent: boolean;
     profile: ProofRequestProfile;
     store: ComponentStoreMethods;
-    invalid_number: string;
     auth_token?: string;
     phoneIntls: CountryCodeConfig;
     dispatch: (action: FlowAction) => void;
+    t: TFunction;
 }
 
 export interface SMSPostBody {

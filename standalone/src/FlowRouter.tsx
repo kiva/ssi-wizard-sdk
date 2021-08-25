@@ -9,6 +9,7 @@ import {
     FlowAction
 } from './interfaces/FlowRouterInterfaces';
 import useComponentStore from './hooks/useComponentStore';
+import useTranslator from './hooks/useTranslator';
 import getFlow from './helpers/getFlow';
 
 const FlowController: React.FC<IConstants> = (CONSTANTS: IConstants) => {
@@ -20,6 +21,8 @@ const FlowController: React.FC<IConstants> = (CONSTANTS: IConstants) => {
     const prevStep = theFlow[step]![FlowDispatchTypes.BACK] ?? '';
     const componentStoreMethods: ComponentStoreMethods =
         useComponentStore(step);
+    const lang = CONSTANTS.languages[0];
+    const t = useTranslator(lang);
 
     function dispatch(action: FlowAction) {
         const {type, payload} = action;
@@ -92,6 +95,7 @@ const FlowController: React.FC<IConstants> = (CONSTANTS: IConstants) => {
                         prevScreen={prevStep}
                         authIndex={authIndex.current}
                         dispatch={dispatch}
+                        t={t}
                     />
                 </div>
             </div>

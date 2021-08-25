@@ -48,14 +48,14 @@ export default function RegistrationUserTable(props: ICommonProps) {
                         component="h2"
                         variant="h4"
                         style={{display: 'inline-block'}}>
-                        Registration Entries
+                        {props.t('RegistrationTable.buttons.entries')}
                     </Typography>
                     <Button
                         className="accept"
                         onClick={() =>
                             props.dispatch({type: FlowDispatchTypes.RESTART})
                         }>
-                        + Register New Entry
+                        + {props.t('RegistrationTable.buttons.registerNewEntry')}
                     </Button>
                 </Grid>
                 <div style={{height: 400, width: '100%'}}>

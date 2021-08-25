@@ -19,6 +19,7 @@ import getDataFrom from '../helpers/getDataFrom';
 import FlowDispatchTypes from '../enums/FlowDispatchTypes';
 
 export default function ConfirmationScreen(props: ConfirmationProps) {
+    console.log(props.t('Definitely does not exist'));
     const enableProofProfileMenu = !!props.CONSTANTS.proof_profile_url;
     const [credentialKeys, setCredentialKeys] = useState<CredentialKeyMap | null>(enableProofProfileMenu ? getProfileDataIfAvailable() : props.CONSTANTS.credentialKeyMap);
 
@@ -46,17 +47,17 @@ export default function ConfirmationScreen(props: ConfirmationProps) {
                 alignItems="center">
                 <Grid item>
                     <Typography component="h2" variant="h6" gutterBottom>
-                        {props.reviewText}
+                        {props.t('ConfirmationScreen.text.pleaseReview')}
                     </Typography>
                 </Grid>
             </Grid>
             <div className="legal-terms-section">
                 <div className="legal-terms1">
-                    <p>{props.agreement}</p>
+                    <p>{props.t('ConfirmationScreen.text.agreement')}</p>
 
-                    <p>{props.info_includes}</p>
+                    <p>{props.t('ConfirmationScreen.text.infoShareIncludes')}</p>
                 </div>
-                {credentialKeys && <PII fields={credentialKeys} />}
+                {credentialKeys && <PII t={props.t} fields={credentialKeys} />}
             </div>
             <Grid
                 container
@@ -71,7 +72,7 @@ export default function ConfirmationScreen(props: ConfirmationProps) {
                                 type: FlowDispatchTypes.NEXT
                             })
                         }>
-                        {props.buttonText}
+                        {props.t('Standard.accept')}
                     </Button>
                 </Grid>
             </Grid>
@@ -82,6 +83,17 @@ export default function ConfirmationScreen(props: ConfirmationProps) {
 function PII(props: CredentialKeyFieldsProps) {
     const labels: CredentialKeyFieldState = delegateLabels();
 
+    function translatePII(key: string) {
+        const translationKey = `PII.${key}`;
+        const maybeTranslated = props.t(translationKey);
+
+        if (maybeTranslated === translationKey) {
+            return key;
+        }
+
+        return maybeTranslated;
+    }
+
     function delegateLabels(): CredentialKeyFieldState {
         const columnOne: string[] = [];
         const columnTwo: string[] = [];
@@ -90,7 +102,8 @@ function PII(props: CredentialKeyFieldsProps) {
         let i = 0;
         for (const field in fields) {
             const currentArray = i % 2 === 0 ? columnOne : columnTwo;
-            currentArray.push(fields[field].name);
+            const name = translatePII(fields[field].name);
+            currentArray.push(name);
             i++;
         }
 
