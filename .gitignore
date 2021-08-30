@@ -11,6 +11,9 @@
 # config files for Standalone
 /standalone/src/config.ts
 
+# translation files
+**translations.json
+
 # production
 **/build
 **/dist

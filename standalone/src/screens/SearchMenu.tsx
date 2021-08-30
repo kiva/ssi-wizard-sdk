@@ -62,7 +62,7 @@ export default function SearchMenu(props: SearchProps) {
 
     const inputIsEmpty = (value: string) => {
         if (value && '' === value.trim()) {
-            toast.error('Please fill out the field', {
+            toast.error(props.t('Errors.input.emptyField'), {
                 duration: 3000
             });
             return false;
@@ -98,7 +98,7 @@ export default function SearchMenu(props: SearchProps) {
                     alignItems="center">
                     <Grid item>
                         <Typography component="h2" variant="h6" gutterBottom>
-                            {props.instructions}
+                            {props.t('SearchMenu.text.instructions')}
                         </Typography>
                     </Grid>
                     <form name="ekycIdForm">
@@ -122,7 +122,7 @@ export default function SearchMenu(props: SearchProps) {
                                             />
                                         }>
                                         <MenuItem value="none" disabled>
-                                            Select ID Type
+                                            {props.t('SearchMenu.text.selectID')}
                                         </MenuItem>
                                         {Object.entries(
                                             props.dropdownConfig
@@ -147,7 +147,7 @@ export default function SearchMenu(props: SearchProps) {
                                         autoFocus={true}
                                         label={
                                             filters.value.trim() === ''
-                                                ? props.placeholder
+                                                ? props.t('SearchMenu.text.placeholder')
                                                 : ''
                                         }
                                         value={filters.value}
@@ -167,22 +167,21 @@ export default function SearchMenu(props: SearchProps) {
                                 id="scan-fingerprint"
                                 onClick={(e: any) => handleSubmission(e)}
                                 onSubmit={(e: any) => handleSubmission(e)}>
-                                {props.nextText}
+                                {props.t('Standard.next')}
                             </Button>
                             <Button
                                 className="secondary"
                                 onClick={() => {
-                                    console.log('Hello');
                                     props.dispatch({
                                         type: FlowDispatchTypes.BACK
                                     });
                                 }}>
-                                {props.backText}
+                                {props.t('Standard.back')}
                             </Button>
                             <a
                                 id="alternate-search"
                                 onClick={() => toggleSearchType()}>
-                                {props.alternateSearchInstructions}
+                                {props.t('SearchMenu.text.alternateSearchInstructions')}
                             </a>
                         </div>
                     </form>

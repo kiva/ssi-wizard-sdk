@@ -25,7 +25,7 @@ export default function EmailScreen(props: EmailProps) {
     const proceed = () => (e: any) => {
         e.preventDefault();
         if (!email) {
-            toast.error(props.no_input, {
+            toast.error(props.t('Errors.email.noInput'), {
                 duration: 3000
             });
         } else {
@@ -42,7 +42,7 @@ export default function EmailScreen(props: EmailProps) {
                 alignItems="center">
                 <Grid item>
                     <Typography component="h2" variant="h6" gutterBottom>
-                        {props.instructions}
+                        {props.t('Email.text.instructions')}
                     </Typography>
                 </Grid>
                 <form name="ekycIdForm">
@@ -51,7 +51,7 @@ export default function EmailScreen(props: EmailProps) {
                             <TextField
                                 id="email-input"
                                 data-cy="email-input"
-                                label={email.trim() === '' ? 'Email' : ''}
+                                label={email.trim() === '' ? props.t('Email.text.placeHolder') : ''}
                                 value={email}
                                 onChange={handleInputChange()}
                                 inputProps={{'aria-label': 'bare'}}
@@ -69,14 +69,14 @@ export default function EmailScreen(props: EmailProps) {
                                     type: FlowDispatchTypes.BACK
                                 })
                             }>
-                            {props.back_text}
+                            {props.t('Standard.back')}
                         </Button>
                         <Button
                             type="submit"
                             id="continue"
                             onClick={proceed()}
                             onSubmit={proceed()}>
-                            {props.continue}
+                            {props.t('Standard.continue')}
                         </Button>
                     </div>
                 </form>

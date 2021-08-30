@@ -1,5 +1,6 @@
 import {ComponentStoreMethods, FlowAction} from './FlowRouterInterfaces';
 import {IConstants} from './IConstants';
+import {TFunction} from 'i18next';
 
 export default interface ICommonProps {
     CONSTANTS: IConstants;
@@ -8,4 +9,5 @@ export default interface ICommonProps {
     authIndex: number;
     dataHelper?: any;
     dispatch: (action: FlowAction) => void;
+    t: TFunction;
 }

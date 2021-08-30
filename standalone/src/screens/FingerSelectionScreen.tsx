@@ -20,7 +20,10 @@ export default function FingerSelectionScreen(props: FingerSelectProps) {
     );
 
     function getFingerCaption(code: string) {
-        return Fingers[code] || '';
+        const translationKey = `Fingers.${code}_full`;
+        return props.t(translationKey, {
+            finger: props.t('Fingers.finger')
+        }) || '';
     }
 
     function confirmSelection() {
@@ -65,7 +68,7 @@ export default function FingerSelectionScreen(props: FingerSelectProps) {
                         Use <strong>{getFingerCaption(selectedFinger)}</strong>
                     </span>
                 ) : (
-                    'Go Back'
+                    props.t('Standard.goBack')
                 )}
             </Button>
         );

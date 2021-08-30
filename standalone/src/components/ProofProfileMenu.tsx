@@ -74,7 +74,7 @@ export default function ProofProfileMenu(props: ProofProfileProps) {
                     component="h2"
                     align="center"
                     className="error-description">
-                    <strong>Unable to fetch proof profiles!</strong>
+                    <strong>{props.t('Errors.proofs.profileFetchError')}</strong>
                     <br />
                     {proofOptionsError}
                 </Typography>
@@ -86,7 +86,7 @@ export default function ProofProfileMenu(props: ProofProfileProps) {
             <div className="VerificationRequirement screen">
                 <CircularProgress className="pr-loader" />
                 <div className="loader-text">
-                    Loading verification requirement options...
+                    {props.t('ProofProfileMenu.text.loading')}
                 </div>
             </div>
         );
@@ -100,7 +100,7 @@ export default function ProofProfileMenu(props: ProofProfileProps) {
             alignItems="center">
             <Grid item>
                 <FormControl className="form-control">
-                    <InputLabel>Verification Requirement</InputLabel>
+                    <InputLabel>{props.t('ProofProfileMenu.text.requirement')}</InputLabel>
                     <Select
                         className="verification-requirement-select"
                         value={verificationRequired}

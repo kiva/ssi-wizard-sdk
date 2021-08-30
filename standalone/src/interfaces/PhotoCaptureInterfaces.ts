@@ -1,3 +1,5 @@
+import {TFunction} from 'i18next';
+
 export interface PhotoAttach {
     data: string;
     type: string;
@@ -14,4 +16,6 @@ export interface WebcamCaptureButtonProps {
     onClickBack(): void;
 
     onReset(): void;
+
+    t: TFunction;
 }

@@ -84,10 +84,10 @@ export default class SMSOTPScreen extends React.Component<SMSProps, OTPState> {
                 email={this.email}
                 profile={this.profile}
                 store={this.props.store}
-                invalid_number={this.props.invalid_number}
                 auth_token={this.props.CONSTANTS.auth_token}
                 phoneIntls={this.props.phoneIntls}
                 dispatch={this.props.dispatch}
+                t={this.props.t}
             />
         );
     }
@@ -101,10 +101,10 @@ export default class SMSOTPScreen extends React.Component<SMSProps, OTPState> {
                 setContainerState={this.setContainerState}
                 profile={this.profile}
                 store={this.props.store}
-                invalid_otp={this.props.invalid_otp}
                 auth_token={this.props.CONSTANTS.auth_token}
                 phoneIntls={this.props.phoneIntls}
                 dispatch={this.props.dispatch}
+                t={this.props.t}
             />
         );
     }
@@ -189,7 +189,7 @@ class PhoneNumberScreen extends React.Component<PhoneScreenProps, PhoneState> {
                 () => this.sendTwilioRequest(body)
             );
         } else {
-            toast.error(this.props.invalid_number, {
+            toast.error(this.props.t('Errors.input.missingPhoneNumber'), {
                 duration: 3000
             });
         }
@@ -215,10 +215,11 @@ class PhoneNumberScreen extends React.Component<PhoneScreenProps, PhoneState> {
     renderInProgress() {
         return (
             <div>
-                <SMSStatus status="progress" />
+                <SMSStatus status="progress" t={this.props.t} />
                 <SMSScreenButtons
                     onClickBack={() => disabledFunction}
                     onSubmit={() => disabledFunction}
+                    t={this.props.t}
                 />
             </div>
         );
@@ -232,12 +233,14 @@ class PhoneNumberScreen extends React.Component<PhoneScreenProps, PhoneState> {
                     handlePhoneNumberChange={this.handlePhoneNumberChange}
                     handleEnter={this.handlePhoneNumberEnter}
                     phoneIntls={this.props.phoneIntls}
+                    t={this.props.t}
                 />
                 <SMSScreenButtons
                     onClickBack={() =>
                         this.props.dispatch({type: FlowDispatchTypes.BACK})
                     }
                     onSubmit={() => this.beginTwilioRequest()}
+                    t={this.props.t}
                 />
             </div>
         );
@@ -246,7 +249,7 @@ class PhoneNumberScreen extends React.Component<PhoneScreenProps, PhoneState> {
     renderErrorScreen() {
         return (
             <div>
-                <SMSStatus status="error" errorText={this.state.error} />
+                <SMSStatus status="error" errorText={this.state.error} t={this.props.t} />
                 <SMSScreenButtons
                     onClickBack={() => {
                         this.setState({
@@ -254,6 +257,7 @@ class PhoneNumberScreen extends React.Component<PhoneScreenProps, PhoneState> {
                         });
                     }}
                     onSubmit={() => disabledFunction}
+                    t={this.props.t}
                 />
             </div>
         );
@@ -342,7 +346,7 @@ class OTPScreen extends React.Component<OTPScreenProps, OTPInputState> {
                 () => this.sendTwilioRequest(body)
             );
         } else {
-            toast.error(this.props.invalid_otp, {
+            toast.error(this.props.t('Errors.input.invalidOTP'), {
                 duration: 3000
             });
         }
@@ -398,12 +402,12 @@ class OTPScreen extends React.Component<OTPScreenProps, OTPInputState> {
                         variant="h6"
                         gutterBottom
                         align="center">
-                        Please enter your one-time password
+                        {this.props.t('SMSOTP.text.otpEntryInstructions')}
                     </Typography>
                 </Grid>
                 <Grid item>
                     <Typography id="instructions" component="h2" align="center">
-                        Your message was sent to
+                        {this.props.t('SMSOTP.text.messageSentTo')}
                         <br />
                         {`${this.props.phoneNumber}`}
                     </Typography>
@@ -412,6 +416,7 @@ class OTPScreen extends React.Component<OTPScreenProps, OTPInputState> {
                 <SMSScreenButtons
                     onClickBack={() => this.goToPhoneInput()}
                     onSubmit={() => this.beginTwilioRequest()}
+                    t={this.props.t}
                 />
             </div>
         );
@@ -420,10 +425,11 @@ class OTPScreen extends React.Component<OTPScreenProps, OTPInputState> {
     renderOTPErrorScreen() {
         return (
             <div>
-                <SMSStatus status="error" errorText={this.state.smsError} />
+                <SMSStatus status="error" errorText={this.state.smsError} t={this.props.t} />
                 <SMSScreenButtons
                     onClickBack={() => this.handleErrorBack()}
                     onSubmit={() => disabledFunction}
+                    t={this.props.t}
                 />
             </div>
         );
@@ -432,10 +438,11 @@ class OTPScreen extends React.Component<OTPScreenProps, OTPInputState> {
     renderInProgress() {
         return (
             <div>
-                <SMSStatus status="verifying" />
+                <SMSStatus status="verifying" t={this.props.t} />
                 <SMSScreenButtons
                     onClickBack={() => disabledFunction}
                     onSubmit={() => disabledFunction}
+                    t={this.props.t}
                 />
             </div>
         );
@@ -444,10 +451,11 @@ class OTPScreen extends React.Component<OTPScreenProps, OTPInputState> {
     renderVerified() {
         return (
             <div>
-                <SMSStatus status="success" />
+                <SMSStatus status="success" t={this.props.t} />
                 <SMSScreenButtons
                     onClickBack={() => disabledFunction}
                     onSubmit={() => disabledFunction}
+                    t={this.props.t}
                 />
             </div>
         );
@@ -484,7 +492,7 @@ class SMSScreenButtons extends React.Component<SMSButtonProps> {
                         data-cy="smsotp-back"
                         className="back"
                         onClick={this.props.onClickBack}>
-                        Back
+                        {this.props.t('Standard.back')}
                     </Button>
                 </Grid>
                 <Grid item>
@@ -495,7 +503,7 @@ class SMSScreenButtons extends React.Component<SMSButtonProps> {
                         className="next"
                         onSubmit={this.props.onSubmit}
                         onClick={this.props.onSubmit}>
-                        Verify
+                        {this.props.t('Standard.verify')}
                     </Button>
                 </Grid>
             </Grid>
@@ -546,7 +554,7 @@ class SMSStatus extends React.Component<SMSStatusProps> {
                     component="h2"
                     align="center"
                     className="status-text">
-                    Your transaction was successfully verified
+                    {this.props.t('SMSOTP.text.successMessage')}
                 </Typography>
             </div>
         );
@@ -574,17 +582,17 @@ class SMSStatus extends React.Component<SMSStatusProps> {
 }
 
 class OTPInput extends React.Component<OTPInputProps> {
+    focusOn = (el: HTMLElement | null) => {
+        el && el.focus();
+    };
+
     handleEntry =
         (index: number) =>
         (event: any): void => {
             if (index >= 0 && index < 5) {
-                const d = document.getElementById('otp-digit-' + (index + 1));
-                d && d.focus();
+                this.focusOn(document.getElementById('otp-digit-' + (index + 1)))
             } else if (index === 5) {
-                const d = document.getElementById(
-                    'sms-scan-verification-button'
-                );
-                d && d.focus();
+                this.focusOn(document.getElementById('sms-scan-verification-button'));
             }
             this.props.handleOTPEntry(index, event.target.value);
         };
@@ -688,13 +696,12 @@ class PhoneNumberInput extends React.Component<PhoneNumberInputProps> {
                         variant="h6"
                         gutterBottom
                         align="center">
-                        Enter your phone number
+                        {this.props.t('SMSOTP.text.phoneNoEntryInstructions')}
                     </Typography>
                 </Grid>
                 <Grid item>
                     <Typography id="instructions" component="h2" align="center">
-                        You will receive a text message with a six digit
-                        password to provide to your verifier
+                        {this.props.t('SMSOTP.text.smsDetails')}
                     </Typography>
                 </Grid>
                 <Grid item>

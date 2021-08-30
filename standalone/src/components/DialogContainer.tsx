@@ -27,11 +27,7 @@ export default function DialogContainer(props: DialogContainerProps) {
                     cancel={props.handleCancel || undefined}
                     errorMessage={props.errorMessage}
                     allowCancel={props.allowCancel}
-                    tryAgainText={props.tryAgainText}
-                    continueText={props.continueText}
-                    verificationNotice={props.verificationNotice}
-                    slowInternetWarning={props.slowInternetWarning}
-                    verifyingText={props.verifyingText}
+                    t={props.t}
                 />
             </DialogContent>
         </Dialog>

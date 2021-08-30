@@ -37,7 +37,7 @@ export default function AuthenticationOptionMenu(props: AuthOptionProps) {
                 className="auth_instructions"
                 component="h2"
                 variant="h6">
-                {props.instructions}
+                {props.t('AuthMenu.text.selectVerification')}
             </Typography>
             <div id="auth_options" className="flex-block row">
                 {props.CONSTANTS.verification_options.map((option, idx) => {
@@ -59,7 +59,7 @@ export default function AuthenticationOptionMenu(props: AuthOptionProps) {
             <Button
                 id="select-auth-method"
                 onClick={() => props.dispatch({type: FlowDispatchTypes.NEXT})}>
-                {props.selectButtonText}
+                {props.t('Standard.select')}
             </Button>
         </div>
     );
