@@ -24,7 +24,7 @@ const FlowController: React.FC<IConstants> = (CONSTANTS: IConstants) => {
     const prevStep = theFlow[step]![FlowDispatchTypes.BACK] ?? '';
     const componentStoreMethods: ComponentStoreMethods =
         useComponentStore(step);
-    const lang = CONSTANTS.languages[0];
+    const lang = CONSTANTS.defaultLang;
     const t = useTranslator(lang);
 
     function dispatch(action: FlowAction) {
