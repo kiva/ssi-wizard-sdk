@@ -91,8 +91,8 @@
     "ssirius": "bin/cli.js"
   },
   "scripts": {
-    "start": "node scripts/start.js",
-    "build": "node scripts/build.js --local",
+    "start": "node scripts/start.js --config=/../examples/configs/everything_enabled.ts --translations=/../examples/translations/en_only.json",
+    "build": "node scripts/build.js --config=/../examples/configs/everything_enabled.ts --translations=/../examples/translations/en_only.json --local",
     "test": "node scripts/test.js"
   },
   "eslintConfig": {
@@ -130,7 +130,6 @@
       "<rootDir>/src/**/*.{spec,test}.{js,jsx,ts,tsx}"
     ],
     "testEnvironment": "jsdom",
-    "testRunner": "/Users/nates/Desktop/lajhem/node_modules/jest-circus/runner.js",
     "transform": {
       "^.+\\.(js|jsx|mjs|cjs|ts|tsx)$": "<rootDir>/config/jest/babelTransform.js",
       "^.+\\.css$": "<rootDir>/config/jest/cssTransform.js",
