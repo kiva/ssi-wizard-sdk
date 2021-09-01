@@ -1,11 +1,7 @@
 import ICommonProps from './ICommonProps';
+import {TFunction} from 'i18next';
 
-export interface ConfirmationProps extends ICommonProps {
-    agreement: string;
-    reviewText: string;
-    info_includes: string;
-    buttonText: string;
-}
+export interface ConfirmationProps extends ICommonProps {}
 
 interface CredentialKeyDefinition {
     name: string;
@@ -22,6 +18,7 @@ export interface CredentialKeyMap {
 
 export interface CredentialKeyFieldsProps {
     fields: CredentialKeyMap;
+    t: TFunction;
 }
 
 export interface CredentialKeyFieldState {

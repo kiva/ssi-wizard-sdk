@@ -100,7 +100,7 @@ export default function CredentialIssuance(props: CredentialIssuanceProps) {
             setInviteUrl(invitation);
             writeQRtoCanvas(invitation);
         } else {
-            processConnectionError(props.no_invite);
+            processConnectionError(props.t('Errors.qr.noInviteUrl'));
         }
     }
 
@@ -177,7 +177,7 @@ export default function CredentialIssuance(props: CredentialIssuanceProps) {
 
     const startCredentialCreation = () => {
         if (offered || !props.store.get('isConnected', true)) {
-            toast.error(props.noConnectionWarning, {
+            toast.error(props.t('Errors.qr.notConnected'), {
                 duration: 3000
             });
         } else {
@@ -226,8 +226,8 @@ export default function CredentialIssuance(props: CredentialIssuanceProps) {
                     gutterBottom
                     className="qr-loading-title">
                     {connected
-                        ? props.connectionEstablishedNotice
-                        : props.scanCodeInstructions}
+                        ? props.t('CredentialIssuance.text.connectionSuccessful')
+                        : props.t('CredentialIssuance.text.instructions')}
                 </Typography>
                 <div id="qr-box">
                     <canvas
@@ -249,7 +249,7 @@ export default function CredentialIssuance(props: CredentialIssuanceProps) {
     function renderCredentialOffered(text?: string) {
         const header: string =
             text ||
-            'Citizen should see the National ID card in their mobile Wallet.';
+            props.t('CredentialIssuance.text.offerNotice');
         return (
             <div className="centered-flex-content">
                 <Typography
@@ -280,7 +280,7 @@ export default function CredentialIssuance(props: CredentialIssuanceProps) {
     }
 
     function renderCredentialIssued(text?: string) {
-        const header: string = text || 'Citizen’s National ID has been issued.';
+        const header: string = text || props.t('CredentialIssuance.text.issueNotice');
         return (
             <div className="centered-flex-content">
                 <Typography
@@ -319,7 +319,7 @@ export default function CredentialIssuance(props: CredentialIssuanceProps) {
     }
 
     function renderRetrieving(text?: string) {
-        const header: string = text || props.retrievingQRNotice;
+        const header: string = text || props.t('QR.text.retrieving');
         return (
             <div className="centered-flex-content">
                 <Typography
@@ -384,7 +384,7 @@ export default function CredentialIssuance(props: CredentialIssuanceProps) {
                 {renderBody()}
             </Grid>
             <QRScreenButtons
-                backText={props.backText}
+                backText={props.t('Standard.back')}
                 onClickBack={() => {
                     props.dispatch({type: FlowDispatchTypes.BACK});
                 }}

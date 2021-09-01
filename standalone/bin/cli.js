@@ -21,7 +21,7 @@ if (args.length > 3) {
     process.exit(99);
 }
 
-const {script, file} = getScriptAndConfigFile(args);
+const {script, file, translations} = parseCLIArgs(args);
 
 if (['start', 'build'].indexOf(script) === -1) {
     console.log(
@@ -30,12 +30,14 @@ if (['start', 'build'].indexOf(script) === -1) {
 }
 
 let configInfo = fs.readFileSync(file, 'utf8');
+let translationData = fs.readFileSync(translations, 'utf8');
 
 if (isJsonFile(file)) {
     configInfo = 'const config = ' + configInfo + '; export default config;';
 }
 
 fs.writeFileSync(__dirname + '/../src/config.ts', configInfo);
+fs.writeFileSync(__dirname + '/../src/translations.json', translationData);
 
 if ('start' === script) {
     const runDevServer = require('../scripts/start');
@@ -45,11 +47,13 @@ if ('start' === script) {
     buildApp();
 }
 
-function getScriptAndConfigFile(args) {
+function parseCLIArgs(args) {
     const ret = {};
     args.forEach(arg => {
         if (arg.indexOf('--config') === 0 && arg.indexOf('=') > -1) {
             ret['file'] = determineFileName(arg);
+        } else if (arg.indexOf('--translations') === 0 && arg.indexOf('=') > -1) {
+            ret['translations'] = determineFileName(arg);
         } else if ('--local' !== arg) {
             ret['script'] = arg;
         }

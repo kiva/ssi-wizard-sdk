@@ -81,7 +81,7 @@ export default function RegistrationForm(props: RegistrationFormProps) {
             }
 
             if ('NaN' === dates[key]) {
-                dates[key] = `${dates[key]} -> (Not A Valid Date)`;
+                dates[key] = `${dates[key]} -> (${props.t('Errors.formData.invalidDate')})`;
             }
         }
         setCredentialData(dates);
@@ -111,12 +111,11 @@ export default function RegistrationForm(props: RegistrationFormProps) {
                     justify="space-around">
                     <Grid container justify="space-around">
                         <Typography component="h4" variant="h6">
-                            Enter Credential Details
+                            {props.t('RegistrationForm.text.instructionsHeader')}
                         </Typography>
                     </Grid>
                     <Grid container justify="space-around">
-                        Details on this page will be issued to the employee in a
-                        credential.
+                        {props.t('RegistrationForm.text.instructions')}
                     </Grid>
                     <Grid item xs={6}>
                         <Grid container direction="row" justify="space-between">
@@ -167,6 +166,7 @@ export default function RegistrationForm(props: RegistrationFormProps) {
                         props.dispatch({type: FlowDispatchTypes.BACK})
                     }
                     onPopulateForm={() => onPopulateForm()}
+                    t={props.t}
                     onSubmit={(e: any) =>
                         handleSubmit(e)
                     }></RegistrationFormButtons>
@@ -301,7 +301,7 @@ function RegistrationFormButtons(props: ButtonProps) {
                             data-cy="qr-back"
                             className="back"
                             onClick={props.onClickBack}>
-                            Back
+                            {props.t('Standard.back')}
                         </Button>
                     </Grid>
                     <Grid item>
@@ -309,7 +309,7 @@ function RegistrationFormButtons(props: ButtonProps) {
                             data-cy="populate-form"
                             className="back"
                             onClick={props.onPopulateForm}>
-                            Populate Form
+                            {props.t('RegistrationForm.buttons.populate')}
                         </Button>
                     </Grid>
                     <Grid item>
@@ -318,7 +318,7 @@ function RegistrationFormButtons(props: ButtonProps) {
                             onSubmit={props.onSubmit}
                             type="submit"
                             className="next">
-                            Continue
+                            {props.t('Standard.continue')}
                         </Button>
                     </Grid>
                 </Grid>

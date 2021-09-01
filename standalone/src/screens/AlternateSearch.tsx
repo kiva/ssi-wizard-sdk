@@ -60,7 +60,7 @@ export default function AlternateSearch(props: AltSearchProps) {
             inputs.indexOf('firstName') === -1 ||
             inputs.indexOf('lastName') === -1
         ) {
-            toast.error(props.missingNamesError, {
+            toast.error(props.t('Errors.input.missingNames'), {
                 duration: 3000
             });
             return false;
@@ -73,7 +73,7 @@ export default function AlternateSearch(props: AltSearchProps) {
         ) {
             return true;
         } else {
-            toast.error(props.missingFuzzyDataError, {
+            toast.error(props.t('Errors.input.missingFuzzySearchData'), {
                 duration: 7000
             });
             return false;
@@ -83,7 +83,7 @@ export default function AlternateSearch(props: AltSearchProps) {
     function validateBirthDate(): any {
         const bday: string | undefined = searchParams.birthDate;
         if (bday && !Date.parse(bday)) {
-            return props.dateInputError;
+            return props.t('Errors.input.dateInput');
         }
 
         // Input is valid
@@ -93,7 +93,10 @@ export default function AlternateSearch(props: AltSearchProps) {
     function validateInputText(k: string): any {
         const inputValue: string | undefined = searchParams[k];
         if (!inputValue || inputValue.length <= 0 || inputValue.length > 50) {
-            return props.inputLengthError;
+            return props.t('Errors.input.inputLength', {
+                minimum: 1,
+                maximum: 50
+            });
         }
 
         // Input is valid
@@ -158,7 +161,7 @@ export default function AlternateSearch(props: AltSearchProps) {
                             id="instructions"
                             component="h2"
                             align="center">
-                            {props.primaryInstructions}
+                            {props.t('AlternateSearchScreen.text.fuzzySearchInstructions')}
                         </Typography>
                     </Grid>
                     <Grid item>
@@ -167,7 +170,7 @@ export default function AlternateSearch(props: AltSearchProps) {
                             variant="h6"
                             gutterBottom
                             align="center">
-                            {props.firstRowInstructions}
+                            {props.t('AlternateSearchScreen.text.enterFirstAndLast')}
                         </Typography>
                     </Grid>
                     <Grid
@@ -180,7 +183,7 @@ export default function AlternateSearch(props: AltSearchProps) {
                             <TextField
                                 className="inspectletIgnore alternate-search-field required"
                                 data-cy="firstname-input"
-                                label={props.labelOne}
+                                label={props.t('PII.firstName')}
                                 value={searchParams.firstName || ''}
                                 onChange={handleFieldChange('firstName')}
                                 inputProps={{'aria-label': 'bare'}}
@@ -194,7 +197,7 @@ export default function AlternateSearch(props: AltSearchProps) {
                             <TextField
                                 className="inspectletIgnore alternate-search-field required"
                                 data-cy="lastname-input"
-                                label={props.labelTwo}
+                                label={props.t('PII.lastName')}
                                 value={searchParams.lastName || ''}
                                 onChange={handleFieldChange('lastName')}
                                 inputProps={{'aria-label': 'bare'}}
@@ -215,7 +218,7 @@ export default function AlternateSearch(props: AltSearchProps) {
                             component="h2"
                             variant="h6"
                             align="center">
-                            {props.firstRowHeader}
+                            {props.t('AlternateSearch.text.enterDob')}
                             <AccordionArrow
                                 fontSize="large"
                                 className={
@@ -239,7 +242,7 @@ export default function AlternateSearch(props: AltSearchProps) {
                             <TextField
                                 className="inspectletIgnore alternate-search-field"
                                 data-cy="birthdate-input"
-                                label={props.labelThree}
+                                label={props.t('PII.birthDate')}
                                 type="date"
                                 value={searchParams.birthDate || ''}
                                 onChange={handleFieldChange('birthDate')}
@@ -263,7 +266,7 @@ export default function AlternateSearch(props: AltSearchProps) {
                             component="h2"
                             variant="h6"
                             align="center">
-                            {props.secondRowHeader}
+                            {props.t('AlternateSearchScreen.text.enterParentsNames')}
                             <AccordionArrow
                                 fontSize="large"
                                 className={
@@ -279,7 +282,7 @@ export default function AlternateSearch(props: AltSearchProps) {
                                 'align-center': true,
                                 hidden: !rows[1]
                             })}>
-                            ({props.secondRowSubheader})
+                            ({props.t('AlternateSearchScreen.text.requiredWithoutDob')})
                         </h3>
                     </Grid>
                     <Grid
@@ -295,7 +298,7 @@ export default function AlternateSearch(props: AltSearchProps) {
                             <TextField
                                 className="inspectletIgnore alternate-search-field"
                                 data-cy="mothersfirstname-input"
-                                label={props.labelFour}
+                                label={props.t('PII.momsName')}
                                 value={searchParams.mothersFirstName || ''}
                                 onChange={handleFieldChange('mothersFirstName')}
                                 inputProps={{'aria-label': 'bare'}}
@@ -309,7 +312,7 @@ export default function AlternateSearch(props: AltSearchProps) {
                             <TextField
                                 className="inspectletIgnore alternate-search-field"
                                 data-cy="fathersfirstname-input"
-                                label={props.labelFive}
+                                label={props.t('PII.dadsName')}
                                 value={searchParams.fathersFirstName || ''}
                                 onChange={handleFieldChange('fathersFirstName')}
                                 inputProps={{'aria-label': 'bare'}}
@@ -326,12 +329,12 @@ export default function AlternateSearch(props: AltSearchProps) {
                             id="scan-fingerprint"
                             onClick={handleSubmission()}
                             onSubmit={handleSubmission()}>
-                            {props.nextText}
+                            {props.t('Standard.next')}
                         </Button>
                         <Button
                             className="back"
                             onClick={() => props.toggleSearchType()}>
-                            {`< ${props.backText}`}
+                            {`< ${props.t('Standard.back')}`}
                         </Button>
                     </div>
                 </form>

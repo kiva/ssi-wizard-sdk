@@ -113,6 +113,7 @@ export default function WebcamCaptureTool(props: ICommonProps) {
     function renderPageButtons() {
         return (
             <WebcamCaptureToolButtons
+                t={props.t}
                 onClickBack={() =>
                     props.dispatch({type: FlowDispatchTypes.BACK})
                 }
@@ -132,7 +133,7 @@ export default function WebcamCaptureTool(props: ICommonProps) {
                         color: 'red',
                         marginTop: '20px'
                     }}>
-                    You need to add a photo before proceeding to the next step.
+                    {props.t('Errors.webcamCapture.noPhoto')}
                 </Typography>
             );
         } else {
@@ -151,7 +152,7 @@ export default function WebcamCaptureTool(props: ICommonProps) {
                 <img
                     id="credential-image"
                     src={`data:${photoAttach.type};${photoAttach.encoding},${photoAttach.data}`}
-                    alt="This will be included with your issued credential"></img>
+                    alt={props.t('WebcamCapture.text.photoAlt')}></img>
                 {renderPageButtons()}
             </Grid>
         );
@@ -208,7 +209,7 @@ function WebcamCaptureToolButtons(props: WebcamCaptureButtonProps) {
                         data-cy="image-select-back"
                         className="back"
                         onClick={props.onClickBack}>
-                        Back
+                        {props.t('Standard.back')}
                     </Button>
                 </Grid>
                 <Grid item>
@@ -216,7 +217,7 @@ function WebcamCaptureToolButtons(props: WebcamCaptureButtonProps) {
                         data-cy="reset-flow"
                         className="back"
                         onClick={props.onReset}>
-                        Reset Image
+                        {props.t('WebcamCapture.buttons.reset')}
                     </Button>
                 </Grid>
                 <Grid item>
@@ -226,7 +227,7 @@ function WebcamCaptureToolButtons(props: WebcamCaptureButtonProps) {
                         className="next"
                         onSubmit={props.onSubmit}
                         onClick={props.onSubmit}>
-                        Continue
+                        {props.t('Standard.continue')}
                     </Button>
                 </Grid>
             </Grid>
