@@ -1,46 +1,19 @@
-# Getting Started with Create React App
+# Welcome to SSIrius
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+There's a lot of exciting work being done in the SSI space at the moment, and it's clear that human imagination and bandwidth are the only limitations to its potential applications.
 
-## Available Scripts
+Given that this is such a vibrant field, we felt the need to make a front-end UI that was scalable enough to accommodate lots of different use cases. An SSI wizard, if you will.
 
-In the project directory, you can run:
+Enter SSIrius. (Get it?) The goal of this project is to make it easy to create a web UI to process any kind of SSI transaction. We welcome your input, your contributions, and your support.
 
-### `npm start`
+## Before You Start
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+SSIrius is designed to be flexible enough to accommodate either an Aries agent running locally on your machine, or a cloud agent. If you already have one of these set up, you can skip this section, but if you don't and would still like to try out the platform, keep reading.
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+An easy option for making the SDK work out of the box is to set up the Kiva Aries backend locally. You'll need to [install Docker](https://docs.docker.com/get-docker/), but otherwise you should [be able to follow the steps in our `protocol-demo` repo to get an agent running quickly](https://github.com/kiva/protocol-demo#working-with-protocol-using-aries).
 
-### `npm test`
+## Trying It Out
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+To try out our SSIrius standalone package, check out [the Quickstart documentation in the `/standalone` directory](https://github.com/kiva/ssi-wizard-sdk/tree/main/standalone).
 
-### `npm run build`
-
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
+Happy coding!

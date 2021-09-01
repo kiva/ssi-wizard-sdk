@@ -10,13 +10,7 @@ Enter SSIrius. (Get it?) The goal of this project is to make it easy to create a
 
 Want to play with SSIrius? Here's how.
 
-First things first - get into the right directory.
-
-```
-cd standalone
-```
-
-Now install everything.
+First things first - install everything.
 
 ```
 npm i
