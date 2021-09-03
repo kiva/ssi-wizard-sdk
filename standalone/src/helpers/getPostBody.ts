@@ -28,13 +28,9 @@ function addCredentialsToBody(
 
 function insertFilters(body: FingerprintEkycBody, get: ComponentStoreGet) {
     const filterData: any = get('filters', {}, 'searchMenu');
-    console.log('Aloha');
-    console.log(filterData);
 
     if (
-        !filterData ||
-        !filterData.hasOwnProperty('type') ||
-        !filterData.hasOwnProperty('value')
+        !Object.keys(filterData).length
     ) {
         throw new Error(
             'The filter data is incomplete: ' + JSON.stringify(filterData)
@@ -42,6 +38,10 @@ function insertFilters(body: FingerprintEkycBody, get: ComponentStoreGet) {
     }
 
     body.filters = {
-        [filterData.type]: filterData.value
+        externalIds: {}
     };
+
+    for (const k in filterData) {
+        body.filters.externalIds[k] = filterData[k];
+    }
 }

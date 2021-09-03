@@ -91,9 +91,10 @@
     "ssirius": "bin/cli.js"
   },
   "scripts": {
-    "start": "node scripts/start.js --config=/../examples/configs/everything_enabled.ts --translations=/../examples/translations/en_only.json",
-    "build": "node scripts/build.js --config=/../examples/configs/everything_enabled.ts --translations=/../examples/translations/en_only.json --local",
-    "test": "node scripts/test.js"
+    "start": "node scripts/start.js",
+    "build": "node scripts/build.js --local",
+    "test": "node scripts/test.js",
+    "initConfigs": "cp examples/configs/everything_enabled.ts src/config.ts & cp examples/translations/en_only.json src/translations.json"
   },
   "eslintConfig": {
     "extends": [
