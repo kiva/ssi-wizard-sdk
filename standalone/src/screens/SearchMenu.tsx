@@ -23,10 +23,10 @@ import {
 import FlowDispatchTypes from '../enums/FlowDispatchTypes';
 
 export default function SearchMenu(props: SearchProps) {
+    const [externalId, setExternalId] = useState<string>(Object.keys(props.dropdownConfig)[0]);
     const [filters, setFilters] = useState<SearchInputData>(
         props.store.get('filters', {
-            type: Object.keys(props.dropdownConfig)[0],
-            value: ''
+            [externalId]: '',
         })
     );
     const [error, setError] = useState(false);
@@ -37,14 +37,12 @@ export default function SearchMenu(props: SearchProps) {
         props.store.set('searchType', searchType);
     }, [searchType, props.store]);
 
-    const handleFieldChange =
-        (filterKey: string) =>
-        (event: any): void => {
+    const handleInputChange = (event: any): void => {
             event.preventDefault();
             const value = event.target.value;
             const updatedFilters: SearchInputData = {
                 ...props.store.get('filters', filters),
-                [filterKey]: value
+                [externalId]: value
             };
             setFilters(updatedFilters);
             props.store.set('filters', updatedFilters);
@@ -71,22 +69,21 @@ export default function SearchMenu(props: SearchProps) {
     };
 
     const handleSubmission = (event: any): void => {
-            event.preventDefault();
+        event.preventDefault();
 
-            if (!inputIsEmpty(filters.value)) return;
+        if (!inputIsEmpty(filters.value)) return;
 
-            const filterConfig: DropdownConfigDefinition =
-                props.dropdownConfig[filters.type];
+        const filterConfig: DropdownConfigDefinition =
+            props.dropdownConfig[externalId];
 
-            if (filterConfig.validation(filters.value)) {
-                props.store.set('filters', filters);
-                console.log(props.store.get('filters'))
-                props.dispatch({type: FlowDispatchTypes.NEXT});
-            } else {
-                setError(true);
-                setErrorReason(filterConfig.errorMsg);
-            }
-        };
+        if (filterConfig.validation(filters[externalId])) {
+            props.store.set('filters', filters);
+            props.dispatch({type: FlowDispatchTypes.NEXT});
+        } else {
+            setError(true);
+            setErrorReason(filterConfig.errorMsg);
+        }
+    };
 
     if ('filters' === searchType) {
         return (
@@ -110,8 +107,8 @@ export default function SearchMenu(props: SearchProps) {
                             <Grid item id="id-select-menu">
                                 <FormControl variant="outlined">
                                     <Select
-                                        value={filters.type}
-                                        onChange={handleFieldChange('type')}
+                                        value={externalId}
+                                        onChange={(e: any) => setExternalId(e.target.value)}
                                         id="select-searchId"
                                         displayEmpty
                                         input={
@@ -146,12 +143,12 @@ export default function SearchMenu(props: SearchProps) {
                                         data-cy="id-input"
                                         autoFocus={true}
                                         label={
-                                            filters.value.trim() === ''
+                                            filters[externalId].trim() === ''
                                                 ? props.t('SearchMenu.text.placeholder')
                                                 : ''
                                         }
                                         value={filters.value}
-                                        onChange={handleFieldChange('value')}
+                                        onChange={handleInputChange}
                                         inputProps={{'aria-label': 'bare'}}
                                         margin="normal"
                                         name="inputId"

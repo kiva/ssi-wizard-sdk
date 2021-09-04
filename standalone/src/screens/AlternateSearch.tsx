@@ -298,7 +298,7 @@ export default function AlternateSearch(props: AltSearchProps) {
                             <TextField
                                 className="inspectletIgnore alternate-search-field"
                                 data-cy="mothersfirstname-input"
-                                label={props.t('PII.momsName')}
+                                label={props.t('PII.motherName')}
                                 value={searchParams.mothersFirstName || ''}
                                 onChange={handleFieldChange('mothersFirstName')}
                                 inputProps={{'aria-label': 'bare'}}
@@ -312,7 +312,7 @@ export default function AlternateSearch(props: AltSearchProps) {
                             <TextField
                                 className="inspectletIgnore alternate-search-field"
                                 data-cy="fathersfirstname-input"
-                                label={props.t('PII.dadsName')}
+                                label={props.t('PII.fatherName')}
                                 value={searchParams.fathersFirstName || ''}
                                 onChange={handleFieldChange('fathersFirstName')}
                                 inputProps={{'aria-label': 'bare'}}

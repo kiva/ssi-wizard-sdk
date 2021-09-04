@@ -1,8 +1,7 @@
 import ICommonProps from './ICommonProps';
 
 export interface SearchInputData {
-    type: string;
-    value: string;
+    [index: string]: string;
 }
 
 // TODO: Make this make sense
