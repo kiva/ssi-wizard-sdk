@@ -57,7 +57,6 @@ export default class SMSOTPScreen extends React.Component<SMSProps, OTPState> {
         };
 
         this.email = this.props.store.get('email', '', this.props.email_step);
-        console.log(this.email)
         this.profile = this.props.store.get(
             'profile',
             {
