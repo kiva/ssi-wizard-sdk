@@ -10,7 +10,7 @@ const config_constants = {
         org: 'Kiva',
         footerText: 'Powered by <strong>Kiva</strong>'
     },
-    defaultLang: 'en',
+    defaultLang: 'es',
     auth_token: '',
     proof_profile_url:
         'https://sandbox-gateway.protocol-prod.kiva.org/v2/kiva/api/profiles/proofs',
@@ -78,17 +78,13 @@ const config_constants = {
         },
         email_input: {
             component: 'EmailScreen',
-            props: {
-                no_input: 'Please enter your email in the field below',
-                instructions: 'Please enter your email'
-            }
+            props: {}
         },
         smsotp: {
             component: 'SMSOTPScreen',
             props: {
-                invalid_number: 'Please enter a valid phone number',
-                invalid_otp: 'Please provide the full six-digit passcode',
-                phoneIntls
+                phoneIntls,
+                email_step: 'email_input'
             },
             dataHelper: '../dataHelpers/GuardianSDK'
         },

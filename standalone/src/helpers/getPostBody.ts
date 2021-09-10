@@ -1,4 +1,4 @@
-import {FingerprintEkycBody} from '../interfaces/ScanFingerprintInterfaces';
+import {FingerprintEkycBody, GuardianData} from '../interfaces/ScanFingerprintInterfaces';
 import {ComponentStoreGet} from '../interfaces/FlowRouterInterfaces';
 
 export default function setPostBody(
@@ -7,26 +7,34 @@ export default function setPostBody(
     device: any,
     get: ComponentStoreGet
 ): FingerprintEkycBody {
-    const body: FingerprintEkycBody = {image, position, device};
-    addCredentialsToBody(body, get);
-    console.log(body);
+    const body: FingerprintEkycBody = {
+        profile: 'identity.proof.request.json',
+        guardianData: createGuardianData(image, position, get)
+    };
 
     return body;
 }
 
-function addCredentialsToBody(
-    body: FingerprintEkycBody,
-    get: ComponentStoreGet
-) {
+function createGuardianData(image: string, position: number, get: ComponentStoreGet): GuardianData {
     const searchType: string = get('searchType', '', 'searchMenu');
+    const body: any = {
+        pluginType: 'FINGERPRINT',
+        params: {image, position}
+    };
+
     if ('filters' === searchType) {
-        insertFilters(body, get);
+        body['filters'] = getFilters(get)
     } else if ('search' === searchType) {
         body['search'] = get('search', {}, 'searchMenu');
     }
+
+    return body;
 }
 
-function insertFilters(body: FingerprintEkycBody, get: ComponentStoreGet) {
+function getFilters(get: ComponentStoreGet) {
+    const filters: any = {
+        externalIds: {}
+    };
     const filterData: any = get('filters', {}, 'searchMenu');
 
     if (
@@ -37,11 +45,9 @@ function insertFilters(body: FingerprintEkycBody, get: ComponentStoreGet) {
         );
     }
 
-    body.filters = {
-        externalIds: {}
-    };
-
     for (const k in filterData) {
-        body.filters.externalIds[k] = filterData[k];
+        filters.externalIds[k] = filterData[k];
     }
+
+    return filters;
 }

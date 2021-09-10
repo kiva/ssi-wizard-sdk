@@ -11,6 +11,7 @@ export interface SMSProps extends ICommonProps {
     smsSent: boolean;
     profile: ProofRequestProfile;
     phoneIntls: CountryCodeConfig;
+    email_step: string;
 }
 
 export interface CountryCodeConfig {

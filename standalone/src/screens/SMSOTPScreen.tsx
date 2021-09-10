@@ -56,7 +56,8 @@ export default class SMSOTPScreen extends React.Component<SMSProps, OTPState> {
             phoneScreen: this.props.store.get('phoneScreen', 'phoneInput')
         };
 
-        this.email = this.props.store.get('email', '', 'email');
+        this.email = this.props.store.get('email', '', this.props.email_step);
+        console.log(this.email)
         this.profile = this.props.store.get(
             'profile',
             {
@@ -64,7 +65,7 @@ export default class SMSOTPScreen extends React.Component<SMSProps, OTPState> {
                 proof_request: {},
                 schema_id: ''
             },
-            'verificationRequirement'
+            'confirmation'
         );
     }
 
