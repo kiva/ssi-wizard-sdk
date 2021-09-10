@@ -10,7 +10,7 @@ const config_constants = {
         org: 'Kiva',
         footerText: 'Powered by <strong>Kiva</strong>'
     },
-    defaultLang: 'es',
+    defaultLang: 'en',
     auth_token: '',
     proof_profile_url:
         'https://sandbox-gateway.protocol-prod.kiva.org/v2/kiva/api/profiles/proofs',
