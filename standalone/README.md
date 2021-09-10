@@ -1,11 +1,3 @@
-# Welcome to SSIrius
-
-There's a lot of exciting work being done in the SSI space at the moment, and it's clear that human imagination and bandwidth are the only limitations to its potential applications.
-
-Given that this is such a vibrant field, we felt the need to make a front-end UI that was scalable enough to accommodate lots of different use cases. An SSI wizard, if you will.
-
-Enter SSIrius. (Get it?) The goal of this project is to make it easy to create a web UI to process any kind of SSI transaction. We welcome your input, your contributions, and your support.
-
 ## Quick Start
 
 Want to play with SSIrius? Here's how.
@@ -14,6 +6,12 @@ First things first - install everything.
 
 ```
 npm i
+```
+
+If this is your first time using SSIrius on your own, you'll need to set up your configuration and translation files. Don't worry - we've written a command to make it easy to do!
+
+```
+npm run initConfigs
 ```
 
 To launch a local version of the SSIrius application and browse the available features, you can use our pre-configured `start` command. (We'll explain what's happening here later on.)
@@ -257,3 +255,17 @@ You should follow this schema when creating your own translations.
 ```
 
 Kiva has created both Spanish and English translations because there is native fluency in both languages within Kiva Protocol. We welcome any additional help!
+
+## Agents
+
+If you want to use QR codes to issue or verify your credentials, we have handy UI components to handle that transaction for you. Unfortunately, SSIrius won't know in advance what network calls you'll need to make in order to process the transaction, and it definitely won't know what to make of the responses to those network calls.
+
+Fortunately, we have written a classed called `BaseAgent` which is designed with these specific problems in mind. The actual steps that you need to follow to issue or verify a credential don't change that much, no matter what network you're using, and `BaseAgent` has abstracted those steps.
+
+1. Invite another party to connect
+2. Wait until that party accepts your invitation
+3. Offer a credential, or send a verification request
+4. Wait to see if the credential was accepted/issued, or whether the proof request was satisfied
+
+For a more in-depth look at how we've abstracted this - and to see how you can create your OWN Agent - take a look [in the `agents` directory](https://github.com/kiva/ssi-wizard-sdk/tree/main/standalone/src/agents).
+
