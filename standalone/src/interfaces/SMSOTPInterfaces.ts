@@ -11,6 +11,7 @@ export interface SMSProps extends ICommonProps {
     smsSent: boolean;
     profile: ProofRequestProfile;
     phoneIntls: CountryCodeConfig;
+    backendURL: string;
 }
 
 export interface CountryCodeConfig {
@@ -64,6 +65,7 @@ export interface OTPScreenProps {
     specificError?: string;
     dispatch: (action: FlowAction) => void;
     t: TFunction;
+    SDK: any;
 }
 
 export interface OTPInputProps {
@@ -94,6 +96,7 @@ export interface PhoneScreenProps {
     phoneIntls: CountryCodeConfig;
     dispatch: (action: FlowAction) => void;
     t: TFunction;
+    SDK: any;
 }
 
 export interface SMSPostBody {

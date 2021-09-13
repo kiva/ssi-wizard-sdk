@@ -13,7 +13,7 @@ import FingerprintScanning from '../dataHelpers/FingerprintScanning';
 import GuardianSDK from '../dataHelpers/GuardianSDK';
 import getPostBody from '../helpers/getPostBody';
 
-import {FingerprintEkycBody} from '../interfaces/ScanFingerprintInterfaces';
+import {FingerprintEkycBody, FPScanProps} from '../interfaces/ScanFingerprintInterfaces';
 import ICommonProps from '../interfaces/ICommonProps';
 import FlowDispatchTypes from '../enums/FlowDispatchTypes';
 
@@ -23,7 +23,7 @@ import in_progress from '../images/np_fingerprint_inprogress.png';
 
 const FINGER_STORE = 'selectedFinger';
 
-export default function ScanFingerprintScreen(props: ICommonProps) {
+export default function ScanFingerprintScreen(props: FPScanProps) {
     const SLOW_INTERNET_THRESHOLD: number =
         props.CONSTANTS.slowInternetThreshold || 10000;
     const [selectedFinger, setSelectedFinger] = useState<string>(
@@ -44,7 +44,7 @@ export default function ScanFingerprintScreen(props: ICommonProps) {
         api: 'http://localhost:9907'
     });
     const SDK = GuardianSDK.init({
-        url: 'https://sandbox-gateway.protocol-prod.kiva.org/v2/kyc',
+        url: props.backendURL,
         auth_method: 'Fingerprint'
     });
 
