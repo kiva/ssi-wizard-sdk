@@ -78,16 +78,12 @@ const config_constants = {
         },
         email_input: {
             component: 'EmailScreen',
-            props: {
-                no_input: 'Please enter your email in the field below',
-                instructions: 'Please enter your email'
-            }
+            props: {}
         },
         smsotp: {
             component: 'SMSOTPScreen',
             props: {
-                invalid_number: 'Please enter a valid phone number',
-                invalid_otp: 'Please provide the full six-digit passcode',
+                backendURL: 'https://sandbox-gateway.protocol-prod.kiva.org/v2/kyc/sms',
                 phoneIntls
             },
             dataHelper: '../dataHelpers/GuardianSDK'
@@ -150,7 +146,9 @@ const config_constants = {
         },
         fpScan: {
             component: 'ScanFingerprintScreen',
-            props: {}
+            props: {
+                backendURL: 'https://sandbox-gateway.protocol-prod.kiva.org/v2/kyc'
+            }
         }
     },
     verification_options: [

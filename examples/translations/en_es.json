@@ -106,8 +106,8 @@
             "ConfirmationScreen": {
                 "text": {
                     "pleaseReview": "Please have the customer review the following information",
-                    "agreement": "Acepto que la siguiente información personal se compartirá como parte de la verificación \"eKYC\".",
-                    "infoShareIncludes": "La información compartida incluye su:"
+                    "agreement": "I agree that the following personal information will be shared as part of the \"Know Your Customer\" verification.",
+                    "infoShareIncludes": "Information shared includes your:"
                 }
             },
             "AuthMenu": {
@@ -325,7 +325,7 @@
             "ConfirmationScreen": {
                 "text": {
                     "pleaseReview": "Haga que el cliente revise la siguiente información",
-                    "agreement": "I agree that the following personal information will be shared as part of the \"Know Your Customer\" verification.",
+                    "agreement": "Acepto que la siguiente información personal se compartirá como parte de la verificación \"eKYC\".",
                     "infoShareIncludes": "La información compartida incluye su:"
                 }
             },
