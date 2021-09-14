@@ -84,7 +84,8 @@ const config_constants = {
             component: 'SMSOTPScreen',
             props: {
                 phoneIntls,
-                email_step: 'email_input'
+                email_step: 'email_input',
+                backendURL: 'https://sandbox-gateway.protocol-prod.kiva.org/v2/kyc/sms'
             },
             dataHelper: '../dataHelpers/GuardianSDK'
         },
@@ -146,7 +147,9 @@ const config_constants = {
         },
         fpScan: {
             component: 'ScanFingerprintScreen',
-            props: {}
+            props: {
+                backendURL: 'https://sandbox-gateway.protocol-prod.kiva.org/v2/kyc'
+            }
         }
     },
     verification_options: [

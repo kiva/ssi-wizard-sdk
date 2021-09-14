@@ -34,11 +34,6 @@ import '../css/SMSOTPScreen.scss';
 import '../css/DialogBody.scss';
 import '../css/Common.scss';
 
-const SDK = GuardianSDK.init({
-    url: 'https://sandbox-gateway.protocol-prod.kiva.org/v2/kyc/sms',
-    auth_method: 'SMS'
-});
-
 const disabledFunction = () => {
     console.log('Please wait for the request to complete');
     return false;
@@ -47,6 +42,11 @@ const disabledFunction = () => {
 export default class SMSOTPScreen extends React.Component<SMSProps, OTPState> {
     private email: string;
     private profile: ProofRequestProfile;
+
+    public SDK: any = GuardianSDK.init({
+        url: this.props.backendURL,
+        auth_method: 'SMS'
+    });
 
     constructor(props: SMSProps) {
         super(props);
@@ -88,6 +88,7 @@ export default class SMSOTPScreen extends React.Component<SMSProps, OTPState> {
                 phoneIntls={this.props.phoneIntls}
                 dispatch={this.props.dispatch}
                 t={this.props.t}
+                SDK={this.SDK}
             />
         );
     }
@@ -105,6 +106,7 @@ export default class SMSOTPScreen extends React.Component<SMSProps, OTPState> {
                 phoneIntls={this.props.phoneIntls}
                 dispatch={this.props.dispatch}
                 t={this.props.t}
+                SDK={this.SDK}
             />
         );
     }
@@ -196,7 +198,7 @@ class PhoneNumberScreen extends React.Component<PhoneScreenProps, PhoneState> {
     };
 
     sendTwilioRequest = (body: any): void => {
-        SDK.fetchKyc(body, this.props.auth_token)
+        this.props.SDK.fetchKyc(body, this.props.auth_token)
             .then(() => {
                 this.props.setContainerState({
                     smsSent: true,
@@ -204,7 +206,7 @@ class PhoneNumberScreen extends React.Component<PhoneScreenProps, PhoneState> {
                     phoneScreen: 'smsInput'
                 });
             })
-            .catch(error => {
+            .catch((error: any) => {
                 this.setState({
                     error,
                     requestInProgress: false
@@ -354,7 +356,7 @@ class OTPScreen extends React.Component<OTPScreenProps, OTPInputState> {
 
     sendTwilioRequest = async (body: any): Promise<void> => {
         try {
-            const data = await SDK.fetchKyc(body, this.props.auth_token);
+            const data = await this.props.SDK.fetchKyc(body, this.props.auth_token);
             this.setState(
                 {
                     requestInProgress: false,
