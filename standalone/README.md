@@ -138,6 +138,7 @@ As you can see, each key of the `component_map` object is part of the `sequence`
 
 * `component`: This is a string value that corresponds to one of the pre-coded React components that is currently a part of this repo. It's a required field.
 * `props`: These are additional React component props that can be passed into the code. Your imagination is your limit for this object, and as you can see in the `webcam` configuration, it's not necessary to put any props in.
+    * **For more context on useful props for component definitions, [check out the Docs in the `/screens` directory](https://github.com/kiva/ssi-wizard-sdk/tree/main/standalone/src/screens)**
 
 #### credentialKeyMap
 
