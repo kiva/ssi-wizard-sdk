@@ -14,7 +14,6 @@ import GuardianSDK from '../dataHelpers/GuardianSDK';
 import getPostBody from '../helpers/getPostBody';
 
 import {FingerprintEkycBody, FPScanProps} from '../interfaces/ScanFingerprintInterfaces';
-import ICommonProps from '../interfaces/ICommonProps';
 import FlowDispatchTypes from '../enums/FlowDispatchTypes';
 
 import failed from '../images/np_fingerprint_failed.png';
