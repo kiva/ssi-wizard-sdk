@@ -14,6 +14,7 @@ import getFlow from './helpers/getFlow';
 import AppHeader from './components/AppHeader';
 
 const FlowController: React.FC<IConstants> = (CONSTANTS: IConstants) => {
+    console.log(CONSTANTS.auth_token);
     const [step, setStep] = useState('confirmation');
     const authIndex = useRef<number>(0);
     const Header = useHeaderIfAsked(CONSTANTS);

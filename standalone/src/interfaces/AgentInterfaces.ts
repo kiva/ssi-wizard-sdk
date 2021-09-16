@@ -26,6 +26,6 @@ export interface IAgent {
     formatProof(response: any): any;
     isRejected?: (response: any) => boolean;
     setProofProfile?: (credentialDefinition: string) => void;
-    createCredential(entityData: any) => Promise<any>;
-    checkCredentialStatus(credentialId: string) => Promise<any>;
+    createCredential(entityData: any): Promise<any>;
+    checkCredentialStatus(credentialId: string): Promise<any>;
 }
