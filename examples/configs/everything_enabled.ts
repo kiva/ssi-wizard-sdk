@@ -83,8 +83,9 @@ const config_constants = {
         smsotp: {
             component: 'SMSOTPScreen',
             props: {
-                backendURL: 'https://sandbox-gateway.protocol-prod.kiva.org/v2/kyc/sms',
-                phoneIntls
+                phoneIntls,
+                email_step: 'email_input',
+                backendURL: 'https://sandbox-gateway.protocol-prod.kiva.org/v2/kyc/sms'
             },
             dataHelper: '../dataHelpers/GuardianSDK'
         },
