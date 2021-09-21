@@ -1,11 +1,11 @@
 name: Publish @kiva/ssirius-standalone
 on:
   push:
-    branches-ignore:
+    branches:
       - 'main'
 
 jobs:
-  build_and_publish:
+  build_and_publish_standalone:
     timeout-minutes: 10
     runs-on: ubuntu-latest
     steps:
