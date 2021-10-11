@@ -1,6 +1,6 @@
 {
     "name": "create-ssirius-standalone",
-    "version": "0.0.3",
+    "version": "0.0.4",
     "description": "Quickstart template for getting up and running with a SSIrius app",
     "scripts": {
         "create-ssirius-standalone": "create-ssirius-standalone",
@@ -27,7 +27,6 @@
     "dependencies": {
         "chalk": "^4.1.2",
         "commander": "^8.2.0",
-        "create-docusaurus": "^0.0.6",
         "fs-extra": "^10.0.0",
         "prompts": "^2.4.2",
         "semver": "^7.3.5",
