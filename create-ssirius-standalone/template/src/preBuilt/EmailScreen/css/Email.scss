@@ -1,0 +1,26 @@
+@import '../../../css/mixins/_fonts';
+@import '../../../css/mixins/_colors';
+
+#continue {
+    @include the-font;
+    background: $primary-color;
+    color: $primary-offset;
+    width: 300px;
+    margin: 10 0;
+}
+
+#back {
+    @include the-font;
+    background: $secondary-color;
+    color: $secondary-offset;
+    width: 300px;
+    margin: 10 0;
+}
+
+#email-input {
+    width: 100%;
+}
+
+#test {
+    width: 100%;
+}

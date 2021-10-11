@@ -1,0 +1,281 @@
+@import 'mixins/_fonts';
+@import 'mixins/_buttonList';
+@import 'mixins/_colors';
+
+#root, #dialog-box {
+  @include the-font;
+  button {
+    border-radius: 24px;
+    border: 0;
+    height: 48px;
+    padding: 0 30px;
+    &.back {
+      background: $secondary-color !important;
+      opacity: 0.5;
+      color: $secondary-offset;
+    }
+    &.next {
+      background: $primary-color !important;
+      color: $primary-offset;
+    }
+    &.verified {
+        background: $primary-color;
+        color: $primary-offset;
+    }
+    &.error {
+        background: $error-color;
+        color: $error-offset;
+    }
+    &#recapture {
+        background: $secondary-color;
+        color: $secondary-offset;
+    }
+    &#cancel-request {
+        background: $secondary-color;
+        color: $secondary-offset;
+        width: 200px;
+    }
+    &#continue-request {
+        background: $warning-color;
+        color: $warning-offset;
+        width: 200px;
+    }
+    .dialog-title {
+        text-align: center;
+        margin-bottom: 0;
+        color: $primary-color !important;
+    }
+  }
+
+  .otp-icon {
+    background: #fff;
+    border-radius: 50%;
+    fill: #27c9ce;
+    width: 56px;
+    height: 56px;
+    position: relative;
+    top: 15px;
+    left: -10px;
+  }
+      
+  .dialog-icon {
+    width: 56px;
+    height: 56px;
+    &.error {
+        fill: $error-color;
+    }
+    &.warning {
+        fill: $warning-color;
+        z-index: 1;
+        margin-bottom: 20px;
+        background-color: $warning-offset;
+        border-radius: 40px;
+    }
+    &.verified {
+        fill: #27c9ce;
+    }
+    &.verifying {
+        color: $primary-color;
+    }
+  }
+
+  h2 {
+      @include the-font;
+      color: #454545;
+      font-weight: 400;
+  }
+}
+
+.flex-block {
+    display: flex;
+    flex-grow: 1;
+    &.column {
+      flex-direction: column;
+    }
+    &.row {
+      flex-direction: row;
+    }
+}
+
+.centered-flex-content {
+  align-items: center;
+}
+
+.screen {
+  margin: 0 auto;
+  flex-direction: column;
+  align-items: center;
+  display: flex;
+  flex-shrink: 0;
+
+  input {
+    width: 300px;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    text-align: center;
+  }
+}
+
+.buttonListNew {
+  @include buttonListNew;
+  padding-top: 30px;
+  &.row {
+    flex-direction: row;
+  }
+  &.stack {
+    justify-content: space-between;
+    height: 120px;
+    flex-direction: column;
+  }
+  &.tight {
+    padding: 0;
+    margin: 0;
+  }
+  &.loose * {
+    padding: 10px;
+    margin: 10px;
+  }
+  button {
+    background-color: $primary-color;
+    color: $primary-offset;
+    &.secondary {
+      background-color: $secondary-color !important;
+      color: $secondary-offset !important;
+    }
+  }
+}
+
+.full-width,
+.full-width * {
+    width: 100%;
+}
+
+.rtl {
+    direction: rtl !important;
+}
+
+.hidden {
+    display: none !important;
+}
+
+@import "mixins/_fonts";
+@import "mixins/_colors";
+
+.KernelContent {
+  min-height: 500px;
+  background: white;
+}
+
+.KernelContainer {
+  overflow: hidden;
+}
+
+h4 {
+  font-weight: bold;
+  font-size: 25px;
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.AppHeader {
+  height: 100px;
+  text-align:center;
+  line-height: 100px;
+  border-bottom: 1px solid #f2f2f2;
+  margin-bottom:20px;
+  color: $primary-color;
+  font-weight: lighter;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-items: center;
+  justify-content: center;
+  align-content: center;
+  h1 {
+    font-weight: bold;
+    font-size: 30px;
+  }
+  img {
+    width:50px;
+    margin: 0 20px;
+    border-radius: 100px;
+  }
+}
+
+.AppFooter {
+  height: 80px;
+  font-size: 12px;
+  text-align:center;
+  line-height: 80px;
+  strong {
+    font-weight: bold;
+  }
+}
+
+.footer {
+  height: 150px;
+  background: #f5f5f5;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  justify-items: center;
+  align-content: center;
+  padding-top: 20px;
+
+  .firstColumn {
+    display: flex;
+    flex-direction: column;
+    height: 130px;
+    width: 400px;
+    align-items: flex-start;
+    justify-content: flex-start;
+
+    .partners {
+      margin: 0px;
+      width:400px;
+      padding: 5px 20px;
+      flex-direction: row;
+      justify-content: space-around;
+      display:flex;
+
+      * {
+        background-size: 100%;
+        background-position: center center;
+        background-repeat: no-repeat;
+        height: 90px;
+        width: 70px;
+      }
+    }
+
+    .instructions {
+      margin: 0px;
+      font-size: 12px;
+      font-weight: bold;
+      margin-bottom: 5px;
+    }
+  }
+
+  .secondColumn {
+    border-left: 1px solid #000;
+    height: 80px;
+    align-items: center;
+    justify-content: center;
+    width: 500px;
+    margin-left: 20px;
+
+    display: flex;
+    flex-direction: row;
+    justify-items: center;
+    align-content: center;
+
+    p {
+      font-weight: bold;
+      display: block;
+      width: 80%;
+      font-size: 13px;
+      color: #454545;
+    }
+  }
+}
+

@@ -1,0 +1,18 @@
+@import '../../../css/mixins/_fonts';
+@import '../../../css/mixins/_colors';
+
+button.finger-select {
+    @include the-font;
+    background: $primary-color !important;
+    color: $primary-offset;
+    margin: 100px;
+    width: 300px;
+}
+
+.FingerContainer {
+    width: 400px;
+    height: 300px;
+    // background: url('../images/fingers_small.png') no-repeat center center;
+    background-size: contain;
+    position: relative;
+}

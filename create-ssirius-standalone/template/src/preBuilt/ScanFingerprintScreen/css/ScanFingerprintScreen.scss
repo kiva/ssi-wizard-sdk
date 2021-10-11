@@ -1,0 +1,66 @@
+@import '../../../css/mixins/_fonts';
+@import '../../../css/mixins/_colors';
+
+.fileLoader {
+    border-radius: 100px;
+    background: none;
+    height: 200px;
+    width: 200px;
+    border: 9px solid #f5f5f5;
+
+    &.valid {
+        border: 9px solid $primary-color;
+        background-size: 50%;
+    }
+
+    &.invalid {
+        border: 9px solid #d73931;
+    }
+}
+
+.fingerprint {
+    text-align: center;
+    .fingerprint-selection {
+        margin-bottom: 0;
+        color: $primary-color;
+        a {
+            color: $secondary-offset;
+        }
+    }
+    a {
+        margin-top: 20px;
+        text-align: center;
+        display: block;
+        width: 100%;
+        font-size: 14px;
+        &.enhanced {
+            text-decoration: underline;
+        }
+        &#select-alternate-auth-method {
+            font-size: 1.1em;
+        }
+    }
+    button {
+        @include the-font;
+        margin: 10px 40px;
+        &.back {
+            background: $secondary-color !important;
+            opacity: 0.5;
+            color: $secondary-offset;
+        }
+        &.next {
+            background: $primary-color !important;
+            color: $primary-offset;
+        }
+    }
+}
+
+.SuperImage {
+    border: 0px;
+    outline: none;
+    border-radius: 100px;
+    width: 160px;
+    height: 160px;
+    display: block;
+    margin: 15px auto;
+}

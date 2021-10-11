@@ -1,0 +1,217 @@
+{
+    "DeployKeys": {
+        "title": "Kiva",
+        "authAgency": "Kiva HQ",
+        "authAgencyAcronym": "Kiva"
+    },
+    "Standard": {
+        "back": "Back",
+        "accept": "Accept",
+        "verify": "Verify",
+        "verifying": "Verifying",
+        "continue": "Continue",
+        "poweredBy": "Powered by",
+        "next": "Next",
+        "select": "Select",
+        "goBack": "Go Back"
+    },
+    "Fingers": {
+        "finger": "finger",
+        "right_thumb": "Right Thumb",
+        "right_index": "Right Index",
+        "right_middle": "Right Middle",
+        "right_ring": "Right Ring",
+        "right_little": "Right Little",
+        "left_thumb": "Left Thumb",
+        "left_index": "Left Index",
+        "left_middle": "Left Middle",
+        "left_ring": "Left Ring",
+        "left_little": "Left Little",
+        "right_thumb_full": "Right Thumb",
+        "right_index_full": "Right Index {{finger}}",
+        "right_middle_full": "Right Middle {{finger}}",
+        "right_ring_full": "Right Ring {{finger}}",
+        "right_little_full": "Right Little {{finger}}",
+        "left_thumb_full": "Left Thumb",
+        "left_index_full": "Left Index {{finger}}",
+        "left_middle_full": "Left Middle {{finger}}",
+        "left_ring_full": "Left Ring {{finger}}",
+        "left_little_full": "Left Little {{finger}}"
+    },
+    "PII": {
+        "firstName": "First Name",
+        "lastName": "Last Name",
+        "birthDate": "Date of birth",
+        "motherName": "Mother's First Name",
+        "fatherName": "Father's First Name",
+        "hireDate": "Date of Hire",
+        "currentTitle": "Current Title",
+        "officeLocation": "Office Location",
+        "type": "Employment Type",
+        "phoneNumber": "Phone Number",
+        "endDate": "End Date (if applicable)",
+        "photo~attach": "Photo",
+        "team": "Team",
+        "companyEmail": "Company Email",
+        "code": "Code",
+        "value": "Note Value",
+        "issued": "Date Issued",
+        "expiry": "Expiration Date",
+        "department": "Department",
+        "firstDay": "Start Date",
+        "school": "School Attended",
+        "mentor": "Intern Mentor",
+        "lastDay": "End Date"
+    },
+    "Errors": {
+        "unknown": "An unknown error occurred.",
+        "qr": {
+            "noInviteUrl": "There was an error creating the QR code. Please try again and contact your IT department if the error persists.",
+            "connectionError": "There was an error establishing a connection. Please try again and contact your IT department if the error persists.",
+            "notConnected": "Please scan the QR code and establish a connection before you verify",
+            "noConnectionFound": "Could not find a record of connection [ {{connectionId}} ]",
+            "rejectedProof": "Verification Failed: This credential may have been revoked or it may not have been able to fulfill the proof request: \"{{proofRequestComment}}\""
+        },
+        "formData": {
+            "invalidDate": "Not a Valid Date"
+        },
+        "proofs": {
+            "fetchProofsError": "Failed to fetch available verification requirement options.",
+            "profileFetchError": "Unable to fetch proof profiles!"
+        },
+        "email": {
+            "noInput": "Please enter your email in the field below"
+        },
+        "webcamCapture": {
+            "noPhoto": "You need to add a photo before proceeding to the next step."
+        },
+        "input": {
+            "nationalIdInput": "National ID must be eight characters long (capital letters and numbers only)",
+            "voterIdInput": "Voter ID must be seven digits",
+            "dateInput": "Please enter a valid date",
+            "unsetID": "You must set an ID value",
+            "missingNames": "You must provide your first and last names",
+            "missingFuzzySearchData": "Customer must provide their birthdate, their mother's first name or their father's first name",
+            "inputLength": "Input must be between {{minimum}} and {{maximum}} characters",
+            "missingPhoneNumber": "Please enter a valid phone number",
+            "invalidOTP": "Please provide the full six-digit passcode",
+            "emptyField": "Please fill out the field"
+        },
+        "results": {
+            "noData": "We could not process the data returned"
+        }
+    },
+    "ConfirmationScreen": {
+        "text": {
+            "pleaseReview": "Please have the customer review the following information",
+            "agreement": "I agree that the following personal information will be shared as part of the \"Know Your Customer\" verification.",
+            "infoShareIncludes": "Information shared includes your:"
+        }
+    },
+    "AuthMenu": {
+        "text": {
+            "selectVerification": "Select a verification method"
+        }
+    },
+    "QR": {
+        "text": {
+            "clickVerify": "Click Verify to continue",
+            "retrieving": "Retrieving your QR code. Please be patient...",
+            "scanQR": "Scan QR Code",
+            "scanQRInstructions": "Please scan the QR code with the mobile wallet app",
+            "connected": "Connection established successfully. A proof request will be sent to the user's wallet.",
+            "resetConnection": "Reset"
+        }
+    },
+    "UserDetails": {
+        "buttons": {
+            "exportProfile": "Export Profile",
+            "printProfile": "Print Profile"
+        }
+    },
+    "Dialog": {
+        "text": {
+            "slowInternetWarning": "The internet connectivity is poor, so eKYC verification will take longer than normal.",
+            "idVerified": "Identity Verified"
+        },
+        "buttons": {
+            "tryAgain": "Try Again"
+        }
+    },
+    "Email": {
+        "text": {
+            "instructions": "Please enter your email",
+            "placeHolder": "Email"
+        }
+    },
+    "AlternateSearchScreen": {
+        "text": {
+            "fuzzySearchInstructions": "Enter the first name and last name of the customer to look up the ID information. The customer’s date of birth, mother’s first name or father’s first name will also be needed. All fields may also be filled out for a stronger search.",
+            "enterFirstAndLast": "Enter customer {{first}} and {{last}}",
+            "enterDob": "Enter customer date of birth",
+            "enterParentsNames": "Enter Mother's or Father's First Name",
+            "requiredWithoutDob": "Required if DOB is not entered"
+        }
+    },
+    "FingerprintScan": {
+        "text": {
+            "place": "Place",
+            "useDifferentFinger": "Use a different finger",
+            "recaptureFingerprint": "Recapture Fingerprint"
+        }
+    },
+    "CredentialIssuance": {
+        "text": {
+            "connectionSuccessful": "Connection established successfully. A proof request will be sent to the user's wallet.",
+            "instructions": "Please scan the QR code with the mobile wallet app",
+            "offerNotice": "Citizen should see the National ID card in their mobile Wallet.",
+            "issueNotice": "Citizen’s National ID has been issued."
+        }
+    },
+    "RegistrationForm": {
+        "text": {
+            "instructionsHeader": "Enter Credential Details",
+            "instructions": "Details on this page will be issued to the employee in a credential."
+        },
+        "buttons": {
+            "populate": "Populate Form"
+        }
+    },
+    "RegistrationTable": {
+        "buttons": {
+            "registerNewEntry": "Register New Entry",
+            "entries": "Registration Entries"
+        }
+    },
+    "ProofProfileMenu": {
+        "text": {
+            "loading": "Loading verification requirement options...",
+            "requirement": "Verification Requirement"
+        }
+    },
+    "SearchMenu": {
+        "text": {
+            "instructions": "Enter the customer's ID",
+            "selectID": "Select ID Type",
+            "placeholder": "Enter a valid ID",
+            "alternateSearchInstructions": "Customer Doesn't Know ID"
+        }
+    },
+    "SMSOTP": {
+        "text": {
+            "otpEntryInstructions": "Please enter your one-time password",
+            "messageSentTo": "Your message was sent to",
+            "successMessage": "Your transaction was successfully verified",
+            "phoneNoEntryInstructions": "Enter your phone number",
+            "smsDetails": "You will receive a text message with a six digit password to provide to your verifier"
+        }
+    },
+    "WebcamCapture": {
+        "text": {
+            "photoAlt": "This will be included with your issued credential"
+        },
+        "buttons": {
+            "reset": "Reset Image"
+        }
+    }
+}
