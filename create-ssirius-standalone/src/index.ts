@@ -114,13 +114,19 @@ async function integrateExternalPack(packPath: string, projectDirectory: string)
         );
 
     packContents.forEach(element => {
-        if ('i18n' === element) {
-            fs.copy(path.resolve(packDirectory, element), path.resolve(projectDirectory, 'tools', element));
-            generateTranslationFile(path.resolve(packDirectory, element), path.resolve(projectDirectory, 'translations.json'))
-        } else if ('package.json' === element) {
-            updateDependencies(path.resolve(projectDirectory, 'package.json'), path.resolve(packDirectory, 'package.json'))
-        } else {
-            fs.copy(path.resolve(packDirectory, element), path.resolve(projectDirectory, element));
+        switch (element) {
+            case 'i18n':
+                fs.copy(path.resolve(packDirectory, element), path.resolve(projectDirectory, 'tools', element));
+                generateTranslationFile(path.resolve(packDirectory, element), path.resolve(projectDirectory, 'src', 'translations.json'));
+                break;
+            case 'package.json':
+                updateDependencies(path.resolve(projectDirectory, 'package.json'), path.resolve(packDirectory, 'package.json'));
+                break;
+            case 'config.ts':
+                fs.copy(path.resolve(packDirectory, element), path.resolve(projectDirectory, 'src', element));
+                break;
+            default:
+                fs.copy(path.resolve(packDirectory, element), path.resolve(projectDirectory, element));
         }
     });
 
