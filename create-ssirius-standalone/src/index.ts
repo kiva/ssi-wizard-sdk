@@ -115,6 +115,7 @@ async function integrateExternalPack(packPath: string, projectDirectory: string)
 
     packContents.forEach(element => {
         if ('i18n' === element) {
+            fs.copy(path.resolve(packDirectory, element), path.resolve(projectDirectory, 'tools', element));
             generateTranslationFile(path.resolve(packDirectory, element), path.resolve(projectDirectory, 'translations.json'))
         } else if ('package.json' === element) {
             updateDependencies(path.resolve(projectDirectory, 'package.json'), path.resolve(packDirectory, 'package.json'))

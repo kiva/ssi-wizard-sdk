@@ -1,6 +1,6 @@
 {
     "name": "create-ssirius-standalone",
-    "version": "0.0.1",
+    "version": "0.0.2",
     "description": "Quickstart template for getting up and running with a SSIrius app",
     "scripts": {
         "create-ssirius-standalone": "create-ssirius-standalone",
