@@ -1,0 +1,43 @@
+{
+    "compilerOptions": {
+        "target": "ES2019",
+        "module": "commonjs",
+        "lib": [
+            "ESNext",
+            "DOM"
+        ],
+        "declaration": true,
+        "declarationMap": false,
+        "jsx": "react",
+        "strict": true,
+        "strictNullChecks": true,
+        "strictFunctionTypes": true,
+        "strictBindCallApply": true,
+        "strictPropertyInitialization": true,
+        "noImplicitThis": true,
+        "alwaysStrict": true,
+        "noUnusedLocals": false, // ensured by eslint, should not block compilation
+        "noImplicitReturns": true,
+        "noFallthroughCasesInSwitch": true,
+        "noUnusedParameters": false,
+        "moduleResolution": "node",
+        "allowSyntheticDefaultImports": true,
+        "esModuleInterop": true,
+        "isolatedModules": true,
+        "resolveJsonModule": true,
+        "skipLibCheck": true,
+        "importHelpers": true,
+        "noEmitHelpers": true,
+        "incremental": true,
+        "tsBuildInfoFile": "./lib/.tsbuildinfo",
+        "rootDir": "src",
+        "outDir": "lib"
+    },
+    "exclude": [
+        "node_modules",
+        "templates/"
+    ],
+    "include": [
+        "src/"
+    ]
+}
