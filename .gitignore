@@ -14,8 +14,8 @@
 # config files for Standalone
 /standalone/src/config.ts
 
-# config files for ssirius-react
-/react-core/src/config.ts
+# files for ssirius-react
+/react-core/lib
 
 # translation files
 **translations.json
