@@ -7,7 +7,7 @@ const config_constants = {
     standaloneConf: {
         isStandalone: true
     },
-    defaultLang: 'en',
+    defaultLang: 'es',
     auth_token: '',
     proof_profile_url: '',
     credentialKeyMap: {

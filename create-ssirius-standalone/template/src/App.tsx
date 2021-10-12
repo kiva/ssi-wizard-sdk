@@ -1,5 +1,5 @@
-import {useState} from 'react';
-import {IConstants} from './interfaces/IConstants';
+import { useState } from 'react';
+import { IConstants } from './interfaces/IConstants';
 import listen from './helpers/listen';
 import FlowRouter from './FlowRouter';
 
