@@ -37,7 +37,7 @@
     },
     "scripts": {
         "prep": "sh tools/bundle/build_required_files.sh & react-scripts",
-        "start": "npm run prep -- start",
+        "start": "PORT=7567 npm run prep -- start",
         "build": "npm run prep -- build",
         "test": "react-scripts test",
         "eject": "react-scripts eject",

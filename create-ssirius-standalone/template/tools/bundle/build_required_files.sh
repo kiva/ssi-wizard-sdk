@@ -15,5 +15,3 @@ for file in `ls "$BASEDIR/js"`; do
         rm "$BASEDIR/js/$file"
     fi
 done
-
-rm "$BASEDIR/js/config.ts"
