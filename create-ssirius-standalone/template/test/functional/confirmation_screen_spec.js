@@ -25,7 +25,7 @@ describe("The Confirmation Screen", () => {
     });
 
     it('displays all the required PII fields', () => {
-        cy.get('.Confirmation.screen li', {timeout: 200})
+        cy.get('.Confirmation.screen li', { timeout: 200 })
             .should((listItems) => {
                 listItems.each(index => {
                     let field = listItems.eq(index).text();
@@ -35,7 +35,7 @@ describe("The Confirmation Screen", () => {
     });
 
     it('doesn\'t have unexpected PII fields', () => {
-        cy.get('.Confirmation.screen li', {timeout: 200}).should(list => {
+        cy.get('.Confirmation.screen li', { timeout: 200 }).should(list => {
             /* eslint no-unused-expressions: 0 */
             expect(list.length === infoFields.length, 'Verifying there are no unexpected fields').to.be.true;
         });
@@ -43,6 +43,6 @@ describe("The Confirmation Screen", () => {
 
     it('advances to the Verification Requirements Screen when user Accepts', () => {
         cy.contains('Accept').click();
-        cy.get('.VerificationRequirement').should('be.visible');
+        cy.get('#auth_option_menu').should('be.visible');
     });
 });

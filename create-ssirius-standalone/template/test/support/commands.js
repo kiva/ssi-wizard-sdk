@@ -46,4 +46,21 @@ Cypress.Commands.add("otpInput", (inputCode) => {
 
         cy.get(selector).clear().type(inputCode[i]);
     }
+});
+
+Cypress.Commands.add("checkAuthOptions", (authConfig, callback) => {
+    for (let i = 0; i < authConfig.length; i++) {
+        callback(i);
+    }
 })
+
+Cypress.Commands.add("beginIssuing", () => {
+    cy.visit('/');
+    cy.get('.accept').click();
+    cy.selectAuthMenuItem().eq(2).click();
+    cy.get('#select-auth-method').click();
+    cy.get('#inner-circle').click();
+    cy.get('[data-cy="image-select-continue"]').click();
+    cy.get('[data-cy="populate-form"]').click();
+    cy.get('.next').click();
+});

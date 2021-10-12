@@ -1,12 +1,14 @@
 let conf;
 let common;
 
-describe('QR Code Scan screen should...', function() {
+describe('QR Code Scan screen should...', function () {
 
-    before(function() {
+    before(function () {
         cy.fixture("kiva_agent.json").then(config => {
             conf = config;
             common = config.common;
+            // This intercept doesn't do anything in the current incarnation of ssirius-standalone
+            // but may come in handy if you ever decide to set the proof_profiles_url config
             cy.intercept(conf.fetchProofOptions.method, conf.fetchProofOptions.endpoint, {
                 ...common,
                 body: conf.fetchProofOptions.success
@@ -14,7 +16,7 @@ describe('QR Code Scan screen should...', function() {
         });
     });
 
-    it('should show an error message when the connection attempt fails', function() {
+    it('should show an error message when the connection attempt fails', function () {
         let testConf = conf.establishConnection,
             response = {
                 statusCode: 418,
@@ -24,12 +26,11 @@ describe('QR Code Scan screen should...', function() {
         cy.visit('/');
         cy.get('.accept').click();
         cy.wait(200);
-        cy.contains('Continue').click();
         cy.get('#select-auth-method').click();
         cy.get('.dialog-icon.error').should('be.visible');
     });
 
-    it('should clear the error message when clicking "Reset"', function() {
+    it('should clear the error message when clicking "Reset"', function () {
         let delayMs = 400,
             testConf = conf.establishConnection,
             response = {
@@ -43,12 +44,12 @@ describe('QR Code Scan screen should...', function() {
         cy.wait(delayMs + 100);
     });
 
-    it('should go back to the Confirmation screen when "Back" is clicked', function() {
+    it('should go back to the Confirmation screen when "Back" is clicked', function () {
         cy.get('[data-cy="qr-back"]').click();
         cy.get('#Kiva_QR').should('not.exist');
     });
 
-    it('should load a QR code when the request is successful', function() {
+    it('should load a QR code when the request is successful', function () {
         let establishConf = conf.establishConnection,
             getConf = conf.getConnection,
             establishResponseBody = establishConf.success,
@@ -66,7 +67,7 @@ describe('QR Code Scan screen should...', function() {
         cy.get('#qr-code').should('be.visible');
     });
 
-    it('should show an error message when there\'s an error in the status check', function() {
+    it('should show an error message when there\'s an error in the status check', function () {
         let establishConf = conf.establishConnection,
             getConf = conf.getConnection,
             establishResponseBody = establishConf.success,
@@ -86,7 +87,7 @@ describe('QR Code Scan screen should...', function() {
         cy.get('.dialog-icon.error').should('be.visible');
     });
 
-    it('should signal that the connection has been established', function() {
+    it('should signal that the connection has been established', function () {
         let establishConf = conf.establishConnection,
             getConf = conf.getConnection,
             establishResponseBody = establishConf.success,
@@ -106,7 +107,7 @@ describe('QR Code Scan screen should...', function() {
         cy.wait(500);
     });
 
-    it('should begin verification when you click "Verify"', function() {
+    it('should begin verification when you click "Verify"', function () {
         let verifyConf = conf.sendVerification,
             checkConf = conf.checkVerification;
 
@@ -124,11 +125,11 @@ describe('QR Code Scan screen should...', function() {
         cy.wait(201);
     });
 
-    it('should should show an error if there\'s an error sending the proof request', function() {
+    it('should should show an error if there\'s an error sending the proof request', function () {
         cy.get('.dialog-icon.error').should('be.visible');
     });
 
-    it('should show an error if the proof status check fails', function() {
+    it('should show an error if the proof status check fails', function () {
         let verifyConf = conf.sendVerification,
             checkConf = conf.checkVerification;
 
@@ -145,7 +146,7 @@ describe('QR Code Scan screen should...', function() {
         cy.get('.dialog-icon.error').should('be.visible');
     });
 
-    it('should show an error if the proof request is rejected', function() {
+    it('should show an error if the proof request is rejected', function () {
         let establishConf = conf.establishConnection,
             getConf = conf.getConnection,
             establishResponseBody = establishConf.success,
@@ -177,7 +178,7 @@ describe('QR Code Scan screen should...', function() {
         cy.get('#instructions').should('contain', 'Verification Failed: This credential may have been revoked or it may not have been able to fulfill the proof request:');
     });
 
-    it('should render user details if the proof is sucessful', function() {
+    it('should render user details if the proof is sucessful', function () {
         let establishConf = conf.establishConnection,
             getConf = conf.getConnection,
             establishResponseBody = establishConf.success,

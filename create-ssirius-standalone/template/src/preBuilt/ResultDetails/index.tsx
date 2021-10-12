@@ -69,7 +69,7 @@ export default class ResultDetails extends React.Component<DetailsProps> {
                         FieldCard: true,
                         wide: wideItemKeys.indexOf(key) > -1
                     })}>
-                    <div className="FieldCardTitle">{key}</div>
+                    <div className="FieldCardTitle">{this.props.t('PII.' + key)}</div>
                     <div className="FieldCardValue">
                         {this.getPIIDisplayString(key, value)}
                     </div>

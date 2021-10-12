@@ -50,12 +50,14 @@ program
     .command('init [projectName] [rootDir]', { isDefault: true })
     .option('--skip-install', 'Skip NPM installation')
     .option('--pack <directory>', 'Your Pack directory to integrate into the template')
+    .option('--build', 'Automatically generate a production-optimized bundle for deployment')
     .description('Initialize website.')
     .action(
-        (projectName, rootDir = '.', { skipInstall, pack }) => {
+        (projectName, rootDir = '.', { skipInstall, pack, build }) => {
             wrapCommand(init)(path.resolve(rootDir), projectName, {
                 skipInstall,
-                pack
+                pack,
+                build
             });
         },
     );

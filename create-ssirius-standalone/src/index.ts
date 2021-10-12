@@ -26,7 +26,8 @@ export default async function init(
     projectName: string,
     cliOptions: Partial<{
         skipInstall: boolean,
-        pack: string
+        pack: string,
+        build: boolean
     }> = {}
 ): Promise<void> {
     const templateDirectory = path.resolve(__dirname, '../template');
@@ -68,9 +69,9 @@ export default async function init(
         );
     }
 
-    if (!cliOptions.skipInstall) {
+    if (!cliOptions.skipInstall || cliOptions.build) {
         console.log(`\n${chalk.cyan('So you have chosen to have us install your NPM package...')}`);
-        execSync(`cd ${projectName} && npm i`);
+        execSync(`cd ${projectName} && npm i ${cliOptions.build ? ' && npm run build' : ''}`);
     }
 }
 

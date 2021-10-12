@@ -1,7 +1,7 @@
 let kycData, initial;
 
-describe('The User Details screen...', function() {
-    before(function() {
+describe('The User Details screen...', function () {
+    before(function () {
         cy.window().then(win => {
             win.parent.addEventListener('message', (event) => {
                 kycData = event.data.detail;
@@ -38,8 +38,6 @@ describe('The User Details screen...', function() {
             cy.visit('/');
             cy.get('.accept').click();
             cy.wait(200);
-            cy.contains('Continue').click();
-            cy.wait(200);
             cy.get('#select-auth-method').click();
             cy.wait(200);
             cy.get('[data-cy="qr-scan-next"]').click();
@@ -47,7 +45,7 @@ describe('The User Details screen...', function() {
         });
     });
 
-    it('should render all the data from the credential', function() {
+    it('should render all the data from the credential', function () {
         let credentialData = [
             {
                 title: "First Name",
@@ -58,54 +56,50 @@ describe('The User Details screen...', function() {
                 data: "Gata"
             },
             {
+                title: "Employment Type",
+                data: "Full time"
+            },
+            {
+                title: "End Date (if applicable)",
+                data: "17 June 2041"
+            },
+            {
                 title: "Company Email",
                 data: "cutest.kitty@kiva.org"
             },
             {
-                title: "Hire Date",
-                data: "2019-06-17",
-                dataType: "date"
-            },
-            {
-                title: "Current Title",
-                data: "Kiva's Cutest Kitty"
-            },
-            {
-                title: "Team",
-                data: "Kiva Protocol"
+                title: "Phone Number",
+                data: "867-5309"
             },
             {
                 title: "Office Location",
                 data: "San Francisco"
             },
             {
-                title: "Employment Type",
-                data: "Full Time"
+                title: "Date of Hire",
+                data: "17 June 2019"
             },
             {
-                title: "End Date",
-                data: "NEVER!",
-                dataType: "date"
+                title: "Team",
+                data: "Kiva Protocol"
             },
             {
-                title: "Phone",
-                data: "867-5309"
+                title: "Current Title",
+                data: "Kiva's Cutest Kitty"
             }
         ];
         cy.get('.ProfileItemContainer').should(el => {
             el.children('.FieldCard').each((idx, child) => {
                 let title = child.querySelector('.FieldCardTitle').innerText,
                     data = child.querySelector('.FieldCardValue').innerText;
-                if (credentialData[idx].dataType !== 'date') {
-                    expect(credentialData[idx].data).to.eql(data);
-                }
+
+                expect(credentialData[idx].data).to.eql(data);
                 expect(credentialData[idx].title).to.eql(title);
-                
             });
         });
     });
 
-    it('should have a photo', function() {
+    it('should have a photo', function () {
         cy.get('.PictureProfile').should(el => {
             expect(el.attr('src').indexOf('undefined')).to.eql(-1);
         });
@@ -115,7 +109,7 @@ describe('The User Details screen...', function() {
         // cy.get('.export-profile').click();
     });
 
-    it.skip('should export the user data correctly', function() {
+    it.skip('should export the user data correctly', function () {
         // Make sure the data IS different
         expect(initial.stamp === kycData.stamp).to.eql(false);
 
