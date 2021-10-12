@@ -1,11 +1,11 @@
-name: Publish @kiva/ssirius-standalone
+name: Publish NPM packages
 on:
   push:
     branches:
       - 'main'
 
 jobs:
-  build_and_publish_standalone:
+  build_and_publish_packages:
     timeout-minutes: 10
     runs-on: ubuntu-latest
     steps:
@@ -17,11 +17,30 @@ jobs:
           node-version: '12.x'
           registry-url: 'https://registry.npmjs.org'
           scope: '@kiva'
+      - name: Check for @kiva/ssirius-standalone version update
+        id: check-kiva-ssirius
+        uses: EndBug/version-check@v1
+        with:
+          file-name: ./standalone/package.json
+      - name: Check for create-ssirius-standalone version update
+        id: check-create-ssirius
+        uses: EndBug/version-check@v1
+        with:
+          file-name: ./create-ssirius-standalone/package.json
       - name: Install and publish @kiva/ssirius-standalone
+        if: steps.check-kiva-ssirius.outputs.changed == 'true'
         run: |
           cd ./standalone
-          npm ci
+          npm i
           npm publish
         env:
           NODE_AUTH_TOKEN: ${{ secrets.SSIRIUS_STANDALONE_TOKEN }}
+      - name: Install and publish create-ssirius-standalone
+        if: steps.check-create-ssirius.outputs.changed == 'true'
+        run: |
+          cd ./create-ssirius-standalone
+          npm i
+          npm publish
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.SSIRIUS_TEMPLATE_TOKEN }}
       
