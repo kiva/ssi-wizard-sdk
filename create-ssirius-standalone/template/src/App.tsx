@@ -1,15 +1,21 @@
 import { useState } from 'react';
-import { IConstants } from './interfaces/IConstants';
 import listen from './helpers/listen';
-import FlowRouter from './FlowRouter';
+import { Toaster } from 'react-hot-toast';
+import AppHeader from './components/AppHeader';
+import SSIriusRouter, { IConstants } from '@kiva/ssirius-react';
+import useTranslator from './hooks/useTranslator';
 
 function App(props: AppProps) {
-    const [authToken, setAuthToken] = useState<string | undefined>(props.config.auth_token);
+    const { config } = props;
+    const [authToken, setAuthToken] = useState<string | undefined>(config.auth_token);
+    const Header = useHeaderIfAsked(config);
+    const Footer = useFooterIfAsked(config);
 
-    props.config.auth_token = authToken;
+    config.auth_token = authToken;
+    config.t = useTranslator(config.defaultLang);
 
     listen(window, "message", e => {
-        if (props.config.permittedOpenerOrigins && props.config.permittedOpenerOrigins.indexOf(e.origin) > -1) {
+        if (config.permittedOpenerOrigins && config.permittedOpenerOrigins.indexOf(e.origin) > -1) {
             if (e.data === "are you set?") {
                 e.source.postMessage({
                     allSet: true
@@ -20,10 +26,39 @@ function App(props: AppProps) {
         }
     });
 
-    return <FlowRouter {...props.config} />;
+    return (
+        <div className="KernelContainer">
+            <div className="KernelContent">
+                <Toaster />
+                {Header}
+                <SSIriusRouter {...config} />;
+                {Footer}
+            </div>
+        </div >
+    )
 }
 
 export default App;
+
+function isEnabled(props: IConstants) {
+    return !!props.standaloneConf && props.standaloneConf.isStandalone;
+}
+
+function useFooterIfAsked(props: IConstants) {
+    if (isEnabled(props) && !!props.standaloneConf!.org) {
+        return <div className="AppFooter">
+            Powered by <strong>{props.standaloneConf!.org}</strong>
+        </div>;
+    }
+    return null;
+}
+
+function useHeaderIfAsked(props: IConstants) {
+    if (isEnabled(props)) {
+        return <AppHeader {...props} />;
+    }
+    return null;
+}
 
 interface AppProps {
     config: IConstants;

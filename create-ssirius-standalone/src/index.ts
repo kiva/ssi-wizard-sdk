@@ -123,7 +123,8 @@ async function integrateExternalPack(packPath: string, projectDirectory: string)
             case 'package.json':
                 updateDependencies(path.resolve(projectDirectory, 'package.json'), path.resolve(packDirectory, 'package.json'));
                 break;
-            case 'config.ts':
+            case 'constants.ts':
+            case 'componentMap.ts':
                 fs.copy(path.resolve(packDirectory, element), path.resolve(projectDirectory, 'src', element));
                 break;
             default:

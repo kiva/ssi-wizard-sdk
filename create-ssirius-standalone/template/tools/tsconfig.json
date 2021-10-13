@@ -1,10 +1,10 @@
 {
     "extends": "../tsconfig.json",
     "compilerOptions": {
-        "noEmit": false,
-        "module": "CommonJS"
+        "module": "CommonJS",
+        "noEmit": false
     },
     "include": [
-        "bundle/js/*.ts"
+        "bundle/js",
     ]
 }

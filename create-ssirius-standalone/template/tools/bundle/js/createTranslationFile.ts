@@ -1,8 +1,8 @@
-import config from './config';
+import constants from './constants';
 import { readdirSync, readFileSync, writeJSONSync } from 'fs-extra';
 
 function getLang(): string {
-    return config.defaultLang;
+    return constants.defaultLang;
 }
 
 function createTranslationFile() {

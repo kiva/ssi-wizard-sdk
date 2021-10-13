@@ -2,7 +2,6 @@ import React, { useState, useRef, Suspense } from 'react';
 import FlowDispatchTypes from './enums/FlowDispatchTypes';
 import { Flow } from './interfaces/FlowSelectorInterfaces';
 import { IConstants } from './interfaces/IConstants';
-import { Toaster } from 'react-hot-toast';
 
 import {
     ComponentStoreMethods,
@@ -11,13 +10,10 @@ import {
 import useComponentStore from './hooks/useComponentStore';
 import useTranslator from './hooks/useTranslator';
 import getFlow from './helpers/getFlow';
-import AppHeader from './components/AppHeader';
 
 const FlowController: React.FC<IConstants> = (CONSTANTS: IConstants) => {
     const [step, setStep] = useState('confirmation');
     const authIndex = useRef<number>(0);
-    const Header = useHeaderIfAsked(CONSTANTS);
-    const Footer = useFooterIfAsked(CONSTANTS);
 
     let theFlow: Flow = getFlow(authIndex.current, CONSTANTS);
 
@@ -93,44 +89,17 @@ const FlowController: React.FC<IConstants> = (CONSTANTS: IConstants) => {
 
     return (
         <Suspense fallback="">
-            <div className="KernelContainer">
-                <Toaster />
-                {Header}
-                <div className="KernelContent" data-cy={step}>
-                    <TheComponent
-                        {...getAdditionalProps(step)}
-                        CONSTANTS={CONSTANTS}
-                        store={componentStoreMethods}
-                        prevScreen={prevStep}
-                        authIndex={authIndex.current}
-                        dispatch={dispatch}
-                        t={t}
-                    />
-                </div>
-                {Footer}
-            </div>
+            <TheComponent
+                {...getAdditionalProps(step)}
+                CONSTANTS={CONSTANTS}
+                store={componentStoreMethods}
+                prevScreen={prevStep}
+                authIndex={authIndex.current}
+                dispatch={dispatch}
+                t={t}
+            />
         </Suspense>
     );
 };
 
 export default FlowController;
-
-function isEnabled(props: IConstants) {
-    return !!props.standaloneConf && props.standaloneConf.isStandalone;
-}
-
-function useFooterIfAsked(props: IConstants) {
-    if (isEnabled(props) && !!props.standaloneConf!.org) {
-        return <div className="AppFooter">
-            Powered by <strong>{props.standaloneConf!.org}</strong>
-        </div>;
-    }
-    return null;
-}
-
-function useHeaderIfAsked(props: IConstants) {
-    if (isEnabled(props)) {
-        return <AppHeader {...props} />;
-    }
-    return null;
-}
