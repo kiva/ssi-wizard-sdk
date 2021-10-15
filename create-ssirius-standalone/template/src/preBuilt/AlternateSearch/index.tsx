@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import TextField from '@material-ui/core/TextField';
@@ -22,6 +22,7 @@ export default function AlternateSearch(props: AltSearchProps) {
     const [searchParams, setSearchParams] = useState<AltSearchInputData>(
         props.store.get('search', {})
     );
+
     const [errors, setErrors] = useState<AltSearchErrors>({
         firstName: false,
         lastName: false,
@@ -29,10 +30,8 @@ export default function AlternateSearch(props: AltSearchProps) {
         fathersFirstName: false,
         birthDate: false
     });
-    const [rows, setRows] = useState<Array<string | boolean>>([
-        searchParams.birthDate || false,
-        searchParams.mothersFirstName || searchParams.fathersFirstName || false
-    ]);
+    const [rowOne, setRowOne] = useState<boolean>(!!searchParams.birthDate || false);
+    const [rowTwo, setRowTwo] = useState<boolean>(!!searchParams.mothersFirstName || !!searchParams.fathersFirstName || false);
 
     function validateInputs(data: AltSearchInputData): boolean {
         let updatedErrors: any = {};
@@ -103,6 +102,12 @@ export default function AlternateSearch(props: AltSearchProps) {
         return false;
     }
 
+    const processSearchParams = (params: AltSearchInputData) => {
+        const filteredParams = deleteEmptyValues(params);
+        props.store.set('search', filteredParams);
+        setSearchParams(filteredParams);
+    }
+
     const handleFieldChange =
         (filterKey: string) =>
             (event: any): void => {
@@ -112,7 +117,7 @@ export default function AlternateSearch(props: AltSearchProps) {
                     [filterKey]: event.target.value
                 };
 
-                setSearchParams(updatedSearchParams);
+                processSearchParams(updatedSearchParams);
             };
 
     function deleteEmptyValues(
@@ -138,11 +143,24 @@ export default function AlternateSearch(props: AltSearchProps) {
         }
     };
 
-    const handleRowClick = (index: number) => (): void => {
-        const currentRows = rows;
-        currentRows[index] = !rows[index];
-        setRows(currentRows);
+    const handleRowClick = (rowState: [boolean, React.Dispatch<React.SetStateAction<boolean>>]) => (): void => {
+        const [row, setRow] = rowState;
+        setRow(!row);
     };
+
+    function generateRandomString() {
+        const abc = "abcdefghijklmnopqrstuvwxyz";
+        const ABC = abc.toUpperCase();
+        const nums = "0123456789";
+        const allChars = abc + ABC + nums;
+        let ret = '';
+
+        for (let i = 0; i < 11; i++) {
+            ret += allChars[Math.floor(Math.random() * allChars.length)];
+        }
+
+        return ret;
+    }
 
     // TODO:
     //     1) Figure out a way to break out form rows into their own component
@@ -170,7 +188,10 @@ export default function AlternateSearch(props: AltSearchProps) {
                             variant="h6"
                             gutterBottom
                             align="center">
-                            {props.t('AlternateSearchScreen.text.enterFirstAndLast')}
+                            {props.t('AlternateSearchScreen.text.enterFirstAndLast', {
+                                first: props.t('PII.firstName'),
+                                last: props.t('PII.lastName')
+                            })}
                         </Typography>
                     </Grid>
                     <Grid
@@ -208,22 +229,22 @@ export default function AlternateSearch(props: AltSearchProps) {
                             />
                         </Grid>
                     </Grid>
-                    <Grid item onClick={handleRowClick(0)}>
+                    <Grid item onClick={handleRowClick([rowOne, setRowOne])}>
                         <Typography
                             data-cy="dob-row-header"
                             className={classNames({
                                 expandable: true,
-                                expanded: rows[0]
+                                expanded: rowOne
                             })}
                             component="h2"
                             variant="h6"
                             align="center">
-                            {props.t('AlternateSearch.text.enterDob')}
+                            {props.t('AlternateSearchScreen.text.enterDob')}
                             <AccordionArrow
                                 fontSize="large"
                                 className={
                                     'accordion-arrow ' +
-                                    (rows[0] ? 'open' : 'closed')
+                                    (rowOne ? 'open' : 'closed')
                                 }
                             />
                         </Typography>
@@ -233,7 +254,7 @@ export default function AlternateSearch(props: AltSearchProps) {
                         className={classNames({
                             'alternate-search-row': true,
                             labelled: true,
-                            hidden: !rows[0]
+                            hidden: !rowOne
                         })}
                         direction="row"
                         justify="space-around"
@@ -256,12 +277,12 @@ export default function AlternateSearch(props: AltSearchProps) {
                             />
                         </Grid>
                     </Grid>
-                    <Grid item className="or" onClick={handleRowClick(1)}>
+                    <Grid item className="or" onClick={handleRowClick([rowTwo, setRowTwo])}>
                         <Typography
                             data-cy="parents-names-row-header"
                             className={classNames({
                                 expandable: true,
-                                expanded: rows[1]
+                                expanded: rowTwo
                             })}
                             component="h2"
                             variant="h6"
@@ -271,7 +292,7 @@ export default function AlternateSearch(props: AltSearchProps) {
                                 fontSize="large"
                                 className={
                                     'accordion-arrow ' +
-                                    (rows[1] ? 'open' : 'closed')
+                                    (rowTwo ? 'open' : 'closed')
                                 }
                             />
                         </Typography>
@@ -280,7 +301,7 @@ export default function AlternateSearch(props: AltSearchProps) {
                             className={classNames({
                                 'row-subheader': true,
                                 'align-center': true,
-                                hidden: !rows[1]
+                                hidden: !rowTwo
                             })}>
                             ({props.t('AlternateSearchScreen.text.requiredWithoutDob')})
                         </h3>
@@ -289,7 +310,7 @@ export default function AlternateSearch(props: AltSearchProps) {
                         container
                         className={classNames({
                             'alternate-search-row': true,
-                            hidden: !rows[1]
+                            hidden: !rowTwo
                         })}
                         direction="row"
                         justify="space-around"
