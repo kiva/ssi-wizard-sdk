@@ -49,7 +49,6 @@ function initComponentStore(): ComponentStore {
     return {
         menu: {},
         confirmation: {},
-        verificationRequirement: {},
         details: {}
     };
 }

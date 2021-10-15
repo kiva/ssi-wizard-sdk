@@ -32,7 +32,7 @@ function injectAuthMethod(
     const beginAt: string = useMenu ? 'menu' : 'confirmation';
     const sequence: string[] = options[index].sequence;
 
-    if (!sequence.length) throw new Error('You done goofed');
+    if (!sequence.length) throw new Error(`The sequence array for ${options[index].title} must contain at least one element, and it contains zero elements right now.`);
 
     const currentPoint: string = sequence[0];
 

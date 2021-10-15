@@ -30,7 +30,12 @@ export default function SSIriusRouter(CONSTANTS: IConstants) {
 
         switch (type) {
             case FlowDispatchTypes.NEXT:
-                setStep(theFlow[step]![FlowDispatchTypes.NEXT]);
+                if (
+                    theFlow.hasOwnProperty(step) &&
+                    theFlow[step]!.hasOwnProperty(FlowDispatchTypes.NEXT)
+                ) {
+                    setStep(theFlow[step]![FlowDispatchTypes.NEXT]);
+                }
                 break;
             case FlowDispatchTypes.BACK:
                 if (
@@ -50,9 +55,7 @@ export default function SSIriusRouter(CONSTANTS: IConstants) {
                     authIndex.current = payload;
                     theFlow = getFlow(payload, CONSTANTS);
                 } else {
-                    throw new Error(
-                        "Please don't try to set the authentication method from outside the Authentication Menu screen"
-                    );
+                    console.warn("Please don't try to set the authentication method from outside the Authentication Menu screen");
                 }
                 break;
             default:
@@ -78,18 +81,16 @@ export default function SSIriusRouter(CONSTANTS: IConstants) {
 
     return (
         <Suspense fallback="" >
-            <div className="KernelContainer" >
-                <div className="KernelContent" data-cy={step}>
-                    <TheComponent
-                        {...getAdditionalProps(step)}
-                        CONSTANTS={CONSTANTS}
-                        store={componentStoreMethods}
-                        prevScreen={prevStep}
-                        authIndex={authIndex.current}
-                        dispatch={dispatch}
-                        t={CONSTANTS.t}
-                    />
-                </div>
+            <div className="SSIrius" data-cy={step}>
+                <TheComponent
+                    {...getAdditionalProps(step)}
+                    CONSTANTS={CONSTANTS}
+                    store={componentStoreMethods}
+                    prevScreen={prevStep}
+                    authIndex={authIndex.current}
+                    dispatch={dispatch}
+                    t={CONSTANTS.t}
+                />
             </div>
         </Suspense>
     );
