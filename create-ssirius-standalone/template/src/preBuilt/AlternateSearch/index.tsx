@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import TextField from '@material-ui/core/TextField';
@@ -147,20 +147,6 @@ export default function AlternateSearch(props: AltSearchProps) {
         const [row, setRow] = rowState;
         setRow(!row);
     };
-
-    function generateRandomString() {
-        const abc = "abcdefghijklmnopqrstuvwxyz";
-        const ABC = abc.toUpperCase();
-        const nums = "0123456789";
-        const allChars = abc + ABC + nums;
-        let ret = '';
-
-        for (let i = 0; i < 11; i++) {
-            ret += allChars[Math.floor(Math.random() * allChars.length)];
-        }
-
-        return ret;
-    }
 
     // TODO:
     //     1) Figure out a way to break out form rows into their own component

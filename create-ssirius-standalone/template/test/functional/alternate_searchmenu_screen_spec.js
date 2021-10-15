@@ -67,7 +67,7 @@ describe('The Fuzzy Matching SearchMenu screen', () => {
 
     it('should accept inputs where first and last names are provided with birth date', () => {
         cy.get('[data-cy="dob-row-header"]').click();
-        cy.get('[data-cy="birthdate-input"]').type('2020-03-28');
+        cy.get('[data-cy="birthdate-input"] input').type('2020-03-28');
         cy.get('[data-cy="mothersfirstname-input"] input').clear();
         cy.get('[data-cy="fathersfirstname-input"] input').clear();
         cy.get('#scan-fingerprint').click();

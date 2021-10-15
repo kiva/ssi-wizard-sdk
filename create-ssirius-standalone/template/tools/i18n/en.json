@@ -160,6 +160,12 @@
             "recaptureFingerprint": "Recapture Fingerprint"
         }
     },
+    "FingerSelectionScreen": {
+        "text": {
+            "selectNew": "Select a different digit",
+            "leaveFpSelect": "Go Back"
+        }
+    },
     "CredentialIssuance": {
         "text": {
             "connectionSuccessful": "Connection established successfully. A proof request will be sent to the user's wallet.",

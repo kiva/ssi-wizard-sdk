@@ -91,6 +91,9 @@
     flex-grow: 1;
     &.column {
       flex-direction: column;
+      &.centered {
+          align-items: center;
+      }
     }
     &.row {
       flex-direction: row;
@@ -162,7 +165,7 @@
 @import "mixins/_colors";
 
 .KernelContent {
-  min-height: 500px;
+  min-height: 800px;
   background: white;
 }
 

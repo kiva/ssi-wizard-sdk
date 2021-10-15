@@ -160,6 +160,12 @@
             "recaptureFingerprint": "Recuperar huella digital"
         }
     },
+    "FingerSelectionScreen": {
+        "text": {
+            "selectNew": "Selecciona un dígito diferente",
+            "leaveFpSelect": "Regresar"
+        }
+    },
     "CredentialIssuance": {
         "text": {
             "connectionSuccessful": "¡Conexión establecida! Se crea una credencial.",

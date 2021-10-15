@@ -1,10 +1,12 @@
 import Grid from '@material-ui/core/Grid';
-import React, { useState } from 'react';
+import { useState } from 'react';
 
 import Button from '@material-ui/core/Button';
+import Typography from '@material-ui/core/Typography';
 
 import '../../css/Common.scss';
 import './css/FingerSelectionScreen.scss';
+import fpImage from './images/fingers_small.png';
 import Radio from '@material-ui/core/Radio';
 import RadioGroup from '@material-ui/core/RadioGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
@@ -32,15 +34,26 @@ export default function FingerSelectionScreen(props: FingerSelectProps) {
             props.changeFingerSelection(selectedFinger);
     }
 
+    function renderHeader() {
+        return <Grid item>
+            <Typography component="h2" variant="h6" gutterBottom>
+                {props.t('FingerSelectionScreen.text.selectNew')}
+            </Typography>
+        </Grid>;
+    }
+
     function renderRadioMenu() {
         return (
-            <div className="flex-block">
+            <div className="flex-block column centered">
+                {!props.isReadOnly && renderHeader()}
                 <Grid
                     container
                     direction="column"
                     justifyContent="center"
                     alignItems="center">
-                    <div className="FingerContainer">
+                    <div className="FingerContainer" style={{
+                        background: `url(${fpImage}) no-repeat center center`
+                    }}>
                         <RadioGroup
                             aria-label="FingerSelection"
                             name="finger"
@@ -52,7 +65,7 @@ export default function FingerSelectionScreen(props: FingerSelectProps) {
                         </RadioGroup>
                     </div>
                 </Grid>
-                {props.isReadOnly && renderFingerSelectionButton()}
+                {!props.isReadOnly && renderFingerSelectionButton()}
             </div>
         );
     }

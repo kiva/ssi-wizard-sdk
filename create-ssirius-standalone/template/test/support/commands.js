@@ -64,3 +64,12 @@ Cypress.Commands.add("beginIssuing", () => {
     cy.get('[data-cy="populate-form"]').click();
     cy.get('.next').click();
 });
+
+Cypress.Commands.add('fpScanIntercept', function () {
+    cy.fixture('fingerprint.png', 'base64').as('fingerprint');
+    cy.intercept('GET', 'http://localhost:9907/EKYC/Fingerprint', {
+        FingerprintSensorSerialNumber: "Kiva-Device-Simulator",
+        TellerComputerUsername: "MAC",
+        ImageBase64: this.fingerprint
+    });
+})

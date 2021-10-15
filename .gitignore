@@ -17,6 +17,7 @@
 
 # files for create-ssirius-standalone
 /create-ssirius-standalone/lib
+/create-ssirius-standalone/template/tools/bundle/js/constants.ts
 
 # translation files
 **translations.json
