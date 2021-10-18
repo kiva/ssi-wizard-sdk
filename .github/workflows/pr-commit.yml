@@ -1,0 +1,22 @@
+name: Run unit tests
+on:
+  push:
+    branches-ignore:
+      - 'main'
+
+jobs:
+  ssirius-react-jest:
+    timeout-minutes: 10
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '12.x'
+      - name: Run unit tests for @kiva/ssirius-react
+        run: |
+          cd ./react-core
+          npm ci
+          npm run test
