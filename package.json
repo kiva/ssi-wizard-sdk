@@ -1,0 +1,14 @@
+{
+    "name": "@kiva/ssi-wizard-sdk",
+    "version": "0.0.1",
+    "scripts": {
+        "test": "echo \"I'm just here so I don't get fined\"; exit 0;"
+    },
+    "description": "An open-source package to streamline the creation of Verifiable Credential transaction UIs",
+    "keywords": [],
+    "author": "Kiva Microfunds",
+    "license": "https://github.com/kiva/protocol-sdk-verifier/blob/main/LICENSE",
+    "dependencies": {
+        "cypress": "^8.6.0"
+    }
+}
