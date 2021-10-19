@@ -33,10 +33,10 @@ jobs:
       - name: Move into template directory
         run: cd ./create-ssirius-standalone/template
       - name: Run functional tests for create-ssirius-standalone template
-        uses: cypress-io/github-action@v2
-        with:
-          build: npm run build
-          start: npm run serve-build
-          config: baseUrl=http://localhost:5000
-          wait-on: 'http://localhost:5000'
+        run: |
+          cd ./create-ssirius-standalone/template
+          npm ci
+          npm run build
+          npm run serve-build
+          npm run test-build
 
