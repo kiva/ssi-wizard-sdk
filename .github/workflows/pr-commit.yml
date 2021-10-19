@@ -33,7 +33,7 @@ jobs:
       - name: Run functional tests for create-ssirius-standalone template
         uses: cypress-io/github-action@v2
         with:
-          project: ./create-ssirius-standalone/template
+          working-directory: create-ssirius-standalone/template
           build: npm run build
           start: npm run serve-build
           config: baseUrl=http://localhost:5000
