@@ -40,14 +40,14 @@
         "prep": "sh tools/bundle/build_required_files.sh & react-scripts",
         "start": "PORT=7567 npm run prep -- start",
         "build": "npm run prep -- build",
-        "serve-build": "wait-on http://localhost:5000 && serve -s build",
+        "serve-build": "serve -s build",
         "test": "react-scripts test",
         "eject": "react-scripts eject",
         "compile": "tsc",
         "toolsCompile": "tsc --project tools/tsconfig.json",
         "cy:open": "cypress open",
         "cy:run": "cypress run",
-        "test-build": "cypress run --port 5000"
+        "test-build": "wait-on http://localhost:5000 && cypress run --port 5000"
     },
     "eslintConfig": {
         "extends": [
