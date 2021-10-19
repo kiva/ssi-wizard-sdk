@@ -77,7 +77,7 @@ describe('The User Details screen...', function () {
             },
             {
                 title: "Date of Hire",
-                data: "17 June 2019"
+                data: ["17 June 2019", "18 June 2019"]
             },
             {
                 title: "Team",
@@ -90,11 +90,15 @@ describe('The User Details screen...', function () {
         ];
         cy.get('.ProfileItemContainer').should(el => {
             el.children('.FieldCard').each((idx, child) => {
-                let title = child.querySelector('.FieldCardTitle').innerText,
-                    data = child.querySelector('.FieldCardValue').innerText;
+                let fieldTitle = child.querySelector('.FieldCardTitle').innerText,
+                    fieldData = child.querySelector('.FieldCardValue').innerText;
 
-                expect(credentialData[idx].data).to.eql(data);
-                expect(credentialData[idx].title).to.eql(title);
+                expect(credentialData[idx].title).to.eql(fieldTitle);
+                if ('string' === credentialData[idx].data) {
+                    expect(credentialData[idx].data).to.eql(fieldData);
+                } else { // should be an array
+                    expect(credentialData[idx].data.indexOf(fieldData) > -1).to.be.true;
+                }
             });
         });
     });
