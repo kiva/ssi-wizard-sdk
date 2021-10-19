@@ -99,6 +99,10 @@
         },
         "results": {
             "noData": "We could not process the data returned"
+        },
+        "fingerprint": {
+            "fpNotCaptured": "We were unable to capture your fingerprint. Please click \"Recapture Fingerprint\" to retry the scan.",
+            "noCitizenFound": "No record found. Please use an alternative KYC process."
         }
     },
     "ConfirmationScreen": {

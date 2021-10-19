@@ -35,8 +35,8 @@ Cypress.Commands.add("postActionMessage", (stateObject, waitPeriod) => {
     });
 });
 
-Cypress.Commands.add("selectAuthMenuItem", () => {
-    cy.get('#auth_options .auth_option');
+Cypress.Commands.add("selectAuthMenuItem", (index) => {
+    cy.get('#auth_options .auth_option').eq(index);
 });
 
 Cypress.Commands.add("otpInput", (inputCode) => {
@@ -57,7 +57,7 @@ Cypress.Commands.add("checkAuthOptions", (authConfig, callback) => {
 Cypress.Commands.add("beginIssuing", () => {
     cy.visit('/');
     cy.get('.accept').click();
-    cy.selectAuthMenuItem().eq(2).click();
+    cy.selectAuthMenuItem(2).click();
     cy.get('#select-auth-method').click();
     cy.get('#inner-circle').click();
     cy.get('[data-cy="image-select-continue"]').click();
@@ -65,11 +65,20 @@ Cypress.Commands.add("beginIssuing", () => {
     cy.get('.next').click();
 });
 
-Cypress.Commands.add('fpScanIntercept', function () {
-    cy.fixture('fingerprint.png', 'base64').as('fingerprint');
-    cy.intercept('GET', 'http://localhost:9907/EKYC/Fingerprint', {
-        FingerprintSensorSerialNumber: "Kiva-Device-Simulator",
-        TellerComputerUsername: "MAC",
-        ImageBase64: this.fingerprint
+Cypress.Commands.add('fpScanIntercept', function (delay) {
+    const response = {
+        body: {
+            FingerprintSensorSerialNumber: "Kiva-Device-Simulator",
+            TellerComputerUsername: "MAC",
+            ImageBase64: this.fingerprint,
+            success: true
+        }
+    };
+    if (!!delay) {
+        response.delay = delay;
+    }
+    cy.fixture('fingerprint.png', 'base64').then(function (fingerprint) {
+        this.fingerprint = fingerprint;
+        cy.intercept('GET', 'http://localhost:9907/EKYC/Fingerprint', response).as('scannerData');
     });
 })

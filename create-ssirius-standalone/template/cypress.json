@@ -7,7 +7,8 @@
     "videosFolder": "test/videos",
     "supportFile": "test/support/index.js",
     "env": {
-        "MESSAGE_TARGET_ORIGIN": "*"
+        "MESSAGE_TARGET_ORIGIN": "*",
+        "SLOW_INTERNET_THRESHOLD": 1000
     },
     "trashAssetsBeforeRuns": true
 }

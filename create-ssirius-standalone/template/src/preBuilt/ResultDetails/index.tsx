@@ -109,7 +109,7 @@ export default class ResultDetails extends React.Component<DetailsProps> {
         );
 
         return (
-            <Paper className="ProfileCardContainer" elevation={1}>
+            <Paper data-cy="CustomerInfo" className="ProfileCardContainer" elevation={1}>
                 <div className="ProfileCard">
                     <div className="Column2">
                         <h3>eKYC</h3>

@@ -15,7 +15,7 @@ describe('The Registration Form screen', () => {
     before(() => {
         cy.visit('/');
         cy.get('.accept').click();
-        cy.selectAuthMenuItem().eq(2).click();
+        cy.selectAuthMenuItem(2).click();
         cy.get('#select-auth-method').click();
         cy.wait(500);
         cy.get('#inner-circle').click();

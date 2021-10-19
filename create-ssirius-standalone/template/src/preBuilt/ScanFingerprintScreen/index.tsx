@@ -1,9 +1,10 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
+import toast from 'react-hot-toast';
 import '../../css/Common.scss';
 import './css/ScanFingerprintScreen.scss';
 
@@ -24,7 +25,7 @@ const FINGER_STORE = 'selectedFinger';
 
 export default function ScanFingerprintScreen(props: FPScanProps) {
     const SLOW_INTERNET_THRESHOLD: number =
-        props.CONSTANTS.slowInternetThreshold || 10000;
+        props.CONSTANTS.slowInternetThreshold || (process.env.SLOW_INTERNET_THRESHOLD && parseInt(process.env.SLOW_INTERNET_THRESHOLD)) || 10000;
     const [selectedFinger, setSelectedFinger] = useState<string>(
         props.store.get(FINGER_STORE, 'right_thumb')
     );
@@ -67,6 +68,7 @@ export default function ScanFingerprintScreen(props: FPScanProps) {
     }
 
     function resetFingerprintImage() {
+        console.log('Resetting...')
         setFingerprintImage('');
         setScanStatus('progress');
         beginFingerprintScan();
@@ -99,11 +101,17 @@ export default function ScanFingerprintScreen(props: FPScanProps) {
 
     function beginRequest(event: any) {
         event.preventDefault();
-        setDialogComplete(false);
-        setDialogOpen(true);
-        setDialogSuccess(false);
-        setProcessResultMessage('');
-        makeRequest();
+        if ('failed' === scanStatus) {
+            toast.error(props.t('Errors.fingerprint.fpNotCaptured'), {
+                duration: 3000
+            });
+        } else {
+            setDialogComplete(false);
+            setDialogOpen(true);
+            setDialogSuccess(false);
+            setProcessResultMessage('');
+            makeRequest();
+        }
     }
 
     function cancelEkycRequest() {
@@ -139,6 +147,7 @@ export default function ScanFingerprintScreen(props: FPScanProps) {
                 body,
                 props.CONSTANTS.auth_token
             );
+            console.log(response);
             setDialogSuccess(true);
             setDialogComplete(true);
             setProcessResultMessage('');
@@ -148,9 +157,12 @@ export default function ScanFingerprintScreen(props: FPScanProps) {
             console.error('Error -> ' + errorMessage);
             setDialogSuccess(false);
             setDialogComplete(true);
-            setProcessResultMessage(errorMessage);
+            setProcessResultMessage(props.t('Errors.fingerprint.noCitizenFound'));
         } finally {
-            if (slowInternetWarning) clearTimeout(slowInternetWarning);
+            if (slowInternetWarning) {
+                clearTimeout(slowInternetWarning);
+                setSlowInternet(false);
+            }
         }
     }
 
@@ -187,28 +199,31 @@ export default function ScanFingerprintScreen(props: FPScanProps) {
     }
 
     function beginFingerprintScan(): void {
-        if (scanStatus !== 'progress') {
-            setScanStatus('progress');
-            getImageFromFingerprintScanner();
-        }
+        setScanStatus('progress');
+        getImageFromFingerprintScanner();
     }
 
     function updateFingerprintState(response: any): void {
-        const fingerPrintImage: string = response.ImageBase64.replace(
-            'data:image/png;base64,',
-            ''
-        );
-        const deviceInfo: any = response;
+        if (!response.success) {
+            setScanStatus('failed');
+            setFingerprintImage('');
+        } else {
+            const fingerPrintImage: string = response.ImageBase64.replace(
+                'data:image/png;base64,',
+                ''
+            );
+            const deviceInfo: any = response;
 
-        delete deviceInfo.ImageBase64;
-        delete deviceInfo.Token;
+            delete deviceInfo.ImageBase64;
+            delete deviceInfo.Token;
 
-        setScanStatus('success');
-        setFingerprintImage(fingerPrintImage);
-        setDeviceInfo(deviceInfo);
-        setDialogOpen(false);
-        setDialogComplete(false);
-        setProcessResultMessage('');
+            setScanStatus('success');
+            setFingerprintImage(fingerPrintImage);
+            setDeviceInfo(deviceInfo);
+            setDialogOpen(false);
+            setDialogComplete(false);
+            setProcessResultMessage('');
+        }
     }
 
     async function getImageFromFingerprintScanner(): Promise<void> {
@@ -220,6 +235,9 @@ export default function ScanFingerprintScreen(props: FPScanProps) {
         } catch (e: any) {
             console.log(e);
             setProcessResultMessage('string' === typeof e ? e : e.message);
+            updateFingerprintState({
+                success: false
+            });
         }
     }
 

@@ -2,7 +2,7 @@ describe('The Image Upload/Webcam Capture screen', function () {
     before(() => {
         cy.visit('/');
         cy.get('.accept').click();
-        cy.selectAuthMenuItem().eq(2).click();
+        cy.selectAuthMenuItem(2).click();
     });
 
     it('surfaces an error if "Continue" is clicked without an image selected', function () {

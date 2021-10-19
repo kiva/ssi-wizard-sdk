@@ -99,6 +99,9 @@
         },
         "results": {
             "noData": "No pudimos procesar los datos devueltos"
+        },
+        "fingerprint": {
+            "fpNotCaptured": "No pudimos capturar su huella digital. Haga clic en \"Recapturar huella digital\" para volver a intentar escanear."
         }
     },
     "ConfirmationScreen": {

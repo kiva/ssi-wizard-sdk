@@ -2,7 +2,7 @@ describe('The Fuzzy Matching SearchMenu screen', () => {
     before(() => {
         cy.visit('/');
         cy.contains('Accept').click();
-        cy.selectAuthMenuItem().eq(3).click();
+        cy.selectAuthMenuItem(3).click();
         cy.get('#select-auth-method').click();
         cy.get('#alternate-search').click();
     });

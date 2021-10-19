@@ -18,7 +18,7 @@ describe('The FingerSelection screen', function () {
         cy.visit('/');
         cy.wait(500);
         cy.contains('Accept').click();
-        cy.selectAuthMenuItem().eq(3).click();
+        cy.selectAuthMenuItem(3).click();
         cy.get('#select-auth-method').click();
         cy.get('[data-cy="id-input"] input').type('T3STUS3R');
         cy.get('#scan-fingerprint').click();

@@ -23,7 +23,7 @@ import {
 import FlowDispatchTypes from '../../enums/FlowDispatchTypes';
 
 export default function SearchMenu(props: SearchProps) {
-    const [externalId, setExternalId] = useState<string>(Object.keys(props.dropdownConfig)[0]);
+    const [externalId, setExternalId] = useState<string>(props.store.get('externalId', Object.keys(props.dropdownConfig)[0]));
     const [filters, setFilters] = useState<SearchInputData>(
         props.store.get('filters', {
             [externalId]: '',
@@ -32,6 +32,7 @@ export default function SearchMenu(props: SearchProps) {
     const [error, setError] = useState(false);
     const [errorReason, setErrorReason] = useState<string>('');
     const [searchType, setSearchType] = useState<string>(props.store.get('searchType', 'filters'));
+    const filterValue = props.store.get('filters', filters)[externalId] || '';
 
     useEffect(() => {
         props.store.set('searchType', searchType);
@@ -47,6 +48,13 @@ export default function SearchMenu(props: SearchProps) {
         setFilters(updatedFilters);
         props.store.set('filters', updatedFilters);
     };
+
+    const updateExternalId = (event: any): void => {
+        event.preventDefault();
+        const value = event.target.value;
+        props.store.set('externalId', value);
+        setExternalId(value);
+    }
 
     const toggleSearchType = () => {
         const type: string = props.store.get('searchType', searchType);
@@ -108,7 +116,7 @@ export default function SearchMenu(props: SearchProps) {
                                 <FormControl variant="outlined">
                                     <Select
                                         value={externalId}
-                                        onChange={(e: any) => setExternalId(e.target.value)}
+                                        onChange={updateExternalId}
                                         id="select-searchId"
                                         displayEmpty
                                         input={
@@ -143,11 +151,11 @@ export default function SearchMenu(props: SearchProps) {
                                         data-cy="id-input"
                                         autoFocus={true}
                                         label={
-                                            filters[externalId].trim() === ''
+                                            filterValue.trim() === ''
                                                 ? props.t('SearchMenu.text.placeholder')
                                                 : ''
                                         }
-                                        value={filters.value}
+                                        value={filterValue}
                                         onChange={handleInputChange}
                                         inputProps={{ 'aria-label': 'bare' }}
                                         margin="normal"
