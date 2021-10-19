@@ -59,6 +59,7 @@ Cypress.Commands.add("beginIssuing", () => {
     cy.get('.accept').click();
     cy.selectAuthMenuItem(2).click();
     cy.get('#select-auth-method').click();
+    cy.wait(500);
     cy.get('#inner-circle').click();
     cy.get('[data-cy="image-select-continue"]').click();
     cy.get('[data-cy="populate-form"]').click();

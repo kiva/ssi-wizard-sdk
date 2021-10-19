@@ -3,6 +3,7 @@ describe('The Image Upload/Webcam Capture screen', function () {
         cy.visit('/');
         cy.get('.accept').click();
         cy.selectAuthMenuItem(2).click();
+        cy.get('#select-auth-method').click();
     });
 
     it('surfaces an error if "Continue" is clicked without an image selected', function () {
@@ -16,6 +17,7 @@ describe('The Image Upload/Webcam Capture screen', function () {
     });
 
     it('displays the image captured by the webcam', function () {
+        cy.wait(500);
         cy.get('#inner-circle').click();
         cy.get('#credential-image').should('be.visible')
             .and('have.attr', 'alt', 'This will be included with your issued credential')
