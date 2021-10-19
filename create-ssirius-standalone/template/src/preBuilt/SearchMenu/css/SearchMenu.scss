@@ -1,0 +1,29 @@
+@import '../../../css/mixins/_fonts';
+@import '../../../css/mixins/_colors';
+
+#scan-fingerprint {
+    @include the-font;
+    background: $primary-color;
+    color: $primary-offset;
+    width: 300px;
+    margin: 0;
+}
+
+#id-select-menu {
+    padding: 0 40px 0 0;
+}
+
+#select-searchId {
+    .id-type {
+        width: 72px;
+    }
+    &:focus {
+        background-color: rgba(0, 0, 0, 0);
+    }
+}
+
+#alternate-search {
+    text-decoration: underline;
+    font-size: 1.2em;
+    font-weight: 500;
+}

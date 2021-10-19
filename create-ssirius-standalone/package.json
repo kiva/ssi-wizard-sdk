@@ -1,0 +1,39 @@
+{
+    "name": "create-ssirius-standalone",
+    "version": "0.0.5",
+    "description": "Quickstart template for getting up and running with a SSIrius app",
+    "scripts": {
+        "create-ssirius-standalone": "create-ssirius-standalone",
+        "build": "tsc",
+        "prepare": "tsc"
+    },
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/kiva/ssi-wizard-sdk.git",
+        "directory": "create-ssirius-standalone"
+    },
+    "engines": {
+        "node": ">=10.24.1"
+    },
+    "author": "Kiva Microfunds",
+    "license": "Apache-2.0",
+    "bugs": {
+        "url": "https://github.com/kiva/ssi-wizard-sdk/issues"
+    },
+    "homepage": "https://github.com/kiva/ssi-wizard-sdk#readme",
+    "bin": {
+        "create-ssirius-standalone": "bin/index.js"
+    },
+    "dependencies": {
+        "chalk": "^4.1.2",
+        "commander": "^8.2.0",
+        "fs-extra": "^10.0.0",
+        "prompts": "^2.4.2",
+        "semver": "^7.3.5",
+        "tslib": "^2.3.1"
+    },
+    "devDependencies": {
+        "@types/fs-extra": "^9.0.13",
+        "@types/prompts": "^2.0.14"
+    }
+}

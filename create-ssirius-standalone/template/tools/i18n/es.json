@@ -1,0 +1,226 @@
+{
+    "DeployKeys": {
+        "title": "Kiva",
+        "authAgency": "Kiva HQ",
+        "authAgencyAcronym": "Kiva"
+    },
+    "Standard": {
+        "back": "Regresar",
+        "accept": "Aceptar",
+        "verify": "Verificar",
+        "verifying": "Verificando",
+        "continue": "Continuar",
+        "poweredBy": "Desarrollado por",
+        "next": "Siguiente",
+        "select": "Seleccionar",
+        "goBack": "Regresar"
+    },
+    "Fingers": {
+        "finger": "dedo",
+        "right_thumb": "Pulgar Derecho",
+        "right_index": "Indice Derecho",
+        "right_middle": "Mediano Derecho",
+        "right_ring": "Anular Derecho",
+        "right_little": "Meñique Derecho",
+        "left_thumb": "Pulgar Izquierdo",
+        "left_index": "Indice Izquierdo",
+        "left_middle": "Mediano Izquierdo",
+        "left_ring": "Anular Izquierdo",
+        "left_little": "Meñique Izquierdo",
+        "right_thumb_full": "{{finger}} Pulgar Derecho",
+        "right_index_full": "{{finger}} Indice Derecho",
+        "right_middle_full": "{{finger}} Mediano Derecho",
+        "right_ring_full": "{{finger}} Anular Derecho",
+        "right_little_full": "{{finger}} Meñique Derecho",
+        "left_thumb_full": "{{finger}} Pulgar Izquierdo",
+        "left_index_full": "{{finger}} Indice Izquierdo",
+        "left_middle_full": "{{finger}} Mediano Izquierdo",
+        "left_ring_full": "{{finger}} Anular Izquierdo",
+        "left_little_full": "{{finger}} Meñique Izquierdo"
+    },
+    "PII": {
+        "firstName": "Primer Nombre",
+        "lastName": "Appellidos",
+        "birthDate": "Año de Nacimiento",
+        "motherName": "Nombre de Madre",
+        "fatherName": "Nombre de Padre",
+        "hireDate": "Fecha de Contratar",
+        "currentTitle": "Título",
+        "officeLocation": "Lugar de oficina",
+        "type": "Tipo de empleo",
+        "phoneNumber": "Numero de Telefono",
+        "endDate": "End Date (if applicable)",
+        "photo~attach": "Foto de Carnet",
+        "team": "Equipo",
+        "companyEmail": "Correo electrónico profesional",
+        "code": "Código",
+        "value": "Valor de Billete",
+        "issued": "Fecha de emisión",
+        "expiry": "Fecha de caducidad",
+        "department": "Departmento",
+        "firstDay": "Primer día",
+        "school": "Institución educativa a la que asistió",
+        "mentor": "Mentor",
+        "lastDay": "Ultimo día"
+    },
+    "Errors": {
+        "unknownError": "Ha ocurrido un problema.",
+        "qr": {
+            "noInviteUrl": "Se produjo un error creando el código QR. Por favor intente de nuevo. Si el problema persiste, comuníquese con su equipo de IT.",
+            "connectionError": "Se produjo un error estableciendo una conexión. Por favor intente de nuevo. Si el problema persiste, comuníquese con su equipo de IT.",
+            "notConnected": "Por favor escanee el código QR y establezca una conexión antes de verificar.",
+            "noConnectionFound": "Ningún record con el código [ {{connectionId}} ] fue encontrado.",
+            "rejectedProof": "Verificación fallida: es posible que esta credencial haya sido revocada o que no haya podido cumplir con la solicitud de prueba: \"{{proofRequestComment}}\""
+        },
+        "formData": {
+            "invalidDate": "Fecha Invalida"
+        },
+        "proofs": {
+            "fetchProofsError": "No se pudieron recuperar las opciones de requisitos de verificación disponibles.",
+            "profileFetchError": "No se pueden recuperar los perfiles de prueba!"
+        },
+        "email": {
+            "noInput": "Ingrese su correo electrónico en el campo a continuación"
+        },
+        "webcamCapture": {
+            "noPhoto": "Debe subir una foto antes de continuar con el siguiente paso."
+        },
+        "input": {
+            "nationalIdInput": "El numero de identidad nacional tiene 8 caracteres (mayusculas y numeros)",
+            "voterIdInput": "El carnet de votante tiene siete digitos",
+            "dateInput": "Inserte una fecha correcta",
+            "unsetID": "Debe especificar una identidad nacional",
+            "missingNames": "Debe incluir el nombre completo",
+            "missingFuzzySearchData": "Debe ingresar su fecha de nacimiento, el nombre de la madre o del padre",
+            "inputLength": "Asegurese que la entrada tiene entre {{minimum}} y {{maximum}} caracteres",
+            "missingPhoneNumber": "Por favor ingrese un número de teléfono válido",
+            "invalidOTP": "Proporcione el código de acceso completo de seis dígitos",
+            "emptyField": "Por favor ingrese algo"
+        },
+        "results": {
+            "noData": "No pudimos procesar los datos devueltos"
+        },
+        "fingerprint": {
+            "fpNotCaptured": "No pudimos capturar su huella digital. Haga clic en \"Recapturar huella digital\" para volver a intentar escanear."
+        }
+    },
+    "ConfirmationScreen": {
+        "text": {
+            "pleaseReview": "Haga que el cliente revise la siguiente información",
+            "agreement": "Acepto que la siguiente información personal se compartirá como parte de la verificación \"eKYC\".",
+            "infoShareIncludes": "La información compartida incluye su:"
+        }
+    },
+    "AuthMenu": {
+        "text": {
+            "selectVerification": "Seleccione un método de verificación"
+        }
+    },
+    "QR": {
+        "text": {
+            "clickVerify": "Haga clic en el botón \"Verificar\" a continuación...",
+            "retrieving": "Obteniendo su código QR. Por favor sea paciente...",
+            "scanQR": "Hay que escanear el código QR con su billetera móvil.",
+            "scanQRInstructions": "",
+            "connected": "¡Conexión establecida! Se enviará una solicitud de prueba a la billetera móvil del usuario.",
+            "resetConnection": "Reiniciar"
+        }
+    },
+    "UserDetails": {
+        "buttons": {
+            "exportProfile": "Exporte el registro",
+            "printProfile": "Imprima el registro"
+        }
+    },
+    "Dialog": {
+        "text": {
+            "slowInternetWarning": "La conexión de internet es lenta. El proceso de verificación puede tomar tiempo más de lo normal.",
+            "idVerified": "Identidad Verificada"
+        },
+        "buttons": {
+            "tryAgain": "Intente de nuevo"
+        }
+    },
+    "Email": {
+        "text": {
+            "instructions": "Por favor ingrese su correo electrónico",
+            "placeHolder": "Correo electrónico"
+        }
+    },
+    "AlternateSearchScreen": {
+        "text": {
+            "fuzzySearchInstructions": "Ingrese el nombre y apellido del cliente para buscar la información de identificación. También se necesitará la fecha de nacimiento del cliente, el nombre de la madre o el nombre del padre. Todos los campos también se pueden completar para una búsqueda más fuerte.",
+            "enterFirstAndLast": "Ingrese el {{first}} y los {{last}} del cliente",
+            "enterDob": "Ingrese la fecha de nacimiento del cliente",
+            "enterParentsNames": "Ingrese el nombre de la madre o del padre",
+            "requiredWithoutDob": "Obligatoria si no se introduce la fecha de nacimiento"
+        }
+    },
+    "FingerprintScan": {
+        "text": {
+            "place": "Coloque",
+            "useDifferentFinger": "Usa un dedo diferente",
+            "recaptureFingerprint": "Recuperar huella digital"
+        }
+    },
+    "FingerSelectionScreen": {
+        "text": {
+            "selectNew": "Selecciona un dígito diferente",
+            "leaveFpSelect": "Regresar"
+        }
+    },
+    "CredentialIssuance": {
+        "text": {
+            "connectionSuccessful": "¡Conexión establecida! Se crea una credencial.",
+            "instructions": "Hay que escanear el código QR con su billetera móvil.",
+            "offerNotice": "El ciudadano debe ver la tarjeta de identificación nacional en su billetera móvil.",
+            "issueNotice": "Se ha emitido una identificación nacional de ciudadano."
+        }
+    },
+    "RegistrationForm": {
+        "text": {
+            "instructionsHeader": "Ingrese detalles de la Credencial",
+            "instructions": "Los detalles de esta página se entregarán al empleado en una credencial."
+        },
+        "buttons": {
+            "populate": "Rellenar Formulario"
+        }
+    },
+    "RegistrationTable": {
+        "buttons": {
+            "registerNewEntry": "Registrar nueva entrada",
+            "entries": "Entradas de registración"
+        }
+    },
+    "ProofProfileMenu": {
+        "text": {
+            "loading": "Cargando opciones de requisitos de verificación...",
+            "requirement": "Requisito de Verificación"
+        }
+    },
+    "SearchMenu": {
+        "text": {
+            "instructions": "Ingrese la identificación del cliente",
+            "selectID": "Opciones de identificación",
+            "placeholder": "Identificación válida",
+            "alternateSearchInstructions": "No se reconoce la identificación"
+        }
+    },
+    "SMSOTP": {
+        "text": {
+            "otpEntryInstructions": "Ingrese su contraseña de un solo uso",
+            "messageSentTo": "La mensaje fue enviado a",
+            "successMessage": "Su transacción fue verificada con éxito",
+            "phoneNoEntryInstructions": "Ingrese su numero de teléfono",
+            "smsDetails": "Recibirá un mensaje de texto con una contraseña de seis dígitos para que se la proporcione a su verificador."
+        }
+    },
+    "WebcamCapture": {
+        "text": {
+            "photoAlt": "Se incluye con su credencial"
+        },
+        "buttons": {
+            "reset": "Restablecer Imagen"
+        }
+    }
+}

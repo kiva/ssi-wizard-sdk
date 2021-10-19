@@ -1,0 +1,42 @@
+[
+    {
+        "title": "Mobile Wallet",
+        "description": "Customer will use their wallet to establish a connection and provide credentials for proofs.",
+        "type": "verify",
+        "expectation": {
+            "selector": "#Kiva_QR",
+            "expect": "be.visible",
+            "backSelector": "[data-cy=\"qr-back\"]"
+        }
+    },
+    {
+        "title": "SMS",
+        "description": "Customer will verify their identity using a one-time password delivered via text message.",
+        "type": "verify",
+        "expectation": {
+            "selector": "form[name=\"ekycIdForm\"]",
+            "expect": "exist",
+            "backSelector": "#back"
+        }
+    },
+    {
+        "title": "Kiva Credential",
+        "description": "Issue Verifiable Credential to your customer's mobile wallet",
+        "type": "issue",
+        "expectation": {
+            "selector": "[data-cy=\"image-selection\"]",
+            "expect": "be.visible",
+            "backSelector": "[data-cy=\"image-select-back\"]"
+        }
+    },
+    {
+        "title": "Fingerprint Scan",
+        "description": "Customer will scan their fingerprint in order to prove their identity.",
+        "type": "verify",
+        "expectation": {
+            "selector": "[data-cy=\"standard-search\"]",
+            "expect": "be.visible",
+            "backSelector": ".secondary"
+        }
+    }
+]

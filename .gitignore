@@ -7,12 +7,17 @@
 
 # testing
 /coverage
+**/cypress
 
 # NPM config
 **.npmrc
 
 # config files for Standalone
 /standalone/src/config.ts
+
+# files for create-ssirius-standalone
+/create-ssirius-standalone/lib
+/create-ssirius-standalone/template/tools/bundle/js/constants.ts
 
 # files for ssirius-react
 /react-core/lib
