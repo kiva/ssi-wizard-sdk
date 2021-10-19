@@ -33,12 +33,14 @@
         "cypress": "^8.6.0",
         "fs-extra": "^10.0.0",
         "react-scripts": "4.0.3",
-        "serve": "^12.0.1"
+        "serve": "^12.0.1",
+        "wait-on": "^6.0.0"
     },
     "scripts": {
         "prep": "sh tools/bundle/build_required_files.sh & react-scripts",
         "start": "PORT=7567 npm run prep -- start",
         "build": "npm run prep -- build",
+        "serve-build": "serve -s build",
         "test": "react-scripts test",
         "eject": "react-scripts eject",
         "compile": "tsc",
