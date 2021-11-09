@@ -1,6 +1,6 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import FormControl from '@material-ui/core/FormControl';
@@ -21,8 +21,10 @@ import {
     SearchInputData
 } from './interfaces/SearchInterfaces';
 import FlowDispatchTypes from '../../enums/FlowDispatchTypes';
+import TranslationContext from '../../contexts/TranslationContext';
 
 export default function SearchMenu(props: SearchProps) {
+    const t = useContext(TranslationContext);
     const [externalId, setExternalId] = useState<string>(props.store.get('externalId', Object.keys(props.dropdownConfig)[0]));
     const [filters, setFilters] = useState<SearchInputData>(
         props.store.get('filters', {
@@ -68,7 +70,7 @@ export default function SearchMenu(props: SearchProps) {
 
     const inputIsEmpty = (value: string) => {
         if (value && '' === value.trim()) {
-            toast.error(props.t('Errors.input.emptyField'), {
+            toast.error(t('Errors.input.emptyField'), {
                 duration: 3000
             });
             return false;
@@ -103,7 +105,7 @@ export default function SearchMenu(props: SearchProps) {
                     alignItems="center">
                     <Grid item>
                         <Typography component="h2" variant="h6" gutterBottom>
-                            {props.t('SearchMenu.text.instructions')}
+                            {t('SearchMenu.text.instructions')}
                         </Typography>
                     </Grid>
                     <form name="ekycIdForm">
@@ -127,7 +129,7 @@ export default function SearchMenu(props: SearchProps) {
                                             />
                                         }>
                                         <MenuItem value="none" disabled>
-                                            {props.t('SearchMenu.text.selectID')}
+                                            {t('SearchMenu.text.selectID')}
                                         </MenuItem>
                                         {Object.entries(
                                             props.dropdownConfig
@@ -152,7 +154,7 @@ export default function SearchMenu(props: SearchProps) {
                                         autoFocus={true}
                                         label={
                                             filterValue.trim() === ''
-                                                ? props.t('SearchMenu.text.placeholder')
+                                                ? t('SearchMenu.text.placeholder')
                                                 : ''
                                         }
                                         value={filterValue}
@@ -172,7 +174,7 @@ export default function SearchMenu(props: SearchProps) {
                                 id="scan-fingerprint"
                                 onClick={(e: any) => handleSubmission(e)}
                                 onSubmit={(e: any) => handleSubmission(e)}>
-                                {props.t('Standard.next')}
+                                {t('Standard.next')}
                             </Button>
                             <Button
                                 className="secondary"
@@ -181,12 +183,12 @@ export default function SearchMenu(props: SearchProps) {
                                         type: FlowDispatchTypes.BACK
                                     });
                                 }}>
-                                {props.t('Standard.back')}
+                                {t('Standard.back')}
                             </Button>
                             <a
                                 id="alternate-search"
                                 onClick={() => toggleSearchType()}>
-                                {props.t('SearchMenu.text.alternateSearchInstructions')}
+                                {t('SearchMenu.text.alternateSearchInstructions')}
                             </a>
                         </div>
                     </form>

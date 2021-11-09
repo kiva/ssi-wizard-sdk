@@ -1,5 +1,5 @@
 import Grid from '@material-ui/core/Grid';
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
@@ -17,8 +17,10 @@ import {
 import getDataFrom from '../../helpers/getDataFrom';
 
 import FlowDispatchTypes from '../../enums/FlowDispatchTypes';
+import TranslationContext from '../../contexts/TranslationContext';
 
 export default function ConfirmationScreen(props: ConfirmationProps) {
+    const t = useContext(TranslationContext);
     const enableProofProfileMenu = !!props.CONSTANTS.proof_profile_url;
     const [credentialKeys, setCredentialKeys] = useState<CredentialKeyMap | null>(enableProofProfileMenu ? getProfileDataIfAvailable() : props.CONSTANTS.credentialKeyMap);
 
@@ -46,17 +48,17 @@ export default function ConfirmationScreen(props: ConfirmationProps) {
                 alignItems="center">
                 <Grid item>
                     <Typography component="h2" variant="h6" gutterBottom>
-                        {props.t('ConfirmationScreen.text.pleaseReview')}
+                        {t('ConfirmationScreen.text.pleaseReview')}
                     </Typography>
                 </Grid>
             </Grid>
             <div className="legal-terms-section">
                 <div className="legal-terms1">
-                    <p>{props.t('ConfirmationScreen.text.agreement')}</p>
+                    <p>{t('ConfirmationScreen.text.agreement')}</p>
 
-                    <p>{props.t('ConfirmationScreen.text.infoShareIncludes')}</p>
+                    <p>{t('ConfirmationScreen.text.infoShareIncludes')}</p>
                 </div>
-                {credentialKeys && <PII t={props.t} fields={credentialKeys} />}
+                {credentialKeys && <PII fields={credentialKeys} />}
             </div>
             <Grid
                 container
@@ -71,7 +73,7 @@ export default function ConfirmationScreen(props: ConfirmationProps) {
                                 type: FlowDispatchTypes.NEXT
                             })
                         }>
-                        {props.t('Standard.accept')}
+                        {t('Standard.accept')}
                     </Button>
                 </Grid>
             </Grid>
@@ -80,11 +82,12 @@ export default function ConfirmationScreen(props: ConfirmationProps) {
 }
 
 function PII(props: CredentialKeyFieldsProps) {
+    const t = useContext(TranslationContext);
     const labels: CredentialKeyFieldState = delegateLabels();
 
     function translatePII(key: string) {
         const translationKey = `PII.${key}`;
-        const maybeTranslated = props.t(translationKey);
+        const maybeTranslated = t(translationKey);
 
         if (maybeTranslated === translationKey) {
             return key;

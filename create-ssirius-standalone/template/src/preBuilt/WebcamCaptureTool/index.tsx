@@ -1,5 +1,5 @@
 import Grid from '@material-ui/core/Grid';
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import Camera from 'react-html5-camera-photo';
 import Button from '@material-ui/core/Button';
 import 'react-html5-camera-photo/build/css/index.css';
@@ -14,11 +14,13 @@ import {
 } from './interfaces/PhotoCaptureInterfaces';
 import ICommonProps from '../../interfaces/ICommonProps';
 import FlowDispatchTypes from '../../enums/FlowDispatchTypes';
+import TranslationContext from '../../contexts/TranslationContext';
 
 const PHOTO_WIDTH = 250;
 const PHOTO_HEIGHT = 180;
 
 export default function WebcamCaptureTool(props: ICommonProps) {
+    const t = useContext(TranslationContext);
     const [photoAttach, setPhotoAttach] = useState<PhotoAttach | undefined>(
         getInitialPhotoAttach()
     );
@@ -113,7 +115,6 @@ export default function WebcamCaptureTool(props: ICommonProps) {
     function renderPageButtons() {
         return (
             <WebcamCaptureToolButtons
-                t={props.t}
                 onClickBack={() =>
                     props.dispatch({ type: FlowDispatchTypes.BACK })
                 }
@@ -133,7 +134,7 @@ export default function WebcamCaptureTool(props: ICommonProps) {
                         color: 'red',
                         marginTop: '20px'
                     }}>
-                    {props.t('Errors.webcamCapture.noPhoto')}
+                    {t('Errors.webcamCapture.noPhoto')}
                 </Typography>
             );
         } else {
@@ -152,7 +153,7 @@ export default function WebcamCaptureTool(props: ICommonProps) {
                 <img
                     id="credential-image"
                     src={`data:${photoAttach.type};${photoAttach.encoding},${photoAttach.data}`}
-                    alt={props.t('WebcamCapture.text.photoAlt')}></img>
+                    alt={t('WebcamCapture.text.photoAlt')}></img>
                 {renderPageButtons()}
             </Grid>
         );
@@ -194,6 +195,7 @@ export default function WebcamCaptureTool(props: ICommonProps) {
 }
 
 function WebcamCaptureToolButtons(props: WebcamCaptureButtonProps) {
+    const t = useContext(TranslationContext);
     return (
         <Grid
             id="dialog-box"
@@ -209,7 +211,7 @@ function WebcamCaptureToolButtons(props: WebcamCaptureButtonProps) {
                         data-cy="image-select-back"
                         className="back"
                         onClick={props.onClickBack}>
-                        {props.t('Standard.back')}
+                        {t('Standard.back')}
                     </Button>
                 </Grid>
                 <Grid item>
@@ -217,7 +219,7 @@ function WebcamCaptureToolButtons(props: WebcamCaptureButtonProps) {
                         data-cy="reset-flow"
                         className="back"
                         onClick={props.onReset}>
-                        {props.t('WebcamCapture.buttons.reset')}
+                        {t('WebcamCapture.buttons.reset')}
                     </Button>
                 </Grid>
                 <Grid item>
@@ -227,7 +229,7 @@ function WebcamCaptureToolButtons(props: WebcamCaptureButtonProps) {
                         className="next"
                         onSubmit={props.onSubmit}
                         onClick={props.onSubmit}>
-                        {props.t('Standard.continue')}
+                        {t('Standard.continue')}
                     </Button>
                 </Grid>
             </Grid>

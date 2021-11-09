@@ -33,6 +33,7 @@ import { ProofRequestProfile } from '../ConfirmationScreen/interfaces/Confirmati
 import './css/SMSOTPScreen.scss';
 import '../../css/DialogBody.scss';
 import '../../css/Common.scss';
+import TranslationContext from '../../contexts/TranslationContext';
 
 const disabledFunction = () => {
     console.log('Please wait for the request to complete');
@@ -40,6 +41,7 @@ const disabledFunction = () => {
 };
 
 export default class SMSOTPScreen extends React.Component<SMSProps, OTPState> {
+    static contextType = TranslationContext;
     private email: string;
     private profile: ProofRequestProfile;
 
@@ -87,7 +89,6 @@ export default class SMSOTPScreen extends React.Component<SMSProps, OTPState> {
                 auth_token={this.props.CONSTANTS.auth_token}
                 phoneIntls={this.props.phoneIntls}
                 dispatch={this.props.dispatch}
-                t={this.props.t}
                 SDK={this.SDK}
             />
         );
@@ -105,7 +106,6 @@ export default class SMSOTPScreen extends React.Component<SMSProps, OTPState> {
                 auth_token={this.props.CONSTANTS.auth_token}
                 phoneIntls={this.props.phoneIntls}
                 dispatch={this.props.dispatch}
-                t={this.props.t}
                 SDK={this.SDK}
             />
         );
@@ -142,6 +142,7 @@ export default class SMSOTPScreen extends React.Component<SMSProps, OTPState> {
 }
 
 class PhoneNumberScreen extends React.Component<PhoneScreenProps, PhoneState> {
+    static contextType = TranslationContext;
     constructor(props: PhoneScreenProps) {
         super(props);
         this.state = {
@@ -191,7 +192,7 @@ class PhoneNumberScreen extends React.Component<PhoneScreenProps, PhoneState> {
                 () => this.sendTwilioRequest(body)
             );
         } else {
-            toast.error(this.props.t('Errors.input.missingPhoneNumber'), {
+            toast.error(this.context('Errors.input.missingPhoneNumber'), {
                 duration: 3000
             });
         }
@@ -217,11 +218,10 @@ class PhoneNumberScreen extends React.Component<PhoneScreenProps, PhoneState> {
     renderInProgress() {
         return (
             <div>
-                <SMSStatus status="progress" t={this.props.t} />
+                <SMSStatus status="progress" />
                 <SMSScreenButtons
                     onClickBack={() => disabledFunction}
                     onSubmit={() => disabledFunction}
-                    t={this.props.t}
                 />
             </div>
         );
@@ -235,14 +235,12 @@ class PhoneNumberScreen extends React.Component<PhoneScreenProps, PhoneState> {
                     handlePhoneNumberChange={this.handlePhoneNumberChange}
                     handleEnter={this.handlePhoneNumberEnter}
                     phoneIntls={this.props.phoneIntls}
-                    t={this.props.t}
                 />
                 <SMSScreenButtons
                     onClickBack={() =>
                         this.props.dispatch({ type: FlowDispatchTypes.BACK })
                     }
                     onSubmit={() => this.beginTwilioRequest()}
-                    t={this.props.t}
                 />
             </div>
         );
@@ -251,7 +249,7 @@ class PhoneNumberScreen extends React.Component<PhoneScreenProps, PhoneState> {
     renderErrorScreen() {
         return (
             <div>
-                <SMSStatus status="error" errorText={this.state.error} t={this.props.t} />
+                <SMSStatus status="error" errorText={this.state.error} />
                 <SMSScreenButtons
                     onClickBack={() => {
                         this.setState({
@@ -259,7 +257,6 @@ class PhoneNumberScreen extends React.Component<PhoneScreenProps, PhoneState> {
                         });
                     }}
                     onSubmit={() => disabledFunction}
-                    t={this.props.t}
                 />
             </div>
         );
@@ -281,6 +278,7 @@ class PhoneNumberScreen extends React.Component<PhoneScreenProps, PhoneState> {
 }
 
 class OTPScreen extends React.Component<OTPScreenProps, OTPInputState> {
+    static contextType = TranslationContext;
     constructor(props: OTPScreenProps) {
         super(props);
         this.state = {
@@ -348,7 +346,7 @@ class OTPScreen extends React.Component<OTPScreenProps, OTPInputState> {
                 () => this.sendTwilioRequest(body)
             );
         } else {
-            toast.error(this.props.t('Errors.input.invalidOTP'), {
+            toast.error(this.context('Errors.input.invalidOTP'), {
                 duration: 3000
             });
         }
@@ -404,12 +402,12 @@ class OTPScreen extends React.Component<OTPScreenProps, OTPInputState> {
                         variant="h6"
                         gutterBottom
                         align="center">
-                        {this.props.t('SMSOTP.text.otpEntryInstructions')}
+                        {this.context('SMSOTP.text.otpEntryInstructions')}
                     </Typography>
                 </Grid>
                 <Grid item>
                     <Typography id="instructions" component="h2" align="center">
-                        {this.props.t('SMSOTP.text.messageSentTo')}
+                        {this.context('SMSOTP.text.messageSentTo')}
                         <br />
                         {`${this.props.phoneNumber}`}
                     </Typography>
@@ -418,7 +416,6 @@ class OTPScreen extends React.Component<OTPScreenProps, OTPInputState> {
                 <SMSScreenButtons
                     onClickBack={() => this.goToPhoneInput()}
                     onSubmit={() => this.beginTwilioRequest()}
-                    t={this.props.t}
                 />
             </div>
         );
@@ -427,11 +424,10 @@ class OTPScreen extends React.Component<OTPScreenProps, OTPInputState> {
     renderOTPErrorScreen() {
         return (
             <div>
-                <SMSStatus status="error" errorText={this.state.smsError} t={this.props.t} />
+                <SMSStatus status="error" errorText={this.state.smsError} />
                 <SMSScreenButtons
                     onClickBack={() => this.handleErrorBack()}
                     onSubmit={() => disabledFunction}
-                    t={this.props.t}
                 />
             </div>
         );
@@ -440,11 +436,10 @@ class OTPScreen extends React.Component<OTPScreenProps, OTPInputState> {
     renderInProgress() {
         return (
             <div>
-                <SMSStatus status="verifying" t={this.props.t} />
+                <SMSStatus status="verifying" />
                 <SMSScreenButtons
                     onClickBack={() => disabledFunction}
                     onSubmit={() => disabledFunction}
-                    t={this.props.t}
                 />
             </div>
         );
@@ -453,11 +448,10 @@ class OTPScreen extends React.Component<OTPScreenProps, OTPInputState> {
     renderVerified() {
         return (
             <div>
-                <SMSStatus status="success" t={this.props.t} />
+                <SMSStatus status="success" />
                 <SMSScreenButtons
                     onClickBack={() => disabledFunction}
                     onSubmit={() => disabledFunction}
-                    t={this.props.t}
                 />
             </div>
         );
@@ -481,6 +475,7 @@ class OTPScreen extends React.Component<OTPScreenProps, OTPInputState> {
 }
 
 class SMSScreenButtons extends React.Component<SMSButtonProps> {
+    static contextType = TranslationContext;
     render() {
         return (
             <Grid
@@ -494,7 +489,7 @@ class SMSScreenButtons extends React.Component<SMSButtonProps> {
                         data-cy="smsotp-back"
                         className="back"
                         onClick={this.props.onClickBack}>
-                        {this.props.t('Standard.back')}
+                        {this.context('Standard.back')}
                     </Button>
                 </Grid>
                 <Grid item>
@@ -505,7 +500,7 @@ class SMSScreenButtons extends React.Component<SMSButtonProps> {
                         className="next"
                         onSubmit={this.props.onSubmit}
                         onClick={this.props.onSubmit}>
-                        {this.props.t('Standard.verify')}
+                        {this.context('Standard.verify')}
                     </Button>
                 </Grid>
             </Grid>
@@ -514,6 +509,7 @@ class SMSScreenButtons extends React.Component<SMSButtonProps> {
 }
 
 class SMSStatus extends React.Component<SMSStatusProps> {
+    static contextType = TranslationContext;
     // TODO: A lot of this is duplicate code from DialogBody. It would be cool to have a single SOT for lightbox styles and use props for text fields.
     renderInProgress(text: string) {
         return (
@@ -556,7 +552,7 @@ class SMSStatus extends React.Component<SMSStatusProps> {
                     component="h2"
                     align="center"
                     className="status-text">
-                    {this.props.t('SMSOTP.text.successMessage')}
+                    {this.context('SMSOTP.text.successMessage')}
                 </Typography>
             </div>
         );
@@ -584,6 +580,7 @@ class SMSStatus extends React.Component<SMSStatusProps> {
 }
 
 class OTPInput extends React.Component<OTPInputProps> {
+    static contextType = TranslationContext;
     focusOn = (el: HTMLElement | null) => {
         el && el.focus();
     };
@@ -689,6 +686,7 @@ class OTPInput extends React.Component<OTPInputProps> {
 }
 
 class PhoneNumberInput extends React.Component<PhoneNumberInputProps> {
+    static contextType = TranslationContext;
     render() {
         return (
             <div>
@@ -698,12 +696,12 @@ class PhoneNumberInput extends React.Component<PhoneNumberInputProps> {
                         variant="h6"
                         gutterBottom
                         align="center">
-                        {this.props.t('SMSOTP.text.phoneNoEntryInstructions')}
+                        {this.context('SMSOTP.text.phoneNoEntryInstructions')}
                     </Typography>
                 </Grid>
                 <Grid item>
                     <Typography id="instructions" component="h2" align="center">
-                        {this.props.t('SMSOTP.text.smsDetails')}
+                        {this.context('SMSOTP.text.smsDetails')}
                     </Typography>
                 </Grid>
                 <Grid item>

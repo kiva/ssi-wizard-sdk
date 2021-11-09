@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import Grid from '@material-ui/core/Grid';
 import MenuItem from '@material-ui/core/MenuItem';
 import Button from '@material-ui/core/Button';
@@ -21,10 +21,12 @@ import FlowDispatchTypes from '../../enums/FlowDispatchTypes';
 import '../../css/Common.scss';
 import './css/RegistrationForm.scss';
 import 'react-phone-input-2/lib/high-res.css';
+import TranslationContext from '../../contexts/TranslationContext';
 
 const REGISTRATION_STORE_KEY = 'registrationFormData';
 
 export default function RegistrationForm(props: RegistrationFormProps) {
+    const t = useContext(TranslationContext);
     const [credentialState, setCredentialState] = useState(
         props.store.get(REGISTRATION_STORE_KEY, {})
     );
@@ -81,7 +83,7 @@ export default function RegistrationForm(props: RegistrationFormProps) {
             }
 
             if ('NaN' === dates[key]) {
-                dates[key] = `${dates[key]} -> (${props.t('Errors.formData.invalidDate')})`;
+                dates[key] = `${dates[key]} -> (${t('Errors.formData.invalidDate')})`;
             }
         }
         setCredentialData(dates);
@@ -111,11 +113,11 @@ export default function RegistrationForm(props: RegistrationFormProps) {
                     justify="space-around">
                     <Grid container justify="space-around">
                         <Typography component="h4" variant="h6">
-                            {props.t('RegistrationForm.text.instructionsHeader')}
+                            {t('RegistrationForm.text.instructionsHeader')}
                         </Typography>
                     </Grid>
                     <Grid container justify="space-around">
-                        {props.t('RegistrationForm.text.instructions')}
+                        {t('RegistrationForm.text.instructions')}
                     </Grid>
                     <Grid item xs={6}>
                         <Grid container direction="row" justify="space-between">
@@ -166,7 +168,7 @@ export default function RegistrationForm(props: RegistrationFormProps) {
                         props.dispatch({ type: FlowDispatchTypes.BACK })
                     }
                     onPopulateForm={() => onPopulateForm()}
-                    t={props.t}
+                    t={t}
                     onSubmit={(e: any) =>
                         handleSubmit(e)
                     }></RegistrationFormButtons>
@@ -285,6 +287,7 @@ function RegistrationInputField(props: InputProps) {
 }
 
 function RegistrationFormButtons(props: ButtonProps) {
+    const t = useContext(TranslationContext);
     return (
         <Grid
             id="dialog-box"
@@ -301,7 +304,7 @@ function RegistrationFormButtons(props: ButtonProps) {
                             data-cy="qr-back"
                             className="back"
                             onClick={props.onClickBack}>
-                            {props.t('Standard.back')}
+                            {t('Standard.back')}
                         </Button>
                     </Grid>
                     <Grid item>
@@ -309,7 +312,7 @@ function RegistrationFormButtons(props: ButtonProps) {
                             data-cy="populate-form"
                             className="back"
                             onClick={props.onPopulateForm}>
-                            {props.t('RegistrationForm.buttons.populate')}
+                            {t('RegistrationForm.buttons.populate')}
                         </Button>
                     </Grid>
                     <Grid item>
@@ -318,7 +321,7 @@ function RegistrationFormButtons(props: ButtonProps) {
                             onSubmit={props.onSubmit}
                             type="submit"
                             className="next">
-                            {props.t('Standard.continue')}
+                            {t('Standard.continue')}
                         </Button>
                     </Grid>
                 </Grid>

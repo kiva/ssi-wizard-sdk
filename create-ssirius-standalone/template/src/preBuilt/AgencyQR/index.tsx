@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect, useContext } from 'react';
 import toast from 'react-hot-toast';
 import { v4 as uuid4 } from 'uuid';
 import Typography from '@material-ui/core/Typography';
@@ -19,6 +19,7 @@ import FlowDispatchTypes from '../../enums/FlowDispatchTypes';
 
 import '../../css/Common.scss';
 import './css/QRScreen.scss';
+import TranslationContext from '../../contexts/TranslationContext';
 
 let cancel: boolean;
 let agent: any;
@@ -38,6 +39,8 @@ export default function AgencyQR(props: QRProps) {
     const [connectionId, setConnectionId] = useState<string>(
         props.store.get('connection_id', '')
     );
+    const t = useContext(TranslationContext);
+
     if (!agent) {
         agent = KivaAgent.init(props.CONSTANTS.auth_token);
     }
@@ -142,7 +145,7 @@ export default function AgencyQR(props: QRProps) {
                 !!agent.isRejected &&
                 agent.isRejected(verificationStatus)
             ) {
-                const errorMessage = props.t('Errors.qr.rejectedProof', {
+                const errorMessage = t('Errors.qr.rejectedProof', {
                     proofRequestComment: profile.current.comment
                 });
                 // eslint-disable-next-line
@@ -160,7 +163,7 @@ export default function AgencyQR(props: QRProps) {
 
     function startVerification() {
         if (verifying || !agentConnected) {
-            toast.error(props.t('Errors.qr.notConnected'), {
+            toast.error(t('Errors.qr.notConnected'), {
                 duration: 3000
             });
         } else {
@@ -200,7 +203,7 @@ export default function AgencyQR(props: QRProps) {
             setInviteUrl(invitation);
             writeQRtoCanvas(invitation);
         } else {
-            processConnectionError(props.t('Errors.qr.noInviteUrl'));
+            processConnectionError(t('Errors.qr.noInviteUrl'));
         }
     }
 
@@ -223,7 +226,7 @@ export default function AgencyQR(props: QRProps) {
         if ('string' === typeof error) {
             errorMessage = error;
         } else {
-            errorMessage = error.hasOwnProperty('message') ? error.message : props.t('Errors.unknown');
+            errorMessage = error.hasOwnProperty('message') ? error.message : t('Errors.unknown');
         }
         cancel = true;
         setRetrievingInviteUrl(false);
@@ -250,12 +253,12 @@ export default function AgencyQR(props: QRProps) {
                     gutterBottom
                     className="qr-loading-title">
                     <strong>
-                        {agentConnected ? props.t('QR.text.clickVerify') : props.t('QR.text.scanQR')}
+                        {agentConnected ? t('QR.text.clickVerify') : t('QR.text.scanQR')}
                     </strong>
                     <br />
                     {agentConnected
-                        ? props.t('QR.text.connected')
-                        : props.t('QR.text.scanQRInstructions')}
+                        ? t('QR.text.connected')
+                        : t('QR.text.scanQRInstructions')}
                 </Typography>
                 <div id="qr-box">
                     <canvas id="qr-code"></canvas>
@@ -273,7 +276,7 @@ export default function AgencyQR(props: QRProps) {
     }
 
     function renderRetrieving(text?: string) {
-        const header: string = text || props.t('QR.text.retrieving');
+        const header: string = text || t('QR.text.retrieving');
         return (
             <div className="centered-flex-content">
                 <Typography
@@ -298,7 +301,7 @@ export default function AgencyQR(props: QRProps) {
                     variant="h6"
                     gutterBottom
                     className="qr-loading-title">
-                    {props.t('Standard.verifying')}...
+                    {t('Standard.verifying')}...
                 </Typography>
                 <div id="qr-loader">
                     <CircularProgress className="dialog-icon verifying" />
@@ -353,13 +356,15 @@ export default function AgencyQR(props: QRProps) {
                 }
                 onSubmit={() => startVerification()}
                 onReset={() => resetFlow()}
-                t={props.t}
+                t={t}
             />
         </div>
     );
 }
 
 function QRScreenButtons(props: QRButtonProps) {
+    const t = useContext(TranslationContext);
+
     return (
         <Grid
             container
@@ -372,7 +377,7 @@ function QRScreenButtons(props: QRButtonProps) {
                     data-cy="qr-back"
                     className="back secondary"
                     onClick={props.onClickBack}>
-                    {props.t('Standard.back')}
+                    {t('Standard.back')}
                 </Button>
             </Grid>
             <Grid item>
@@ -380,7 +385,7 @@ function QRScreenButtons(props: QRButtonProps) {
                     data-cy="reset-flow"
                     className="qr-reset"
                     onClick={props.onReset}>
-                    {props.t('QR.text.resetConnection')}
+                    {t('QR.text.resetConnection')}
                 </Button>
             </Grid>
             <Grid item>
@@ -391,7 +396,7 @@ function QRScreenButtons(props: QRButtonProps) {
                     className="next button-verify"
                     onSubmit={props.onSubmit}
                     onClick={props.onSubmit}>
-                    {props.t('Standard.next')}
+                    {t('Standard.next')}
                 </Button>
             </Grid>
         </Grid>
