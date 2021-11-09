@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import CircularProgress from '@material-ui/core/CircularProgress';
@@ -8,9 +8,11 @@ import CheckCircleIcon from '@material-ui/icons/CheckCircle';
 import '../css/Common.scss';
 import '../css/DialogBody.scss';
 
-import {DialogBodyProps} from '../interfaces/DialogInterfaces';
+import { DialogBodyProps } from '../interfaces/DialogInterfaces';
+import TranslationContext from '../contexts/TranslationContext';
 
 export default function DialogBody(props: DialogBodyProps) {
+    const t = useContext(TranslationContext);
     const [showCancelDialog, setShowCancelDialog] = useState<
         boolean | undefined
     >(props.allowCancel);
@@ -27,7 +29,7 @@ export default function DialogBody(props: DialogBodyProps) {
                     variant="h4"
                     gutterBottom
                     className="dialog-title">
-                    {props.t('Standard.verifying')}
+                    {t('Standard.verifying')}
                 </Typography>
                 <div>
                     <CircularProgress className="dialog-icon verifying" />
@@ -41,20 +43,20 @@ export default function DialogBody(props: DialogBodyProps) {
             <div className="DialogBody">
                 <ErrorIcon className="dialog-icon warning" />
                 <div className="DialogBodyErrorMessage">
-                    {props.t('Dialog.text.slowInternetWarning')}
+                    {t('Dialog.text.slowInternetWarning')}
                 </div>
                 <div className="buttonListNew row tight">
                     <Button
                         onClick={props.cancel}
                         id="cancel-request"
                         data-cy="cancel">
-                        {props.t('Dialog.buttons.tryAgain')}
+                        {t('Dialog.buttons.tryAgain')}
                     </Button>
                     <Button
                         onClick={() => setShowCancelDialog(false)}
                         data-cy="continue"
                         id="continue-request">
-                        {props.t('Standard.continue')}
+                        {t('Standard.continue')}
                     </Button>
                 </div>
             </div>
@@ -69,7 +71,7 @@ export default function DialogBody(props: DialogBodyProps) {
                     variant="h4"
                     gutterBottom
                     className="dialog-title">
-                    {props.t('Dialog.text.idVerified')}
+                    {t('Dialog.text.idVerified')}
                 </Typography>
                 <CheckCircleIcon className="dialog-icon verified" />
             </div>
@@ -91,14 +93,14 @@ export default function DialogBody(props: DialogBodyProps) {
                     onClick={() => props.clickFunction(false)}
                     data-cy="dialog-button"
                     className="error">
-                    {buttonText || props.t('Standard.continue')}
+                    {buttonText || t('Standard.continue')}
                 </Button>
             </div>
         );
     }
 
     if (props.errorMessage) {
-        return renderError(props.t('Dialog.buttons.tryAgain'));
+        return renderError(t('Dialog.buttons.tryAgain'));
     }
     if (!props.complete) {
         if (showCancelDialog) {

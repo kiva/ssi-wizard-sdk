@@ -8,7 +8,7 @@ interface DialogCommonProps {
 
 export interface DialogContainerProps
     extends DialogCommonProps,
-        DialogTextElements {
+    DialogTextElements {
     open: boolean;
     handleCancel?: () => void;
 }
@@ -17,6 +17,4 @@ export interface DialogBodyProps extends DialogCommonProps, DialogTextElements {
     cancel?: () => void;
 }
 
-interface DialogTextElements {
-    t: Function
-}
+interface DialogTextElements { }

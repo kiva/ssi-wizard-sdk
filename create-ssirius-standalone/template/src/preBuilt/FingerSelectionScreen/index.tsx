@@ -1,5 +1,5 @@
 import Grid from '@material-ui/core/Grid';
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
@@ -13,18 +13,20 @@ import FormControlLabel from '@material-ui/core/FormControlLabel';
 
 import { FingerSelectProps } from './interfaces/FingerSelectionInterfaces';
 import Fingers from '../../globals/fingerMap';
+import TranslationContext from '../../contexts/TranslationContext';
 
 const FINGER_STORE = 'selectedFinger';
 
 export default function FingerSelectionScreen(props: FingerSelectProps) {
+    const t = useContext(TranslationContext);
     const [selectedFinger, setSelectedFinger] = useState<string>(
         props.store.get(FINGER_STORE, 'right_thumb')
     );
 
     function getFingerCaption(code: string) {
         const translationKey = `Fingers.${code}_full`;
-        return props.t(translationKey, {
-            finger: props.t('Fingers.finger')
+        return t(translationKey, {
+            finger: t('Fingers.finger')
         }) || '';
     }
 
@@ -37,7 +39,7 @@ export default function FingerSelectionScreen(props: FingerSelectProps) {
     function renderHeader() {
         return <Grid item>
             <Typography component="h2" variant="h6" gutterBottom>
-                {props.t('FingerSelectionScreen.text.selectNew')}
+                {t('FingerSelectionScreen.text.selectNew')}
             </Typography>
         </Grid>;
     }
@@ -81,7 +83,7 @@ export default function FingerSelectionScreen(props: FingerSelectProps) {
                         Use <strong>{getFingerCaption(selectedFinger)}</strong>
                     </span>
                 ) : (
-                    props.t('Standard.goBack')
+                    t('Standard.goBack')
                 )}
             </Button>
         );

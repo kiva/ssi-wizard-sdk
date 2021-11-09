@@ -1,18 +1,19 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 import listen from './helpers/listen';
 import { Toaster } from 'react-hot-toast';
 import AppHeader from './components/AppHeader';
 import SSIriusRouter, { IConstants } from '@kiva/ssirius-react';
 import useTranslator from './hooks/useTranslator';
+import TranslationContext from './contexts/TranslationContext';
 
 function App(props: AppProps) {
     const { config } = props;
     const [authToken, setAuthToken] = useState<string | undefined>(config.auth_token);
     const Header = useHeaderIfAsked(config);
     const Footer = useFooterIfAsked(config);
+    const t = useTranslator(config.defaultLang);
 
     config.auth_token = authToken;
-    config.t = useTranslator(config.defaultLang);
 
     listen(window, "message", e => {
         if (config.permittedOpenerOrigins && config.permittedOpenerOrigins.indexOf(e.origin) > -1) {
@@ -29,10 +30,12 @@ function App(props: AppProps) {
     return (
         <div className="KernelContainer">
             <div className="KernelContent">
-                <Toaster />
-                {Header}
-                <SSIriusRouter {...config} />;
-                {Footer}
+                <TranslationContext.Provider value={t}>
+                    <Toaster />
+                    {Header}
+                    <SSIriusRouter {...config} />;
+                    {Footer}
+                </TranslationContext.Provider>
             </div>
         </div >
     )

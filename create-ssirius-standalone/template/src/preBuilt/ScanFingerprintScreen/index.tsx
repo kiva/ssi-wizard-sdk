@@ -1,6 +1,6 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useContext } from 'react';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
@@ -20,10 +20,12 @@ import FlowDispatchTypes from '../../enums/FlowDispatchTypes';
 import failed from './images/np_fingerprint_failed.png';
 import success from './images/np_fingerprint_verified.png';
 import in_progress from './images/np_fingerprint_inprogress.png';
+import TranslationContext from '../../contexts/TranslationContext';
 
 const FINGER_STORE = 'selectedFinger';
 
 export default function ScanFingerprintScreen(props: FPScanProps) {
+    const t = useContext(TranslationContext);
     const SLOW_INTERNET_THRESHOLD: number =
         props.CONSTANTS.slowInternetThreshold || (process.env.SLOW_INTERNET_THRESHOLD && parseInt(process.env.SLOW_INTERNET_THRESHOLD)) || 10000;
     const [selectedFinger, setSelectedFinger] = useState<string>(
@@ -75,8 +77,8 @@ export default function ScanFingerprintScreen(props: FPScanProps) {
     }
 
     function buildFingerCaption(fingerType: string): string {
-        return props.t(`Fingers.${fingerType}_full`, {
-            finger: props.t('Fingers.finger')
+        return t(`Fingers.${fingerType}_full`, {
+            finger: t('Fingers.finger')
         });
     }
 
@@ -102,7 +104,7 @@ export default function ScanFingerprintScreen(props: FPScanProps) {
     function beginRequest(event: any) {
         event.preventDefault();
         if ('failed' === scanStatus) {
-            toast.error(props.t('Errors.fingerprint.fpNotCaptured'), {
+            toast.error(t('Errors.fingerprint.fpNotCaptured'), {
                 duration: 3000
             });
         } else {
@@ -157,7 +159,7 @@ export default function ScanFingerprintScreen(props: FPScanProps) {
             console.error('Error -> ' + errorMessage);
             setDialogSuccess(false);
             setDialogComplete(true);
-            setProcessResultMessage(props.t('Errors.fingerprint.noCitizenFound'));
+            setProcessResultMessage(t('Errors.fingerprint.noCitizenFound'));
         } finally {
             if (slowInternetWarning) {
                 clearTimeout(slowInternetWarning);
@@ -283,7 +285,7 @@ export default function ScanFingerprintScreen(props: FPScanProps) {
                             variant="h6"
                             gutterBottom
                             className="fingerprint-selection">
-                            {props.t('FingerprintScan.text.place') + ' '}
+                            {t('FingerprintScan.text.place') + ' '}
                             <strong>
                                 {buildFingerCaption(selectedFinger)}
                             </strong>
@@ -291,7 +293,7 @@ export default function ScanFingerprintScreen(props: FPScanProps) {
                             <a
                                 data-cy="select-new-finger"
                                 onClick={() => setSelectingNewFinger(true)}>
-                                {props.t('FingerprintScan.text.useDifferentFinger')}
+                                {t('FingerprintScan.text.useDifferentFinger')}
                             </a>
                             <br />
                         </Typography>
@@ -307,7 +309,7 @@ export default function ScanFingerprintScreen(props: FPScanProps) {
                                 className="enhanced"
                                 href="#"
                                 onClick={() => resetFingerprintImage()}>
-                                {props.t('FingerprintScan.text.recaptureFingerprint')}
+                                {t('FingerprintScan.text.recaptureFingerprint')}
                             </a>
                             <br />
                         </Typography>
@@ -335,7 +337,7 @@ export default function ScanFingerprintScreen(props: FPScanProps) {
                                 data-cy="fpscan-next"
                                 className="next"
                                 onClick={(e: any) => beginRequest(e)}>
-                                {props.t('Standard.next')}
+                                {t('Standard.next')}
                             </Button>
                         </Grid>
                     </Grid>
@@ -355,7 +357,6 @@ export default function ScanFingerprintScreen(props: FPScanProps) {
                 errorMessage={processResultMessage}
                 handleCancel={cancelEkycRequest || undefined}
                 allowCancel={slowInternet}
-                t={props.t}
             />
         );
     }

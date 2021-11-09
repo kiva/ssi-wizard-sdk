@@ -27,7 +27,6 @@ export default function DialogContainer(props: DialogContainerProps) {
                     cancel={props.handleCancel || undefined}
                     errorMessage={props.errorMessage}
                     allowCancel={props.allowCancel}
-                    t={props.t}
                 />
             </DialogContent>
         </Dialog>
