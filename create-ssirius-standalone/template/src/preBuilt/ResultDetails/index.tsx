@@ -7,10 +7,12 @@ import Paper from '@material-ui/core/Paper';
 import classNames from 'classnames';
 
 import { DetailsProps, PhotoAttach } from './interfaces/DetailsInterfaces';
+import TranslationContext from '../../contexts/TranslationContext';
 
 const wideKeys: string[] = [];
 
 export default class ResultDetails extends React.Component<DetailsProps> {
+    static contextType = TranslationContext;
     private personalInfo: any = this.props.store.get(
         'personalInfo',
         {},
@@ -49,7 +51,7 @@ export default class ResultDetails extends React.Component<DetailsProps> {
             }
             return piiString;
         } catch {
-            return this.props.t('Errors.results.noData');
+            return this.context('Errors.results.noData');
         }
     }
 
@@ -69,7 +71,7 @@ export default class ResultDetails extends React.Component<DetailsProps> {
                         FieldCard: true,
                         wide: wideItemKeys.indexOf(key) > -1
                     })}>
-                    <div className="FieldCardTitle">{this.props.t('PII.' + key)}</div>
+                    <div className="FieldCardTitle">{this.context('PII.' + key)}</div>
                     <div className="FieldCardValue">
                         {this.getPIIDisplayString(key, value)}
                     </div>
@@ -119,7 +121,7 @@ export default class ResultDetails extends React.Component<DetailsProps> {
                             src={pictureData}
                         />
                         {this.renderFields(
-                            this.props.t('DeployKeys.authAgencyAcronym'),
+                            this.context('DeployKeys.authAgencyAcronym'),
                             this.personalInfo
                         )}
                         <div className="important-buttons">
@@ -132,7 +134,7 @@ export default class ResultDetails extends React.Component<DetailsProps> {
                                         window.close();
                                     }
                                 }}>
-                                {this.props.t('Standard.back')}
+                                {this.context('Standard.back')}
                             </Button>
                         </div>
                     </div>

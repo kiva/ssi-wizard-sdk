@@ -1,7 +1,6 @@
 import { ProofRequestProfile } from '../../ConfirmationScreen/interfaces/ConfirmationInterfaces';
 import { ComponentStoreMethods, FlowAction } from '../../../interfaces/FlowRouterInterfaces';
 import ICommonProps from '../../../interfaces/ICommonProps';
-import { TFunction } from 'i18next';
 
 export interface SMSProps extends ICommonProps {
     phoneNumber: string;
@@ -43,7 +42,6 @@ export interface PhoneState {
 export interface SMSButtonProps {
     onSubmit(): void;
     onClickBack(): void;
-    t: TFunction;
 }
 
 export interface PhoneNumberInputProps {
@@ -51,7 +49,6 @@ export interface PhoneNumberInputProps {
     handlePhoneNumberChange: (input: string) => void;
     handleEnter: (keyCode: number) => void;
     phoneIntls: CountryCodeConfig;
-    t: TFunction;
 }
 
 export interface OTPScreenProps {
@@ -65,7 +62,6 @@ export interface OTPScreenProps {
     phoneIntls: CountryCodeConfig;
     specificError?: string;
     dispatch: (action: FlowAction) => void;
-    t: TFunction;
     SDK: any;
 }
 
@@ -83,7 +79,6 @@ export interface OTPInputState {
 export interface SMSStatusProps {
     status: string;
     errorText?: string;
-    t: TFunction;
 }
 
 export interface PhoneScreenProps {
@@ -96,7 +91,6 @@ export interface PhoneScreenProps {
     auth_token?: string;
     phoneIntls: CountryCodeConfig;
     dispatch: (action: FlowAction) => void;
-    t: TFunction;
     SDK: any;
 }
 

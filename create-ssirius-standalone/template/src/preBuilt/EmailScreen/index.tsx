@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import toast from 'react-hot-toast';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
@@ -12,8 +12,10 @@ import { EmailProps } from './interfaces/EmailInterfaces';
 
 import '../../css/Common.scss';
 import './css/Email.scss';
+import TranslationContext from '../../contexts/TranslationContext';
 
 export default function EmailScreen(props: EmailProps) {
+    const t = useContext(TranslationContext);
     const [email, setEmail] = useState<string>(props.store.get('email', ''));
 
     const handleInputChange = () => (e: any) => {
@@ -25,7 +27,7 @@ export default function EmailScreen(props: EmailProps) {
     const proceed = () => (e: any) => {
         e.preventDefault();
         if (!email) {
-            toast.error(props.t('Errors.email.noInput'), {
+            toast.error(t('Errors.email.noInput'), {
                 duration: 3000
             });
         } else {
@@ -42,7 +44,7 @@ export default function EmailScreen(props: EmailProps) {
                 alignItems="center">
                 <Grid item>
                     <Typography component="h2" variant="h6" gutterBottom>
-                        {props.t('Email.text.instructions')}
+                        {t('Email.text.instructions')}
                     </Typography>
                 </Grid>
                 <form name="ekycIdForm">
@@ -51,7 +53,7 @@ export default function EmailScreen(props: EmailProps) {
                             <TextField
                                 id="email-input"
                                 data-cy="email-input"
-                                label={email.trim() === '' ? props.t('Email.text.placeHolder') : ''}
+                                label={email.trim() === '' ? t('Email.text.placeHolder') : ''}
                                 value={email}
                                 onChange={handleInputChange()}
                                 inputProps={{ 'aria-label': 'bare' }}
@@ -69,14 +71,14 @@ export default function EmailScreen(props: EmailProps) {
                                     type: FlowDispatchTypes.BACK
                                 })
                             }>
-                            {props.t('Standard.back')}
+                            {t('Standard.back')}
                         </Button>
                         <Button
                             type="submit"
                             id="continue"
                             onClick={proceed()}
                             onSubmit={proceed()}>
-                            {props.t('Standard.continue')}
+                            {t('Standard.continue')}
                         </Button>
                     </div>
                 </form>

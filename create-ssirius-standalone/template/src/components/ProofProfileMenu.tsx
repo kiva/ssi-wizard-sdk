@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import axios from 'axios';
 import Typography from '@material-ui/core/Typography';
 import CircularProgress from '@material-ui/core/CircularProgress';
@@ -11,8 +11,10 @@ import MenuItem from '@material-ui/core/MenuItem';
 
 import { ProofProfileProps } from '../preBuilt/ConfirmationScreen/interfaces/ConfirmationInterfaces';
 import getDataFrom from '../helpers/getDataFrom';
+import TranslationContext from '../contexts/TranslationContext';
 
 export default function ProofProfileMenu(props: ProofProfileProps) {
+    const t = useContext(TranslationContext);
     const [verificationRequired, setVerificationRequired] = useState<number>(0);
     const [proofOptions, setProofOptions] = useState<any[]>([]);
     const [proofsLoading, setProofsLoading] = useState<boolean>(true);
@@ -75,7 +77,7 @@ export default function ProofProfileMenu(props: ProofProfileProps) {
                     component="h2"
                     align="center"
                     className="error-description">
-                    <strong>{props.t('Errors.proofs.profileFetchError')}</strong>
+                    <strong>{t('Errors.proofs.profileFetchError')}</strong>
                     <br />
                     {proofOptionsError}
                 </Typography>
@@ -87,7 +89,7 @@ export default function ProofProfileMenu(props: ProofProfileProps) {
             <div className="VerificationRequirement screen">
                 <CircularProgress className="pr-loader" />
                 <div className="loader-text">
-                    {props.t('ProofProfileMenu.text.loading')}
+                    {t('ProofProfileMenu.text.loading')}
                 </div>
             </div>
         );
@@ -101,7 +103,7 @@ export default function ProofProfileMenu(props: ProofProfileProps) {
             alignItems="center">
             <Grid item>
                 <FormControl className="form-control">
-                    <InputLabel>{props.t('ProofProfileMenu.text.requirement')}</InputLabel>
+                    <InputLabel>{t('ProofProfileMenu.text.requirement')}</InputLabel>
                     <Select
                         className="verification-requirement-select"
                         value={verificationRequired}

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import CardContent from '@material-ui/core/CardContent';
 import Card from '@material-ui/core/Card';
 import Typography from '@material-ui/core/Typography';
@@ -17,8 +17,10 @@ import {
     AuthOptionProps,
     MenuOptionProps
 } from './interfaces/AuthOptionInterfaces';
+import TranslationContext from '../../contexts/TranslationContext';
 
 export default function AuthenticationOptionMenu(props: AuthOptionProps) {
+    const t = useContext(TranslationContext);
     const [optionSelected, setSelectedOption] = useState<number>(
         props.authIndex
     );
@@ -37,7 +39,7 @@ export default function AuthenticationOptionMenu(props: AuthOptionProps) {
                 className="auth_instructions"
                 component="h2"
                 variant="h6">
-                {props.t('AuthMenu.text.selectVerification')}
+                {t('AuthMenu.text.selectVerification')}
             </Typography>
             <div id="auth_options" className="flex-block row">
                 {props.CONSTANTS.verification_options.map((option, idx) => {
@@ -59,7 +61,7 @@ export default function AuthenticationOptionMenu(props: AuthOptionProps) {
             <Button
                 id="select-auth-method"
                 onClick={() => props.dispatch({ type: FlowDispatchTypes.NEXT })}>
-                {props.t('Standard.select')}
+                {t('Standard.select')}
             </Button>
         </div>
     );

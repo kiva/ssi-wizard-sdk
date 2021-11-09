@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect, useContext } from 'react';
 import KivaAgent from '../agents/KivaAgent';
 import Grid from '@material-ui/core/Grid';
 import toast from 'react-hot-toast';
@@ -15,6 +15,7 @@ import '../AgencyQR/css/QRScreen.scss';
 import { QRScreenButtons } from '../../components/QRScreenButtons';
 import { CredentialIssuanceProps } from './interfaces/CredentialIssuanceInterfaces';
 import FlowDispatchTypes from '../../enums/FlowDispatchTypes';
+import TranslationContext from '../../contexts/TranslationContext';
 
 const pollInterval = 200;
 
@@ -25,6 +26,7 @@ let agent: any;
 const CREDENTIAL_STORE_KEY = 'credentialCreationData';
 
 export default function CredentialIssuance(props: CredentialIssuanceProps) {
+    const t = useContext(TranslationContext);
     const credentialData = useRef(constructInitialData());
 
     const [retrievingInviteUrl, setRetrievingInviteUrl] =
@@ -100,12 +102,12 @@ export default function CredentialIssuance(props: CredentialIssuanceProps) {
             setInviteUrl(invitation);
             writeQRtoCanvas(invitation);
         } else {
-            processConnectionError(props.t('Errors.qr.noInviteUrl'));
+            processConnectionError(t('Errors.qr.noInviteUrl'));
         }
     }
 
     function processConnectionError(error: any) {
-        const errorMessage = error.hasOwnProperty('message') ? error.message : props.t('Errors.unknown');
+        const errorMessage = error.hasOwnProperty('message') ? error.message : t('Errors.unknown');
         cancelConnectionPolling = true;
         cancelCredentialPolling = true;
 
@@ -178,7 +180,7 @@ export default function CredentialIssuance(props: CredentialIssuanceProps) {
 
     const startCredentialCreation = () => {
         if (offered || !props.store.get('isConnected', true)) {
-            toast.error(props.t('Errors.qr.notConnected'), {
+            toast.error(t('Errors.qr.notConnected'), {
                 duration: 3000
             });
         } else {
@@ -227,8 +229,8 @@ export default function CredentialIssuance(props: CredentialIssuanceProps) {
                     gutterBottom
                     className="qr-loading-title">
                     {connected
-                        ? props.t('CredentialIssuance.text.connectionSuccessful')
-                        : props.t('CredentialIssuance.text.instructions')}
+                        ? t('CredentialIssuance.text.connectionSuccessful')
+                        : t('CredentialIssuance.text.instructions')}
                 </Typography>
                 <div id="qr-box">
                     <canvas
@@ -250,7 +252,7 @@ export default function CredentialIssuance(props: CredentialIssuanceProps) {
     function renderCredentialOffered(text?: string) {
         const header: string =
             text ||
-            props.t('CredentialIssuance.text.offerNotice');
+            t('CredentialIssuance.text.offerNotice');
         return (
             <div className="centered-flex-content">
                 <Typography
@@ -281,7 +283,7 @@ export default function CredentialIssuance(props: CredentialIssuanceProps) {
     }
 
     function renderCredentialIssued(text?: string) {
-        const header: string = text || props.t('CredentialIssuance.text.issueNotice');
+        const header: string = text || t('CredentialIssuance.text.issueNotice');
         return (
             <div className="centered-flex-content">
                 <Typography
@@ -320,7 +322,7 @@ export default function CredentialIssuance(props: CredentialIssuanceProps) {
     }
 
     function renderRetrieving(text?: string) {
-        const header: string = text || props.t('QR.text.retrieving');
+        const header: string = text || t('QR.text.retrieving');
         return (
             <div className="centered-flex-content">
                 <Typography
@@ -385,7 +387,7 @@ export default function CredentialIssuance(props: CredentialIssuanceProps) {
                 {renderBody()}
             </Grid>
             <QRScreenButtons
-                backText={props.t('Standard.back')}
+                backText={t('Standard.back')}
                 onClickBack={() => {
                     props.dispatch({ type: FlowDispatchTypes.BACK });
                 }}
