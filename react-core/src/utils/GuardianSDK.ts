@@ -1,13 +1,12 @@
 import axios from 'axios';
 import { v4 as uuid4 } from 'uuid';
-import ErrorHandler from '../abstracts/ErrorHandler';
-// import GuardianSDKClass from '../abstracts/GuardianSDKClass';
 import { determineErrorString } from '../helpers/agentRequest';
-import IGuardianSDKConfig from '../interfaces/IGuardianSDKConfig';
+import IErrorHandler from '../interfaces/IErrorHandler';
+import { IGuardianSDKConfig, IGuardianSDK } from '../interfaces/GuardianInterfaces';
 
 const CancelToken = axios.CancelToken;
 
-export default class GuardianSDK {
+export default class GuardianSDK implements IGuardianSDK {
     public readonly config: any;
     public cancel: any;
     private url: string;
@@ -58,7 +57,7 @@ export default class GuardianSDK {
     }
 }
 
-function catchError(error: any, handler?: ErrorHandler) {
+function catchError(error: any, handler?: IErrorHandler) {
     let msg: string;
     if (handler) {
         msg = handler.explainError(error);

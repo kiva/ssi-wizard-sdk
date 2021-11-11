@@ -35,9 +35,6 @@ describe('<SSIriusRouter />', () => {
         const prevScreenText = await findByTestId('prevScreen');
         expect(prevScreenText.textContent).toBe(`prevScreen: ${values.prevScreen}`);
 
-        const t = await findByTestId('tFunction');
-        expect(t.textContent).toBe('Translated!');
-
         const authIndex = await findByTestId('authIndex');
         expect(authIndex.textContent).toBe(`authIndex: ${values.authIndex}`);
 

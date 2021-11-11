@@ -1,8 +1,8 @@
-import { ComponentStoreMethods, FlowAction } from './FlowRouterInterfaces';
-import { IConstants } from './IConstants';
-import { TFunction } from 'i18next';
+import {ComponentStoreMethods, FlowAction} from './FlowRouterInterfaces';
+import {IConstants} from './IConstants';
+import {TFunction} from 'i18next';
 
-export default interface CommonProps {
+export default interface ICommonProps {
     CONSTANTS: IConstants;
     store: ComponentStoreMethods;
     prevScreen: string;

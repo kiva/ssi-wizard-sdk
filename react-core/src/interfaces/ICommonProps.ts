@@ -1,9 +1,9 @@
 
 
 import { IIssuer, IVerifier } from './IAgent';
-import GuardianSDKClass from '../abstracts/GuardianSDKClass';
 import { ComponentStoreMethods, FlowAction } from './FlowRouterInterfaces';
 import { IConstants } from './IConstants';
+import { IGuardianSDK } from '../interfaces/GuardianInterfaces';
 
 export interface ICommonProps {
     CONSTANTS: IConstants;
@@ -19,5 +19,5 @@ export interface AgentUIProps extends ICommonProps {
 }
 
 export interface GuardianUIProps extends ICommonProps {
-    guardianSDK: GuardianSDKClass;
+    guardianSDK: IGuardianSDK;
 }
