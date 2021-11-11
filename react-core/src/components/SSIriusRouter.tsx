@@ -89,7 +89,6 @@ export default function SSIriusRouter(CONSTANTS: IConstants) {
                     prevScreen={prevStep}
                     authIndex={authIndex.current}
                     dispatch={dispatch}
-                    t={CONSTANTS.t}
                 />
             </div>
         </Suspense>

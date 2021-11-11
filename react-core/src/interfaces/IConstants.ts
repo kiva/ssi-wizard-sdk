@@ -15,7 +15,6 @@ export interface IConstants {
     defaultLang: string;
     standaloneConf?: StandaloneConfig;
     credentialDefinition?: string;
-    t?: Function; // Your translation function
 }
 
 export interface CredentialKeyMap {
