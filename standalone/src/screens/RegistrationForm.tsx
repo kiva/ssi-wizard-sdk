@@ -108,17 +108,17 @@ export default function RegistrationForm(props: RegistrationFormProps) {
                     }}
                     container
                     direction="row"
-                    justify="space-around">
-                    <Grid container justify="space-around">
+                    justifyContent="space-around">
+                    <Grid container justifyContent="space-around">
                         <Typography component="h4" variant="h6">
                             {props.t('RegistrationForm.text.instructionsHeader')}
                         </Typography>
                     </Grid>
-                    <Grid container justify="space-around">
+                    <Grid container justifyContent="space-around">
                         {props.t('RegistrationForm.text.instructions')}
                     </Grid>
                     <Grid item xs={6}>
-                        <Grid container direction="row" justify="space-between">
+                        <Grid container direction="row" justifyContent="space-between">
                             {Object.keys(CredentialKeys).map(
                                 (field: any, idx: any) => {
                                     if (
@@ -293,9 +293,9 @@ function RegistrationFormButtons(props: ButtonProps) {
                 paddingTop: '45px'
             }}
             direction="row"
-            justify="space-around">
+            justifyContent="space-around">
             <Grid item xs={6}>
-                <Grid container direction="row" justify="space-around">
+                <Grid container direction="row" justifyContent="space-around">
                     <Grid item>
                         <Button
                             data-cy="qr-back"

@@ -125,6 +125,7 @@ async function integrateExternalPack(packPath: string, projectDirectory: string)
                 break;
             case 'constants.ts':
             case 'componentMap.ts':
+            case 'actions.ts':
                 fs.copy(path.resolve(packDirectory, element), path.resolve(projectDirectory, 'src', element));
                 break;
             default:

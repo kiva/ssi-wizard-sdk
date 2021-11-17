@@ -9,24 +9,23 @@ import Button from '@material-ui/core/Button';
 import ErrorIcon from '@material-ui/icons/Error';
 import QRCode from 'qrcode';
 import classNames from 'classnames';
-
-import KivaAgent from '../agents/KivaAgent';
+import { IVerifier } from '@kiva/ssirius-react';
 
 import { QRProps, QRButtonProps } from './interfaces/QRInterfaces';
 import { ProofRequestProfile } from '../ConfirmationScreen/interfaces/ConfirmationInterfaces';
 
-import FlowDispatchTypes from '../../enums/FlowDispatchTypes';
+import { FlowDispatchTypes } from '@kiva/ssirius-react';
 
 import '../../css/Common.scss';
 import './css/QRScreen.scss';
 import TranslationContext from '../../contexts/TranslationContext';
 
 let cancel: boolean;
-let agent: any;
 
 const pollInterval = 1000;
 
 export default function AgencyQR(props: QRProps) {
+    const agent = props.agent as IVerifier;
     const [retrievingInviteUrl, setRetrievingInviteUrl] =
         useState<boolean>(false);
     const [inviteUrl, setInviteUrl] = useState<string>('');
@@ -40,10 +39,6 @@ export default function AgencyQR(props: QRProps) {
         props.store.get('connection_id', '')
     );
     const t = useContext(TranslationContext);
-
-    if (!agent) {
-        agent = KivaAgent.init(props.CONSTANTS.auth_token);
-    }
 
     const profile = useRef<ProofRequestProfile>(
         props.store.get(
@@ -97,7 +92,7 @@ export default function AgencyQR(props: QRProps) {
     async function getInviteUrl() {
         try {
             const proposedConnectionId: string = uuid4();
-            const url: string = await agent.establishConnection(
+            const url: string = await agent.connect(
                 proposedConnectionId
             );
             processInviteUrl(url);
@@ -185,7 +180,7 @@ export default function AgencyQR(props: QRProps) {
     async function verify() {
         try {
             const id: string = settleConnectionId();
-            const verification: any = await agent.sendVerification(
+            const verification: any = await agent.verify(
                 id,
                 profile.current
             );
@@ -344,7 +339,7 @@ export default function AgencyQR(props: QRProps) {
             <Grid
                 container
                 direction="column"
-                justify="center"
+                justifyContent="center"
                 alignItems="center">
                 {renderBody()}
             </Grid>
@@ -356,7 +351,6 @@ export default function AgencyQR(props: QRProps) {
                 }
                 onSubmit={() => startVerification()}
                 onReset={() => resetFlow()}
-                t={t}
             />
         </div>
     );
@@ -370,7 +364,7 @@ function QRScreenButtons(props: QRButtonProps) {
             container
             className="qrButtons buttonListNew row"
             direction="row"
-            justify="center"
+            justifyContent="center"
             alignItems="center">
             <Grid item>
                 <Button

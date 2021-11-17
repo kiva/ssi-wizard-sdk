@@ -1,5 +1,5 @@
 import { FingerprintEkycBody, GuardianData } from '../preBuilt/ScanFingerprintScreen/interfaces/ScanFingerprintInterfaces';
-import { ComponentStoreGet } from '../interfaces/FlowRouterInterfaces';
+import { ComponentStoreGet } from '@kiva/ssirius-react';
 
 export default function setPostBody(
     image: string,

@@ -7,6 +7,7 @@ import classNames from 'classnames';
 import ArrowDropUpIcon from '@material-ui/icons/ArrowDropUp';
 import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
 import toast from 'react-hot-toast';
+import { FlowDispatchTypes } from '@kiva/ssirius-react';
 
 import '../../css/Common.scss';
 import './css/AlternateSearch.scss';
@@ -16,7 +17,6 @@ import {
     AltSearchErrors,
     AltSearchInputData
 } from './interfaces/AltSearchInterfaces';
-import FlowDispatchTypes from '../../enums/FlowDispatchTypes';
 import TranslationContext from '../../contexts/TranslationContext';
 
 export default function AlternateSearch(props: AltSearchProps) {
@@ -159,7 +159,7 @@ export default function AlternateSearch(props: AltSearchProps) {
             <Grid
                 container
                 direction="column"
-                justify="center"
+                justifyContent="center"
                 alignItems="center">
                 <form name="ekycFuzzySearchForm">
                     <Grid item>
@@ -186,7 +186,7 @@ export default function AlternateSearch(props: AltSearchProps) {
                         container
                         className="alternate-search-row"
                         direction="row"
-                        justify="space-around"
+                        justifyContent="space-around"
                         alignItems="center">
                         <Grid item xs={12} md={5}>
                             <TextField
@@ -245,7 +245,7 @@ export default function AlternateSearch(props: AltSearchProps) {
                             hidden: !rowOne
                         })}
                         direction="row"
-                        justify="space-around"
+                        justifyContent="space-around"
                         alignItems="center">
                         <Grid item xs={12} md={5}>
                             <TextField
@@ -301,7 +301,7 @@ export default function AlternateSearch(props: AltSearchProps) {
                             hidden: !rowTwo
                         })}
                         direction="row"
-                        justify="space-around"
+                        justifyContent="space-around"
                         alignItems="center">
                         <Grid item xs={12} md={5}>
                             <TextField

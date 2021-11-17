@@ -1,8 +1,7 @@
 import { ProofRequestProfile } from '../../ConfirmationScreen/interfaces/ConfirmationInterfaces';
-import ICommonProps from '../../../interfaces/ICommonProps';
-import { TFunction } from 'i18next';
+import { AgentUIProps } from '@kiva/ssirius-react';
 
-export interface QRProps extends ICommonProps {
+export interface QRProps extends AgentUIProps {
     setConnectionId(id: string): Promise<void>;
     verifyConnection(established: boolean): Promise<void>;
     connectionId: string;
@@ -17,5 +16,4 @@ export interface QRButtonProps {
     onReset(): void;
     isConnectionReady: boolean;
     isVerifying: boolean;
-    t: TFunction;
 }

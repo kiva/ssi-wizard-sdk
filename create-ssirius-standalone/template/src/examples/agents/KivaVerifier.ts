@@ -1,10 +1,9 @@
 import axios, { AxiosRequestConfig, AxiosInstance } from 'axios';
-import BaseAgent from './BaseAgent';
+import { IVerifier, agentRequest } from '@kiva/ssirius-react';
 import { map } from 'lodash';
-import { IAgent } from './AgentInterfaces';
-import { ProofRequestProfile } from '../ConfirmationScreen/interfaces/ConfirmationInterfaces';
+import { ProofRequestProfile } from '../../preBuilt/ConfirmationScreen/interfaces/ConfirmationInterfaces';
 
-export default class KivaAgent extends BaseAgent implements IAgent {
+export default class KivaVerifier implements IVerifier {
     public axiosInstance: AxiosInstance;
     private _connectionId?: string;
     private _verificationId?: string;
@@ -12,11 +11,10 @@ export default class KivaAgent extends BaseAgent implements IAgent {
     private _credentialId?: string;
 
     static init(token?: string) {
-        return new KivaAgent(token);
+        return new KivaVerifier(token);
     }
 
     constructor(token?: string) {
-        super();
         const config: any = {
             baseURL: 'https://sandbox-gateway.protocol-prod.kiva.org'
         };
@@ -34,7 +32,7 @@ export default class KivaAgent extends BaseAgent implements IAgent {
     };
 
     fetchProofOptions() {
-        return super.profiles(
+        return agentRequest(
             this.axiosInstance.get('/v2/kiva/api/profiles/proofs', {}),
             (profiles: any) => {
                 return map(profiles.data, (value, key) => {
@@ -97,8 +95,8 @@ export default class KivaAgent extends BaseAgent implements IAgent {
     }
 
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    establishConnection = async (ignore: string) => {
-        return super.establish(
+    connect = async (ignore: string) => {
+        return agentRequest(
             this.axiosInstance.post('/v2/kiva/api/connection', {}),
             (connection: any) => {
                 this._connectionId = connection.data.connection_id;
@@ -109,7 +107,7 @@ export default class KivaAgent extends BaseAgent implements IAgent {
 
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     getConnection = async (ignore: string) => {
-        return super.check(
+        return agentRequest(
             this.axiosInstance.get(
                 '/v2/kiva/api/connection/' + this._connectionId
             ),
@@ -119,7 +117,7 @@ export default class KivaAgent extends BaseAgent implements IAgent {
 
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     checkVerification = async (ignore: string) => {
-        return super.prove(
+        return agentRequest(
             this.axiosInstance.get(
                 '/v2/kiva/api/verify/' + this._verificationId
             ),
@@ -128,11 +126,11 @@ export default class KivaAgent extends BaseAgent implements IAgent {
     };
 
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    sendVerification = async (
+    verify = async (
         ignore: string,
         profile: ProofRequestProfile
     ): Promise<string> => {
-        return super.send(
+        return agentRequest(
             this.axiosInstance.post('/v2/kiva/api/verify', {
                 connectionId: this._connectionId,
                 profile: profile.schema_id
@@ -152,7 +150,7 @@ export default class KivaAgent extends BaseAgent implements IAgent {
     }
 
     async createCredential(entityData: any) {
-        return super.offer(
+        return agentRequest(
             this.axiosInstance.post('/v2/kiva/api/issue', {
                 profile: this._proofProfile,
                 connectionId: this._connectionId,
@@ -167,7 +165,7 @@ export default class KivaAgent extends BaseAgent implements IAgent {
 
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     checkCredentialStatus(ignore: string) {
-        return super.issue(
+        return agentRequest(
             this.axiosInstance.get('/v2/kiva/api/issue/' + this._credentialId),
             this.getData
         );

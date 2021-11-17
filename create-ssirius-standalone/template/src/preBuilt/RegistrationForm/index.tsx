@@ -16,7 +16,7 @@ import {
     ButtonProps
 } from './interfaces/RegistrationFormInterfaces';
 
-import FlowDispatchTypes from '../../enums/FlowDispatchTypes';
+import { FlowDispatchTypes } from '@kiva/ssirius-react';
 
 import '../../css/Common.scss';
 import './css/RegistrationForm.scss';
@@ -110,17 +110,17 @@ export default function RegistrationForm(props: RegistrationFormProps) {
                     }}
                     container
                     direction="row"
-                    justify="space-around">
-                    <Grid container justify="space-around">
+                    justifyContent="space-around">
+                    <Grid container justifyContent="space-around">
                         <Typography component="h4" variant="h6">
                             {t('RegistrationForm.text.instructionsHeader')}
                         </Typography>
                     </Grid>
-                    <Grid container justify="space-around">
+                    <Grid container justifyContent="space-around">
                         {t('RegistrationForm.text.instructions')}
                     </Grid>
                     <Grid item xs={6}>
-                        <Grid container direction="row" justify="space-between">
+                        <Grid container direction="row" justifyContent="space-between">
                             {Object.keys(CredentialKeys).map(
                                 (field: any, idx: any) => {
                                     if (
@@ -168,7 +168,6 @@ export default function RegistrationForm(props: RegistrationFormProps) {
                         props.dispatch({ type: FlowDispatchTypes.BACK })
                     }
                     onPopulateForm={() => onPopulateForm()}
-                    t={t}
                     onSubmit={(e: any) =>
                         handleSubmit(e)
                     }></RegistrationFormButtons>
@@ -296,9 +295,9 @@ function RegistrationFormButtons(props: ButtonProps) {
                 paddingTop: '45px'
             }}
             direction="row"
-            justify="space-around">
+            justifyContent="space-around">
             <Grid item xs={6}>
-                <Grid container direction="row" justify="space-around">
+                <Grid container direction="row" justifyContent="space-around">
                     <Grid item>
                         <Button
                             data-cy="qr-back"

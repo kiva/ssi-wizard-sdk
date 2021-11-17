@@ -11,6 +11,7 @@ export default class GuardianSDK implements IGuardianSDK {
     public cancel: any;
     private url: string;
     private token?: string;
+    private errorHandler?: IErrorHandler;
 
     static init(config: IGuardianSDKConfig): GuardianSDK {
         return new GuardianSDK(config);
@@ -19,6 +20,7 @@ export default class GuardianSDK implements IGuardianSDK {
     constructor(config: IGuardianSDKConfig) {
         this.cancel = null;
         this.url = config.url;
+        this.errorHandler = config.errorHandler;
         if (config.token) {
             this.token = config.token;
         }
@@ -50,7 +52,7 @@ export default class GuardianSDK implements IGuardianSDK {
             return Promise.resolve(response.data);
         } catch (error: any) {
             console.error(error);
-            return Promise.reject(catchError(error, this.config.errorHandler));
+            return Promise.reject(catchError(error, this.errorHandler));
         } finally {
             this.cancel = null;
         }

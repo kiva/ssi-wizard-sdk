@@ -153,7 +153,7 @@ export default function AlternateSearch(props: AltSearchProps) {
             <Grid
                 container
                 direction="column"
-                justify="center"
+                justifyContent="center"
                 alignItems="center">
                 <form name="ekycFuzzySearchForm">
                     <Grid item>
@@ -177,7 +177,7 @@ export default function AlternateSearch(props: AltSearchProps) {
                         container
                         className="alternate-search-row"
                         direction="row"
-                        justify="space-around"
+                        justifyContent="space-around"
                         alignItems="center">
                         <Grid item xs={12} md={5}>
                             <TextField
@@ -236,7 +236,7 @@ export default function AlternateSearch(props: AltSearchProps) {
                             hidden: !rows[0]
                         })}
                         direction="row"
-                        justify="space-around"
+                        justifyContent="space-around"
                         alignItems="center">
                         <Grid item xs={12} md={5}>
                             <TextField
@@ -292,7 +292,7 @@ export default function AlternateSearch(props: AltSearchProps) {
                             hidden: !rows[1]
                         })}
                         direction="row"
-                        justify="space-around"
+                        justifyContent="space-around"
                         alignItems="center">
                         <Grid item xs={12} md={5}>
                             <TextField

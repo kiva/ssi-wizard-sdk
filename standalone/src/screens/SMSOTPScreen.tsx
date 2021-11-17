@@ -128,7 +128,7 @@ export default class SMSOTPScreen extends React.Component<SMSProps, OTPState> {
                 <Grid
                     container
                     direction="column"
-                    justify="center"
+                    justifyContent="center"
                     alignItems="center">
                     {this.renderCurrentScreen()}
                 </Grid>
@@ -487,7 +487,7 @@ class SMSScreenButtons extends React.Component<SMSButtonProps> {
                 container
                 className="smsButtons buttonListNew row"
                 direction="row"
-                justify="center"
+                justifyContent="center"
                 alignItems="center">
                 <Grid item>
                     <Button
@@ -605,7 +605,7 @@ class OTPInput extends React.Component<OTPInputProps> {
                 <Grid
                     container
                     direction="row"
-                    justify="center"
+                    justifyContent="center"
                     alignItems="center">
                     <FormControl id="otp-row">
                         <TextField

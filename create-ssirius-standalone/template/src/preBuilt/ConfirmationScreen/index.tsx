@@ -3,6 +3,7 @@ import React, { useState, useEffect, useContext } from 'react';
 
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
+import { FlowDispatchTypes } from '@kiva/ssirius-react';
 import ProofProfileMenu from '../../components/ProofProfileMenu';
 
 import '../../css/Common.scss';
@@ -16,7 +17,6 @@ import {
 } from './interfaces/ConfirmationInterfaces';
 import getDataFrom from '../../helpers/getDataFrom';
 
-import FlowDispatchTypes from '../../enums/FlowDispatchTypes';
 import TranslationContext from '../../contexts/TranslationContext';
 
 export default function ConfirmationScreen(props: ConfirmationProps) {

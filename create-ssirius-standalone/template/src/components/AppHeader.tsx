@@ -1,5 +1,5 @@
 import React from 'react';
-import { IConstants } from '../interfaces/IConstants'
+import { IConstants } from '@kiva/ssirius-react';
 import img from '../images/header.png';
 
 export default function AppHeader(props: IConstants) {

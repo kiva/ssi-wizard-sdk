@@ -259,7 +259,7 @@ export default function CredentialIssuance(props: CredentialIssuanceProps) {
                     className="qr-loading-title">
                     {header}
                 </Typography>
-                <Grid container justify="space-around">
+                <Grid container justifyContent="space-around">
                     <Grid item>
                         <CreditCardIcon
                             id="credential-offer-icon"
@@ -290,7 +290,7 @@ export default function CredentialIssuance(props: CredentialIssuanceProps) {
                     className="qr-loading-title">
                     {header}
                 </Typography>
-                <Grid container justify="space-around">
+                <Grid container justifyContent="space-around">
                     <Grid item>
                         <div id="credential-box">
                             <CreditCardIcon
@@ -340,7 +340,7 @@ export default function CredentialIssuance(props: CredentialIssuanceProps) {
         return (
             <Grid
                 container
-                justify="center"
+                justifyContent="center"
                 alignItems="center"
                 direction="column"
                 className="status-report">
@@ -379,7 +379,7 @@ export default function CredentialIssuance(props: CredentialIssuanceProps) {
             <Grid
                 container
                 direction="column"
-                justify="center"
+                justifyContent="center"
                 alignItems="center">
                 {renderBody()}
             </Grid>
