@@ -5,17 +5,16 @@ import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import toast from 'react-hot-toast';
+import { FlowDispatchTypes } from '@kiva/ssirius-react';
 import '../../css/Common.scss';
 import './css/ScanFingerprintScreen.scss';
 
 import FingerSelectionScreen from '../FingerSelectionScreen';
 import DialogContainer from '../../components/DialogContainer';
 import FingerprintScanning from '../../dataHelpers/FingerprintScanning';
-import GuardianSDK from '../../dataHelpers/GuardianSDK';
 import getPostBody from '../../helpers/getPostBody';
 
 import { FingerprintEkycBody, FPScanProps } from './interfaces/ScanFingerprintInterfaces';
-import FlowDispatchTypes from '../../enums/FlowDispatchTypes';
 
 import failed from './images/np_fingerprint_failed.png';
 import success from './images/np_fingerprint_verified.png';
@@ -45,10 +44,7 @@ export default function ScanFingerprintScreen(props: FPScanProps) {
     const fingerprintScanner = FingerprintScanning.init({
         api: 'http://localhost:9907'
     });
-    const SDK = GuardianSDK.init({
-        url: props.backendURL,
-        auth_method: 'Fingerprint'
-    });
+    const SDK = props.guardianSDK;
 
     useEffect(() => {
         resetFingerprintImage();
@@ -149,7 +145,6 @@ export default function ScanFingerprintScreen(props: FPScanProps) {
                 body,
                 props.CONSTANTS.auth_token
             );
-            console.log(response);
             setDialogSuccess(true);
             setDialogComplete(true);
             setProcessResultMessage('');
@@ -206,7 +201,7 @@ export default function ScanFingerprintScreen(props: FPScanProps) {
     }
 
     function updateFingerprintState(response: any): void {
-        if (!response.success) {
+        if (!response.ImageBase64) {
             setScanStatus('failed');
             setFingerprintImage('');
         } else {

@@ -30,6 +30,11 @@ export type GuardianUIProps = CommonConfigs.GuardianUIProps;
 
 // FlowRouterInterfaces.ts
 export type FlowAction = FlowRouterInterfaces.FlowAction;
+export type ComponentStore = FlowRouterInterfaces.ComponentStore;
+export type ComponentStoreMethods = FlowRouterInterfaces.ComponentStoreMethods;
+export type ComponentStoreGet = FlowRouterInterfaces.ComponentStoreGet;
+export type ComponentStoreSet = FlowRouterInterfaces.ComponentStoreSet;
+export type ComponentMap = FlowRouterInterfaces.ComponentMap;
 
 // Agent-to-Agent helpers
 export const agentRequest = baseAgentFunction;

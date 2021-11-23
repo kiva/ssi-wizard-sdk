@@ -7,8 +7,7 @@ import { withStyles } from '@material-ui/core/styles';
 import CardActions from '@material-ui/core/CardActions';
 import Button from '@material-ui/core/Button';
 import classNames from 'classnames';
-
-import FlowDispatchTypes from '../../enums/FlowDispatchTypes';
+import { FlowDispatchTypes } from '@kiva/ssirius-react';
 
 import '../../css/Common.scss';
 import './css/AuthOptionMenu.scss';

@@ -13,7 +13,7 @@ export function QRScreenButtons(props: QRButtonProps) {
             container
             className="qrButtons buttonListNew row"
             direction="row"
-            justify="center"
+            justifyContent="center"
             alignItems="center">
             <Grid item>
                 <Button

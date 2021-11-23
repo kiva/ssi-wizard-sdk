@@ -1,4 +1,4 @@
-import ICommonProps from '../../../interfaces/ICommonProps';
+import { ICommonProps } from "@kiva/ssirius-react";
 
 export interface ConfirmationProps extends ICommonProps { }
 

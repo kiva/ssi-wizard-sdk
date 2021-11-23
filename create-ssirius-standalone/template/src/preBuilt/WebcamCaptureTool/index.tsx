@@ -12,8 +12,7 @@ import {
     PhotoAttach,
     WebcamCaptureButtonProps
 } from './interfaces/PhotoCaptureInterfaces';
-import ICommonProps from '../../interfaces/ICommonProps';
-import FlowDispatchTypes from '../../enums/FlowDispatchTypes';
+import { ICommonProps, FlowDispatchTypes } from '@kiva/ssirius-react';
 import TranslationContext from '../../contexts/TranslationContext';
 
 const PHOTO_WIDTH = 250;

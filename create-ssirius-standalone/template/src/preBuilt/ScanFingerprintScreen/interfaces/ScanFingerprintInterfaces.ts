@@ -1,5 +1,5 @@
 import { EkycPostBody } from '../../../interfaces/EkycPostBodyInterface';
-import ICommonProps from '../../../interfaces/ICommonProps';
+import { GuardianUIProps } from '@kiva/ssirius-react';
 
 export interface FingerprintEkycBody {
     profile: string;
@@ -14,6 +14,4 @@ export interface GuardianData extends EkycPostBody {
     }
 }
 
-export interface FPScanProps extends ICommonProps {
-    backendURL: string;
-}
+export interface FPScanProps extends GuardianUIProps {}

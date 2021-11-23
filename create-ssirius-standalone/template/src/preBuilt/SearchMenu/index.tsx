@@ -10,6 +10,7 @@ import OutlinedInput from '@material-ui/core/OutlinedInput';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import toast from 'react-hot-toast';
+import { FlowDispatchTypes } from '@kiva/ssirius-react';
 
 import '../../css/Common.scss';
 import './css/SearchMenu.scss';
@@ -20,7 +21,6 @@ import {
     SearchProps,
     SearchInputData
 } from './interfaces/SearchInterfaces';
-import FlowDispatchTypes from '../../enums/FlowDispatchTypes';
 import TranslationContext from '../../contexts/TranslationContext';
 
 export default function SearchMenu(props: SearchProps) {

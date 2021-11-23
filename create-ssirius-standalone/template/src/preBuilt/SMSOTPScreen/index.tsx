@@ -11,8 +11,7 @@ import CheckCircleIcon from '@material-ui/icons/CheckCircle';
 import PhoneInput from 'react-phone-input-2';
 import 'react-phone-input-2/lib/bootstrap.css';
 
-import GuardianSDK from '../../dataHelpers/GuardianSDK';
-import FlowDispatchTypes from '../../enums/FlowDispatchTypes';
+import { FlowDispatchTypes, IGuardianSDK } from '@kiva/ssirius-react';
 
 import {
     PhoneScreenProps,
@@ -45,13 +44,11 @@ export default class SMSOTPScreen extends React.Component<SMSProps, OTPState> {
     private email: string;
     private profile: ProofRequestProfile;
 
-    public SDK: any = GuardianSDK.init({
-        url: this.props.backendURL,
-        auth_method: 'SMS'
-    });
+    public SDK: IGuardianSDK = this.props.guardianSDK;
 
     constructor(props: SMSProps) {
         super(props);
+        console.log(this.SDK);
         this.state = {
             phoneNumber: this.props.store.get('phoneNumber', ''),
             smsSent: this.props.store.get('smsSent', false),
@@ -128,7 +125,7 @@ export default class SMSOTPScreen extends React.Component<SMSProps, OTPState> {
                 <Grid
                     container
                     direction="column"
-                    justify="center"
+                    justifyContent="center"
                     alignItems="center">
                     {this.renderCurrentScreen()}
                 </Grid>
@@ -208,6 +205,7 @@ class PhoneNumberScreen extends React.Component<PhoneScreenProps, PhoneState> {
                 });
             })
             .catch((error: any) => {
+                console.log(error);
                 this.setState({
                     error,
                     requestInProgress: false
@@ -482,7 +480,7 @@ class SMSScreenButtons extends React.Component<SMSButtonProps> {
                 container
                 className="smsButtons buttonListNew row"
                 direction="row"
-                justify="center"
+                justifyContent="center"
                 alignItems="center">
                 <Grid item>
                     <Button
@@ -602,7 +600,7 @@ class OTPInput extends React.Component<OTPInputProps> {
                 <Grid
                     container
                     direction="row"
-                    justify="center"
+                    justifyContent="center"
                     alignItems="center">
                     <FormControl id="otp-row">
                         <TextField

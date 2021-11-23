@@ -11,7 +11,6 @@ export interface ICommonProps {
     prevScreen: string;
     authIndex: number;
     dispatch: (action: FlowAction) => void;
-    t?: Function;
 }
 
 export interface AgentUIProps extends ICommonProps {

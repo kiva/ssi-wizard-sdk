@@ -1,10 +1,10 @@
-import {useRef} from 'react';
+import { useRef } from 'react';
 import {
     ComponentStoreGet,
     ComponentStoreSet,
     ComponentStoreMethods,
     ComponentStore
-} from '../interfaces/FlowRouterInterfaces';
+} from '@kiva/ssirius-react';
 
 export default useComponentStore;
 
@@ -42,7 +42,7 @@ function useComponentStore(step: string): ComponentStoreMethods {
         componentStore.current = initComponentStore();
     };
 
-    return {get, set, reset};
+    return { get, set, reset };
 }
 
 function initComponentStore(): ComponentStore {

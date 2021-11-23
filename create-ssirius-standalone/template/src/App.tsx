@@ -5,24 +5,27 @@ import AppHeader from './components/AppHeader';
 import SSIriusRouter, { IConstants } from '@kiva/ssirius-react';
 import useTranslator from './hooks/useTranslator';
 import TranslationContext from './contexts/TranslationContext';
+import actions from './actions';
+import IActions from './interfaces/IActions';
+
+export let auth_token: string | undefined = '';
 
 function App(props: AppProps) {
-    const { config } = props;
-    const [authToken, setAuthToken] = useState<string | undefined>(config.auth_token);
-    const Header = useHeaderIfAsked(config);
-    const Footer = useFooterIfAsked(config);
-    const t = useTranslator(config.defaultLang);
-
-    config.auth_token = authToken;
+    const [conf, setConf] = useState<IConstants>(props.config);
+    const Header = useHeaderIfAsked(conf);
+    const Footer = useFooterIfAsked(conf);
+    const t = useTranslator(conf.defaultLang);
+    const actionHandlers: IActions = actions;
 
     listen(window, "message", e => {
-        if (config.permittedOpenerOrigins && config.permittedOpenerOrigins.indexOf(e.origin) > -1) {
+        if (conf.permittedOpenerOrigins && conf.permittedOpenerOrigins.indexOf(e.origin) > -1) {
+            let allSet = false;
             if (e.data === "are you set?") {
-                e.source.postMessage({
-                    allSet: true
-                }, e.origin);
-            } else if (e.data.token) {
-                setAuthToken(e.data.token);
+                allSet = true;
+                e.source.postMessage({allSet}, e.origin);
+            } else if (allSet && !!e.data.action) {
+                const updatedConf = actionHandlers[e.data.action.name](conf, ...e.data.action.args);
+                setConf(updatedConf);
             }
         }
     });
@@ -33,7 +36,7 @@ function App(props: AppProps) {
                 <TranslationContext.Provider value={t}>
                     <Toaster />
                     {Header}
-                    <SSIriusRouter {...config} />;
+                    <SSIriusRouter {...conf} />;
                     {Footer}
                 </TranslationContext.Provider>
             </div>

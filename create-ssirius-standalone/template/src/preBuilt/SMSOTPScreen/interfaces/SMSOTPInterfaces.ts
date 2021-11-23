@@ -1,8 +1,7 @@
 import { ProofRequestProfile } from '../../ConfirmationScreen/interfaces/ConfirmationInterfaces';
-import { ComponentStoreMethods, FlowAction } from '../../../interfaces/FlowRouterInterfaces';
-import ICommonProps from '../../../interfaces/ICommonProps';
+import { GuardianUIProps, FlowAction, ComponentStoreMethods } from '@kiva/ssirius-react';
 
-export interface SMSProps extends ICommonProps {
+export interface SMSProps extends GuardianUIProps {
     phoneNumber: string;
     setSmsInfo(data: SMSData): void;
     phoneScreen: string;

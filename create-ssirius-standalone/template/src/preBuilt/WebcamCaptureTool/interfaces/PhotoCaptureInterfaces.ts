@@ -1,5 +1,3 @@
-import { TFunction } from 'i18next';
-
 export interface PhotoAttach {
     data: string;
     type: string;

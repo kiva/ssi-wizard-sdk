@@ -1,5 +1,4 @@
 import React, { useState, useRef, useEffect, useContext } from 'react';
-import KivaAgent from '../agents/KivaAgent';
 import Grid from '@material-ui/core/Grid';
 import toast from 'react-hot-toast';
 import Typography from '@material-ui/core/Typography';
@@ -8,25 +7,25 @@ import CreditCardIcon from '@material-ui/icons/CreditCard';
 import classNames from 'classnames';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import { v4 as uuid4 } from 'uuid';
+import { FlowDispatchTypes } from '@kiva/ssirius-react';
 import ErrorIcon from '@material-ui/icons/Error';
 import QRCode from 'qrcode';
 import '../../css/Common.scss';
 import '../AgencyQR/css/QRScreen.scss';
 import { QRScreenButtons } from '../../components/QRScreenButtons';
 import { CredentialIssuanceProps } from './interfaces/CredentialIssuanceInterfaces';
-import FlowDispatchTypes from '../../enums/FlowDispatchTypes';
 import TranslationContext from '../../contexts/TranslationContext';
 
 const pollInterval = 200;
 
 let cancelConnectionPolling: boolean;
 let cancelCredentialPolling: boolean;
-let agent: any;
 
 const CREDENTIAL_STORE_KEY = 'credentialCreationData';
 
 export default function CredentialIssuance(props: CredentialIssuanceProps) {
     const t = useContext(TranslationContext);
+    const agent = props.agent;
     const credentialData = useRef(constructInitialData());
 
     const [retrievingInviteUrl, setRetrievingInviteUrl] =
@@ -42,9 +41,6 @@ export default function CredentialIssuance(props: CredentialIssuanceProps) {
     const [issued, setIssued] = useState<boolean>(
         props.store.get('isIssued', false)
     );
-    if (!agent) {
-        agent = KivaAgent.init(props.CONSTANTS.auth_token);
-    }
 
     function constructInitialData() {
         let credentialCreationData = props.store.get(CREDENTIAL_STORE_KEY, {});
@@ -85,7 +81,7 @@ export default function CredentialIssuance(props: CredentialIssuanceProps) {
     const getInviteUrl = async () => {
         try {
             const connectionId: string = uuid4();
-            const url: string = await agent.establishConnection(connectionId);
+            const url: string = await agent.connect(connectionId);
             props.store.set('connectionId', connectionId);
             processInviteUrl(url);
             pollConnection(connectionId);
@@ -262,7 +258,7 @@ export default function CredentialIssuance(props: CredentialIssuanceProps) {
                     className="qr-loading-title">
                     {header}
                 </Typography>
-                <Grid container justify="space-around">
+                <Grid container justifyContent="space-around">
                     <Grid item>
                         <CreditCardIcon
                             id="credential-offer-icon"
@@ -293,7 +289,7 @@ export default function CredentialIssuance(props: CredentialIssuanceProps) {
                     className="qr-loading-title">
                     {header}
                 </Typography>
-                <Grid container justify="space-around">
+                <Grid container justifyContent="space-around">
                     <Grid item>
                         <div id="credential-box">
                             <CreditCardIcon
@@ -343,7 +339,7 @@ export default function CredentialIssuance(props: CredentialIssuanceProps) {
         return (
             <Grid
                 container
-                justify="center"
+                justifyContent="center"
                 alignItems="center"
                 direction="column"
                 className="status-report">
@@ -382,7 +378,7 @@ export default function CredentialIssuance(props: CredentialIssuanceProps) {
             <Grid
                 container
                 direction="column"
-                justify="center"
+                justifyContent="center"
                 alignItems="center">
                 {renderBody()}
             </Grid>

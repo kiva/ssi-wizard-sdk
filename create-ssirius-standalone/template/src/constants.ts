@@ -1,3 +1,5 @@
+const permittedOpenerOrigins: any[] = [];
+
 const config_constants = {
     standaloneConf: {
         isStandalone: true
@@ -94,7 +96,8 @@ const config_constants = {
                 'Customer will scan their fingerprint in order to prove their identity.',
             sequence: ['searchMenu', 'fpScan']
         }
-    ]
+    ],
+    permittedOpenerOrigins
 };
 
 export default config_constants;

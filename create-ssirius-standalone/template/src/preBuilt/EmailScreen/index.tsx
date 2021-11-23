@@ -6,7 +6,7 @@ import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import FormControl from '@material-ui/core/FormControl';
 
-import FlowDispatchTypes from '../../enums/FlowDispatchTypes';
+import { FlowDispatchTypes } from '@kiva/ssirius-react';
 
 import { EmailProps } from './interfaces/EmailInterfaces';
 
