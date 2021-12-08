@@ -9,14 +9,10 @@ import Button from '@material-ui/core/Button';
 import ErrorIcon from '@material-ui/icons/Error';
 import QRCode from 'qrcode';
 import classNames from 'classnames';
-
 import KivaAgent from '../agents/KivaAgent';
-
 import {QRProps, QRButtonProps} from '../interfaces/QRInterfaces';
 import {ProofRequestProfile} from '../interfaces/ConfirmationInterfaces';
-
 import FlowDispatchTypes from '../enums/FlowDispatchTypes';
-
 import '../css/Common.scss';
 import '../css/QRScreen.scss';
 

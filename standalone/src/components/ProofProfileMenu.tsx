@@ -46,7 +46,7 @@ export default function ProofProfileMenu(props: ProofProfileProps) {
                 setProofOptions(proofOptions);
 
                 props.setCredentialKeys(getDataFrom(proofOptions[0]));
-            } catch (e) {
+            } catch (e: any) {
                 setProofsOptionsError(e.message);
             } finally {
                 setProofsLoading(false);

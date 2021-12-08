@@ -1,10 +1,8 @@
 import Grid from '@material-ui/core/Grid';
 import React, {useState, useEffect} from 'react';
-
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
-import ProofProfileMenu from '../components/ProofProfileMenu';
-
+import { ConsentCard } from 'kiva-protocol-ui-kit';
 import '../css/Common.scss';
 import '../css/ConfirmationScreen.scss';
 
@@ -21,7 +19,7 @@ import FlowDispatchTypes from '../enums/FlowDispatchTypes';
 export default function ConfirmationScreen(props: ConfirmationProps) {
     console.log(props.t('Definitely does not exist'));
     const enableProofProfileMenu = !!props.CONSTANTS.proof_profile_url;
-    const [credentialKeys, setCredentialKeys] = useState<CredentialKeyMap | null>(enableProofProfileMenu ? getProfileDataIfAvailable() : props.CONSTANTS.credentialKeyMap);
+    const [credentialKeys] = useState<CredentialKeyMap | null>(enableProofProfileMenu ? getProfileDataIfAvailable() : props.CONSTANTS.credentialKeyMap);
 
     useEffect(() => {
         props.store.set('credentialKeyMap', credentialKeys);
@@ -36,46 +34,20 @@ export default function ConfirmationScreen(props: ConfirmationProps) {
 
         return null;
     }
+    const agreementText = `${props.t('ConfirmationScreen.text.agreement')}
+        ${props.t('ConfirmationScreen.text.infoShareIncludes')}`;
 
     return (
         <div className="Confirmation screen">
-            {enableProofProfileMenu && <ProofProfileMenu setCredentialKeys={setCredentialKeys} {...props} />}
-            <Grid
-                container
-                direction="column"
-                justifyContent="center"
-                alignItems="center">
-                <Grid item>
-                    <Typography component="h2" variant="h6" gutterBottom>
-                        {props.t('ConfirmationScreen.text.pleaseReview')}
-                    </Typography>
-                </Grid>
-            </Grid>
-            <div className="legal-terms-section">
-                <div className="legal-terms1">
-                    <p>{props.t('ConfirmationScreen.text.agreement')}</p>
-
-                    <p>{props.t('ConfirmationScreen.text.infoShareIncludes')}</p>
-                </div>
-                {credentialKeys && <PII t={props.t} fields={credentialKeys} />}
-            </div>
-            <Grid
-                container
-                direction="row"
-                justifyContent="center"
-                alignItems="center">
-                <Grid item>
-                    <Button
-                        className="accept"
-                        onClick={() =>
-                            props.dispatch({
-                                type: FlowDispatchTypes.NEXT
-                            })
-                        }>
-                        {props.t('Standard.accept')}
-                    </Button>
-                </Grid>
-            </Grid>
+            <ConsentCard
+                title="User Agreement"
+                agreement={agreementText}
+                acceptBtnHandler={() => props.dispatch({
+                    type: FlowDispatchTypes.NEXT
+                })}
+                acceptBtnContent="Accept"
+                pii={credentialKeys && <PII t={props.t} fields={credentialKeys} />}
+            />
         </div>
     );
 }
