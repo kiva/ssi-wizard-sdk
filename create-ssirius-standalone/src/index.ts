@@ -33,6 +33,7 @@ export default async function init(
     const templateDirectory = path.resolve(__dirname, '../template');
 
     const projectDirectory = path.resolve(rootDir, projectName);
+    const hasPackageJson = cliOptions.pack && fs.existsSync(path.resolve(cliOptions.pack, 'package.json'));
     if (fs.existsSync(projectDirectory)) {
         throw new Error(`Your project directory "${projectDirectory}" already exists - please choose another name or delete the offending files and folders`);
     }
@@ -42,7 +43,13 @@ export default async function init(
     );
 
     await fs.copy(templateDirectory, projectDirectory, {
-        filter: (filePath) => !fs.lstatSync(filePath).isSymbolicLink()
+        filter: (filePath) => {
+            let shouldCopy = !fs.lstatSync(filePath).isSymbolicLink();
+            if (hasPackageJson && (filePath.indexOf('package-lock.json') > -1 || filePath.indexOf('node_modules') > -1)) {
+                shouldCopy = false;
+            }
+            return shouldCopy;
+        }
     });
 
     await setPkgDefaults(path.resolve(projectDirectory, 'package.json'), {
@@ -59,10 +66,11 @@ export default async function init(
         console.log(
             `\n${chalk.magenta('And since you made a pre-built pack (go you!!!) we\'ll be adding it to the build')}\n`
         );
-        if (fs.existsSync(path.resolve(cliOptions.pack, 'package.json'))) {
+        if (hasPackageJson) {
             console.log(`${chalk.green('You have also included a package.json file - you will need to manually run npm install once setup is complete')}`);
             cliOptions.skipInstall = true;
         }
+
         await integrateExternalPack(cliOptions.pack, projectDirectory);
         console.log(
             `\n${chalk.magenta('Success!!!')}`
@@ -80,7 +88,7 @@ async function updateDependencies(pkgPath: string, externalPkg: string) {
         extPkg: any = await fs.readFile(externalPkg, 'utf8');
 
     pkg = JSON.parse(pkg);
-    extPkg = JSON.parse(pkg);
+    extPkg = JSON.parse(extPkg);
 
     ['dependencies', 'devDependencies', 'peerDependencies'].forEach(dep => {
         // The goal of this function is to merge the dependencies of an externally provided package into
@@ -88,14 +96,18 @@ async function updateDependencies(pkgPath: string, externalPkg: string) {
         //
         // As you can see, we prioritize the template package dependencies, because our bias is that our platform should work for you.
         // That said, if you have an external package.json we will skip installation, so feel free to undo this work.
-        pkg[dep] = Object.assign(extPkg[dep], pkg[dep]);
+        if (pkg.hasOwnProperty(dep) && extPkg.hasOwnProperty(dep)) {
+            pkg[dep] = Object.assign(extPkg[dep], pkg[dep]);
+        } else if (extPkg.hasOwnProperty(dep)) {
+            pkg[dep] = extPkg[dep];
+        }
     });
 
     await outputFormattedJson(pkgPath, pkg);
 }
 
-async function outputFormattedJson(path: string, data: any) {
-    await fs.outputFile(path, JSON.stringify(data, null, 2));
+function outputFormattedJson(path: string, data: any) {
+    fs.writeFileSync(path, JSON.stringify(data, null, 2));
 }
 
 async function setPkgDefaults(pkgPath: string, obj: Record<string, unknown>) {
@@ -116,6 +128,9 @@ async function integrateExternalPack(packPath: string, projectDirectory: string)
 
     packContents.forEach(element => {
         switch (element) {
+            case 'package-lock.json':
+            case 'node_modules':
+                break;
             case 'i18n':
                 fs.copy(path.resolve(packDirectory, element), path.resolve(projectDirectory, 'tools', element));
                 generateTranslationFile(path.resolve(packDirectory, element), path.resolve(projectDirectory, 'src', 'translations.json'));
@@ -123,13 +138,8 @@ async function integrateExternalPack(packPath: string, projectDirectory: string)
             case 'package.json':
                 updateDependencies(path.resolve(projectDirectory, 'package.json'), path.resolve(packDirectory, 'package.json'));
                 break;
-            case 'constants.ts':
-            case 'componentMap.ts':
-            case 'actions.ts':
-                fs.copy(path.resolve(packDirectory, element), path.resolve(projectDirectory, 'src', element));
-                break;
             default:
-                fs.copy(path.resolve(packDirectory, element), path.resolve(projectDirectory, element));
+                fs.copy(path.resolve(packDirectory, element), path.resolve(projectDirectory, 'src', element));
         }
     });
 
