@@ -42,15 +42,11 @@ export default async function init(
         `\n${chalk.cyan('Creating your SSIrius project in ' + rootDir + '/' + projectName)}\n`
     );
 
-    await fs.copy(templateDirectory, projectDirectory, {
-        filter: (filePath) => {
-            let shouldCopy = !fs.lstatSync(filePath).isSymbolicLink();
-            if (hasPackageJson && (filePath.indexOf('package-lock.json') > -1 || filePath.indexOf('node_modules') > -1)) {
-                shouldCopy = false;
-            }
-            return shouldCopy;
-        }
-    });
+    await fs.copy(templateDirectory, projectDirectory);
+
+    console.log(
+        `\n${chalk.magenta('Copied all the template files to ' + rootDir + '/' + projectName)}\n`
+    );
 
     await setPkgDefaults(path.resolve(projectDirectory, 'package.json'), {
         name: projectName,
@@ -111,9 +107,15 @@ function outputFormattedJson(path: string, data: any) {
 }
 
 async function setPkgDefaults(pkgPath: string, obj: Record<string, unknown>) {
-    const content = await fs.readFile(pkgPath, 'utf-8');
-    const pkg = JSON.parse(content);
-    const newPkg = Object.assign(pkg, obj);
+    let pkgContent = {};
+
+    try {
+        const content = await fs.readFile(pkgPath, 'utf-8');
+        pkgContent = JSON.parse(content);
+    } catch (e: any) {
+        console.log(`\n${chalk.green('We couldn\'t detect a package.json file in your package. We\'ll just give you a basic one for now.')}`);
+    }
+    const newPkg = Object.assign(pkgContent, obj);
 
     await outputFormattedJson(pkgPath, newPkg);
 }
@@ -124,6 +126,7 @@ async function integrateExternalPack(packPath: string, projectDirectory: string)
     const packContents = fs.readdirSync(packDirectory)
         .filter(item =>
             !item.startsWith('.')
+            && !fs.lstatSync(path.resolve(packDirectory, item)).isSymbolicLink()
         );
 
     packContents.forEach(element => {
