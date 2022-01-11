@@ -98,7 +98,7 @@ const component_map = {
         component: ScanFingerprintScreen,
         props: {
             guardianSDK: GuardianSDK.init({
-                url: 'https://sandbox-gateway.protocol-prod.kiva.org/v2/kyc',
+                url: 'http://localhost:8080/v2/kyc',
                 token: config_constants.auth_token,
                 errorHandler: FPErrorHandler
             })
