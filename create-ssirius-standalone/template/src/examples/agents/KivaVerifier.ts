@@ -16,7 +16,7 @@ export default class KivaVerifier implements IVerifier {
 
     constructor(token?: string) {
         const config: any = {
-            baseURL: 'https://sandbox-gateway.protocol-prod.kiva.org'
+            baseURL: 'http://localhost:8080'
         };
         if (token) {
             config.headers = {

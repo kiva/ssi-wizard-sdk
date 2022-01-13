@@ -14,7 +14,7 @@ export default class KivaIssuer implements IIssuer {
     constructor(proofProfile: string, token?: string) {
         this._proofProfile = proofProfile;
         const config: any = {
-            baseURL: 'https://sandbox-gateway.protocol-prod.kiva.org'
+            baseURL: 'http://localhost:8080'
         };
         if (token) {
             config.headers = {
