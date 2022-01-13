@@ -9,6 +9,7 @@
         "axios": "^0.22.0",
         "classnames": "^2.3.1",
         "i18next": "^21.2.6",
+        "kiva-protocol-ui-kit": "^1.0.57",
         "lodash": "^4.17.21",
         "node-sass-chokidar": "^1.5.0",
         "qrcode": "^1.4.4",

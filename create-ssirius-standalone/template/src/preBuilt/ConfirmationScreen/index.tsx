@@ -5,7 +5,8 @@ import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import { FlowDispatchTypes } from '@kiva/ssirius-react';
 import ProofProfileMenu from '../../components/ProofProfileMenu';
-
+import { ConsentCard } from 'kiva-protocol-ui-kit';
+import _ from 'lodash';
 import '../../css/Common.scss';
 import './css/ConfirmationScreen.scss';
 
@@ -38,45 +39,20 @@ export default function ConfirmationScreen(props: ConfirmationProps) {
         return null;
     }
 
+    const agreementText = `${t('ConfirmationScreen.text.agreement')}
+        ${t('ConfirmationScreen.text.infoShareIncludes')}`;
     return (
         <div className="Confirmation screen">
             {enableProofProfileMenu && <ProofProfileMenu setCredentialKeys={setCredentialKeys} {...props} />}
-            <Grid
-                container
-                direction="column"
-                justifyContent="center"
-                alignItems="center">
-                <Grid item>
-                    <Typography component="h2" variant="h6" gutterBottom>
-                        {t('ConfirmationScreen.text.pleaseReview')}
-                    </Typography>
-                </Grid>
-            </Grid>
-            <div className="legal-terms-section">
-                <div className="legal-terms1">
-                    <p>{t('ConfirmationScreen.text.agreement')}</p>
-
-                    <p>{t('ConfirmationScreen.text.infoShareIncludes')}</p>
-                </div>
-                {credentialKeys && <PII fields={credentialKeys} />}
-            </div>
-            <Grid
-                container
-                direction="row"
-                justifyContent="center"
-                alignItems="center">
-                <Grid item>
-                    <Button
-                        className="accept"
-                        onClick={() =>
-                            props.dispatch({
-                                type: FlowDispatchTypes.NEXT
-                            })
-                        }>
-                        {t('Standard.accept')}
-                    </Button>
-                </Grid>
-            </Grid>
+            <ConsentCard
+                title={t('ConfirmationScreen.text.userAgreement')}
+                agreement={agreementText}
+                acceptBtnHandler={() => props.dispatch({
+                    type: FlowDispatchTypes.NEXT
+                })}
+                acceptBtnContent={t('Standard.accept')}
+                pii={_.map(credentialKeys, key => key.name)}
+            />
         </div>
     );
 }

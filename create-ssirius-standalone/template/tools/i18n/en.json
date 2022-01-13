@@ -109,7 +109,8 @@
         "text": {
             "pleaseReview": "Please have the customer review the following information",
             "agreement": "I agree that the following personal information will be shared as part of the \"Know Your Customer\" verification.",
-            "infoShareIncludes": "Information shared includes your:"
+            "infoShareIncludes": "Information shared includes your:",
+            "userAgreement": "User Agreement"
         }
     },
     "AuthMenu": {
