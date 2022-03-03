@@ -32,13 +32,23 @@ To set up a SSIrius standalone React application, you can run:
 npx create-ssirius-standalone <your project name> <path to installation directory>
 ```
 
-This will give you our default implementation - all of our pre-built UI components, Kiva branding, and an assumption that you have [started running the Kiva Aries backend gateway locally on your machine after following the steps in our `protocol-demo` repo](https://github.com/kiva/protocol-demo#working-with-protocol-using-aries) and will be using that as your backend Gateway.
+This will give you our default implementation - all of our pre-built UI components, Kiva branding, and an assumption that you have [started running the Kiva Aries backend gateway locally on your machine after following the steps in our `protocol-demo` repo](https://github.com/kiva/protocol-integration-tests#setup) and will be using that as your backend Gateway.
 
 So, assuming you wanted to create a project called `marauders-map` in the directory you are currently working in, you would run.
 
 ```
 npx create-ssirius-standalone marauders-map .
 ```
+
+Once there, you can run the application locally by running the following commands. By default, the port the application runs on is 7567. (Shoutout to Commander Rex.)
+
+```
+cd marauders-map
+npm i
+npm run start
+```
+
+For deployments to production, you can run `npm run build` to create an optimized application bundle.
 
 #### Packs
 
