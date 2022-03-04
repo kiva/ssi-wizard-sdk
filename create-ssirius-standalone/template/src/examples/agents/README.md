@@ -1,167 +1,166 @@
 # Agent Classes
 
-Verification of credentials mostly follows the same steps.
+SSI credential transactions mostly follow the same steps.
 
 1. Invite another party to establish a connection.
 2. Wait for the connection invitation to be accepted.
-3. Send a verification request to the connected party.
-4. Prove the validity of the credentials.
+3. Next step depends on whether you're issuing a credential or verifying it:
+    * Issuing: Offer the credential
+    * Verifying: Send a verification request
+4. Accept/prove the validity of the credential. Or decide that you don't want to.
 
-Because there's a predictable flow, we have created a `BaseAgent` class and an `IAgent` implementation to make sure that it is as easy as possible to implement your own agent seamlessly into the existing UI. (You can see the React component that consumes the `IAgent` classes in `AgencyQR.tsx` [here](https://github.com/kiva/ssi-wizard-sdk/blob/main/standalone/src/screens/AgencyQR.tsx), or in `CredentialIssuance.tsx` [here](https://github.com/kiva/ssi-wizard-sdk/blob/main/standalone/src/screens/CredentialIssuance.tsx)).
+Because there's a predictable flow to these transactions, we felt comfortable writing React components like [AgencyQR](https://github.com/kiva/ssi-wizard-sdk/tree/main/create-ssirius-standalone/template/src/preBuilt/AgencyQR) and [CredentialIssuance](https://github.com/kiva/ssi-wizard-sdk/tree/main/create-ssirius-standalone/template/src/preBuilt/CredentialIssuance) that simply use Agent classes that invoke methods like `connect` and `verify` rather than do all the logic for connecting and verifying.
+
+In order to help YOU build your own Agent, we have created a few utilities.
+
+## The Utilities
+
+### `IBaseAgent`
+
+Because the process of establishing a connection is the same whether you're Issuing or Verifying, we have abstracted that logic into an `IBaseAgent` interface.
+
+This interface is NOT exported, but it's still useful to know the methods on offer, [because they are extended to `IIssuer` and `IVerifier`, as well](https://github.com/kiva/ssi-wizard-sdk/blob/main/react-core/src/interfaces/IAgent.ts).
+
+```
+interface IBaseAgent {
+    isConnected(connectionData: any): boolean; // says whether a connection has been established
+    connect(connectionId: string): Promise<any>; // initiates a connection
+    getConnection(connectionId: string): Promise<any>; // gets status of a connection request
+}
+```
+
+### `IIssuer`
+
+The `IIssuer` interface extends `IBaseAgent` and an instance of it is required for the [CredentialIssuance](https://github.com/kiva/ssi-wizard-sdk/tree/main/create-ssirius-standalone/template/src/preBuilt/CredentialIssuance) component.
+
+```
+export interface IIssuer extends IBaseAgent {
+    isOffered(response: any): boolean; // says whether the credential has been offered
+    isIssued(response: any): boolean; // says whether the credential has been accepted
+    createCredential(data: any): Promise<any>; // takes a bundle of data and kicks of the process of creating that credential
+    checkCredentialStatus(credentialId: string): Promise<any>; // checks the status of a created credential - offered, issued, rejected, etc.
+}
+```
+
+### `IVerifier`
+
+The `IVerifier` interface extends `IBaseAgent` and an instance of it is required for the [AgencyQR](https://github.com/kiva/ssi-wizard-sdk/tree/main/create-ssirius-standalone/template/src/preBuilt/AgencyQR) component.
+
+Verifications have two parts: a proof profile defining what criteria need to be satisfied in order for a proof to succeed, and a proof presentation, which is a credential-holder's attempt to satisfy the criteria. As such, the `IVerifier` interface has a little more stuff than `IIssuer`.
+
+```
+export interface IVerifier extends IBaseAgent {
+    isVerified(response: any): boolean; // says if the proof has been verified
+    fetchProofOptions?: () => Promise<any>; // an optional method if you have set up a service for getting proof profile definitions
+    setProofProfile?: (proofProfile: string) => void; // an optional method for setting a proof profile based on a server response
+    verify(connectionId: string, profile: any): Promise<any>; // initiates a verification of a proof presentation
+    checkVerification(verificationId: string): Promise<any>; // checks the status of the verification
+    getProof(data: any): any; // gets the data from a credential after a successful verification
+    isRejected(response: any): boolean; // says if the proof presentation has been rejected
+}
+```
+
+### `agentRequest`
+
+The `agentRequest` function is a utility function to make a request to an external API in order to get SSI transaction data. It has three parameters.
+
+* `request`: This is a Promise, usually via a request to an API. You should actually invoke your favorite call: `axios`, `fetch`, `$.ajax` if you're old-school...
+    * Example: `agentRequest(axios.get('http://localhost:1337'))`
+* `callback` (optional): If you need to massage the response from your request, you can do so via this `callback` function. This function should have a return value.
+    * Example: `agentRequest(axios.get('https://<url>.com/getCreditReport?userId=wtv'), (report: CreditReport) => delete report.SecretData && return report)`
+* `error` (optional): We have included default handling for errors, but if you'd like to include a custom error message, you can do so here as a string.
 
 ## How To Use These
 
-First step is to create a new Typescript file that exports a class that implements the `IAgent` interface. We also recommend extending the `BaseAgent` class, but this isn't strictly speaking necessary.
+An Agent class is a requirement for two of our pre-built components: [AgencyQR](https://github.com/kiva/ssi-wizard-sdk/tree/main/create-ssirius-standalone/template/src/preBuilt/AgencyQR) and [CredentialIssuance](https://github.com/kiva/ssi-wizard-sdk/tree/main/create-ssirius-standalone/template/src/preBuilt/CredentialIssuance). As may be obvious, `CredentialIssuance` is a component that enables issuing a credential. As is probably less obvious, `AgencyQR` is designed to verify a credential.
+
+As such, `CredentialIssuance` requires an `IIssuer` type of Agent class, and the `AgencyQR` component requires an `IVerifier` type of Agent class.
+
+The examples in this directory rely on the Kiva Protocol local backend, which you can run locally on your own machine [by going to our `protocol-integration-tests` repo and running through the setup process there](https://github.com/kiva/protocol-integration-tests), and the data we receive follows the RFCs from [AcaPy](https://github.com/hyperledger/aries-cloudagent-python).
+
+Instead of breaking down the Agent classes themselves, we will show you how to add your own Agent to your front end application.
+
+### Using `IIssuer` and `IVerifier` classes
+
+#### Step 1: Create an Agent
+
+The `CredentialIssuance` component requires you to provide an object that implements `IIssuer` as one of its props, while the `AgencyQR` component requires an `IVerifier`. Practically speaking, this means you need to create a class for yourself; it works very similarly, regardless of whether you're verifying or issuing.
+
+For an issuing transaction:
 
 ```
-import BaseAgent from './BaseAgent';
+import {IIssuer, agentRequest} from '@kiva/ssirius-react';
 
-import {IAgent} from '../interfaces/AgentInterfaces';
-
-export default class NewAgent extends BaseAgent implements IAgent {}
+export default class MyIssuer implements IIssuer {}
 ```
 
-The `IAgent` interface requires the following methods:
-
-* `establishConnection`: This asynchronous method accepts a connection ID string and returns a connection invitation object as a `Promise<any>`
-* `getConnection`: This asynchronous method accepts a connection ID string and returns a connection status object as a `Promise<any>`
-* `sendVerification`: This asynchronous method accepts a connection ID string and proof profile object and returns a verification ID string wrapped in a Promise
-* `checkVerification`: This asynchronous method accepts a verification ID string and returns a verification status object as a `Promise<any>`
-* `isConnected`: This method accepts a connection status object and returns a boolean that indicates whether the connection is in an "Accepted" state.
-* `isVerified`: Similar to `isConnected`, this method accepts a verification status object and returns a boolean indicating whether the proof has succeeded.
-* `isOffered`: This method accepts a credential offer status object and returns a boolean that indicates whether the offer for a new credential has been extended to another party.
-* `isIssued`: This method accepts a credential offer status object and returns a boolean that indicates whether the offered credential has been accepted by the other party.
-* `formatProof`: This method allows you to modify the schema of the proven verification in order to be rendered in the UI. If you don't want to do any modfications, simply return the `response` provided as a parameter.
-* `getProof`: This method is used to determine what part of the verified proof object to return to the UI.
-
-The `BaseAgent`, while not required, provides some helpful methods to make writing your connection and verification methods easier.
-
-For example, to create a new `establishConnection` method with the `BaseAgent`, you could simply write:
+For a verification transaction:
 
 ```
-establishConnection = async (connectionId: string) => {
-    return super.establish(
-        fetch(whateverURL.org),
-        (data: any) => { return data; }
-    );
-}
+import {IVerifier, agentRequest} from '@kiva/ssirius-react';
+
+export default class MyVerifier implements IVerifier {}
 ```
 
-For an explanation of why this works, you can read the documentation on the `BaseAgent` below.
+You'll need to implement the methods that we mentioned above, but you can also add any other internal methods you want to make sure that the class is working just the way you want it to. You can see some of the methods we wrote [by looking at our KivaIssuer class](https://github.com/kiva/ssi-wizard-sdk/blob/main/create-ssirius-standalone/template/src/examples/agents/KivaIssuer.ts) or our [KivaVerifier class](https://github.com/kiva/ssi-wizard-sdk/blob/main/create-ssirius-standalone/template/src/examples/agents/KivaVerifier.ts).
 
-Right now, we have hardcoded ONE (1) Agent into the codebase: the `KivaAgent` class. If you have suggestions about the best way to implement new Agents in the codebase, we look forward to hearing them!
- 
-## `BaseAgent`
+#### Step 2: Use your Agent in the `component_map`
 
-This base class provides a series of utility functions that invoke the `baseFunction`, which accepts a promise, a data manipulation function, and optionally a predetermined error string.
+We're going to assume that you've read all [about the `component_map` configuration used by SSIrius](https://github.com/kiva/ssi-wizard-sdk/tree/main/create-ssirius-standalone), so we'll skip directly to the pointy end.
 
 ```
-async baseFunction(request: Promise<any>, callback: (data: any) => any, error?: string): Promise<any>
-```
+import MyIssuer from './MyIssuer';
+import MyVerifier from './MyVerifier';
+import CredentialIssuance from './preBuilt/CredentialIssuance';
+import AgencyQR from './preBuilt/AgencyQR';
 
-### The Promise
-
-Because your request to your agent might have any number of parameters, we accept any type of Promise as the first parameter of the `baseFunction`, such as an Axios or `fetch` request.
-
-This Promise will be awaited, and then returned as a resolved Promise or rejected. The `AgencyQR.tsx` component is designed to catch any errors downstream, so don't worry about error handling just yet.
-
-### The Callback
-
-Sometimes you need to manipulate the Promise's response for the UI to safely handle the data. For example, the Kiva backend will automatically generate a connection ID for you when a connection invitation is created, so the connection ID needs to be saved in this step. Also, the invitation object itself needs to be base64 encoded in order to be rendered as a QR code.
-
-The callback is where you do this handling. If you don't need to do any handling, you can simply provide a function that returns the data.
-
-```
-getData(data: any) {
-    return data;
-}
-
-....
-
-super.check(fetch(...), this.getData);
-```
-
-### The Error Message
-By default, the error generated from a rejected Promise will be passed down for the UI to render. However, if you don't want to use this default message, you can provide your own error string here.
-
-## `IAgent`
-
-Agents used in our React component are required to implement `IAgent`, which is used to normalize the differences in different agents' connection and verification response schemas.
-
-### `establishConnection(connectionId: string): Promise<any>`
-
-This asynchronous method takes a connection ID and can then return any data type wrapped in a Promise. The method is used to provide an invitation string for rendering as a QR code, so we highly recommend you modify your response so that it returns a string.
-
-If you're extending `BaseAgent`, this can be used in conjunction with `super.establish()`.
-
-### `createCredential(entityData: any): Promise<any>`
-
-This asynchronous method takes the data you've collected to create a credential and will make the request to build and offer the credential to the party with whom you're working.
-
-If you're extending `BaseAgent`, this can be used in conjunction with `super.offer()`.
-
-### `checkCredentialStatus(credentialId: string): Promise<any>`
-
-This asynchronous method takes the ID of the credential that's been offered, and returns the current status of the offer wrapped in a Promise.
-
-This method will be called recursively, so please do consider how much data you want your response to deliver. Also note that the response from this method will inform the return value for `isAccepted`, so make sure you write THAT method accordingly.
-
-If you're extending `BaseAgent`, this method can be used in conjunction with `super.issue()`.
-
-### `getConnection(connectionId: string): Promise<any>`
-
-This asynchronous method uses the connection ID used in the creation of the invitation from `establishConnection` and makes a request to check the status of the connection. You can return any data type within a Promise from this method.
-
-This method is called recursively once the connection invitation is created, so be sure to consider how much data you want to pull from your agent.
-
-If you're extending `BaseAgent`, this can be used in conjunction with `super.check()`.
-
-### `isConnected(connectionStatus: any): boolean`
-
-This method consumes the connection status data returned by `getConnection` and returns a boolean indicating whether the status has been accepted by the invited party.
-
-For example, if we know that a connection status object will have a `state` key whose value is `connected` once the connection is accepted, the method could be written like this.
-
-```
-isConnected(connectionStatus: any): boolean {
-    if (connectionStatus.state === 'connected') {
-        return true;
+const component_map = {
+    ...
+    issue: {
+        component: CredentialIssuance,
+        props: {
+            agent: new MyIssuer()
+        }
+    },
+    verify: {
+        component: AgencyQR,
+        props: {
+            agent: new MyVerifier()
+        }
     }
-    return false;
 }
 ```
-### `sendVerification(connectionId: string, profile: ProofRequestProfile): Promise<string>`
 
-This asynchronous method accepts the proof profile object and the connection ID from the invitation, starts a verification request and then returns the ID of the verification request wrapped in a Promise.
+#### Step 3: Add your issuing flow to the configuration, like normal
 
-If you're extending `BaseAgent`, this can be used in conjunction with `super.send()`.
+```
+// In constants.ts
 
-### `checkVerification(verificationId: string): Promise<any>`
+verification_options: [
+    {
+        id: 'issuing',
+        title: 'I, Issuer',
+        type: 'issue',
+        description:
+            'I have a credential that you want. Come and get it.',
+        sequence: ['issue']
+    },
+    {
+        id: 'verifying',
+        title: 'I, Verifier',
+        type: 'verify',
+        description:
+            'Yes, you do need your stinking badges.',
+        sequence: ['verify']
+    }
+]
+```
 
-This asynchronous method accepts the verification ID created in `sendVerification` and returns the current status of the verification wrapped in a Promise.
+#### Step 4: Read more about the `AgencyQR` and `CredentialIssuance` components individually
 
-This method is called recursively, so consider how much data you want to request from your agent.
+While it's easy enough to create a new agent for handling QR code transactions, the `CredentialIssuance` and `AgencyQR` components (specifically the former) have some other features that you'll need to read about in order to make them work properly.
 
-If you're extending `BaseAgent`, this can be used in conjunction with `super.prove()`.
+We have written documentation about both components within their respective directories, so check them out before you go too crazy!
 
-### `isVerified(verificationStatus: any): boolean`
-
-Similar to `isConnected`, this method checks the returned value of `checkVerification` and checks if the value fits the conditions required to be considered proven.
-
-### `isOffered(credentialStatus: any): boolean`
-
-Similar to `isVerified`, this method checks the returned value of `createCredential` and checks if the value fits the conditions required to prove that the credential has been offered.
-
-### `isAccepted(credentialStatus: any): boolean`
-
-Similar to `isOFfered`, this method checks the returned value of `checkCredentialStatus` and checks if the value fits the conditions required to prove that the credential has been accepted and issued.
-
-### `formatProof(proof: any): any`
-
-This method is designed to manipulate the response schema returned from `checkVerification` once the data is verified so that it corresponds with the keys needed to successfully render the user details page.
-
-Typically, this data should correspond to the configuration you provided for `pii_map` in your configuration JSON file, because this configuration is what the `ResultDetails.tsx` component uses in order to decide what values to show in the UI.
-
-### `getProof(data: any): any`
-
-This method takes the response of the `checkVerification` method and extracts the proven data.
+* [CredentialIssuance](https://github.com/kiva/ssi-wizard-sdk/tree/main/create-ssirius-standalone/template/src/preBuilt/CredentialIssuance)
+* [AgencyQR](https://github.com/kiva/ssi-wizard-sdk/tree/main/create-ssirius-standalone/template/src/preBuilt/AgencyQR)
