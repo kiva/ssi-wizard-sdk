@@ -3,7 +3,6 @@
     "version": "0.1.0",
     "description": "Node CLI tool to easily set up a mock fingerprint scanning API",
     "type": "module",
-    "types": "src/types/types.d.ts",
     "homepage": "https://github.com/kiva/Protocol-UI-DevTools#readme",
     "repository": {
         "type": "git",
