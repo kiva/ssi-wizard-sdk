@@ -5,8 +5,7 @@ import yargs from 'yargs';
 import {hideBin} from 'yargs/helpers';
 import createEndpoints from "./utils/createEndpoints.js";
 import parseOpts from "./utils/parseOpts.js";
-// import { serverInit, listenOnPort, configureEndpoints } from "./utils/serverUtils.js";
-import { serverInit } from "./utils/serverUtils.js";
+import { serverInit, listenOnPort, configureEndpoints } from "./utils/serverUtils.js";
 
 const argv = yargs(hideBin(process.argv))
     .usage('Usage: $0 [options]')
@@ -30,7 +29,6 @@ console.log(points);
 
 parseOpts(argv).then(d => {
     const app = serverInit();
-    console.log(app);
-    // configureEndpoints(app, points, d);
-    // listenOnPort(app, argv.p);
+    configureEndpoints(app, points, d);
+    listenOnPort(app, argv.p);
 });

@@ -6,5 +6,5 @@ export default function createBase64Img(fileName: string): string {
     if (fileData) {
         return Buffer.from(fileData).toString('base64');
     }
-    return '';
+    return fileName;
 }

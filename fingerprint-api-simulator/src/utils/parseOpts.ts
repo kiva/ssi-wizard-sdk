@@ -3,7 +3,6 @@ import IOpts from "../interfaces/IOpts";
 import { returnValues } from "../defaults/config.js";
 import createBase64Img from "./createBase64Img.js";
 import path from "path";
-import { createRequire } from "module";
 
 export default async function parseOpts(opts: IOpts): Promise<IConfig> {
     const conf: IConfig = returnValues;
@@ -33,20 +32,16 @@ export default async function parseOpts(opts: IOpts): Promise<IConfig> {
     return conf;
 }
 
-async function addExternalFileData(fileName: string, conf: IConfig) {
-    let data;
+export async function addExternalFileData(fileName: string, conf: IConfig) {
     try {
-        const d = await import(path.resolve(process.cwd(), fileName));
-        data = d.default;
-    } catch {
-        const require = createRequire(import.meta.url);
-        data = require(path.resolve(process.cwd(), fileName));
-    } finally {
+        const {default: data} = await import(path.resolve(process.cwd(), fileName));
         insertData(data, conf);
+    } catch {
+        console.warn(`Sorry! We were not able to read ${fileName}, so the data in that file will not be added to your API response`);
     }
 }
 
-function insertData(data: any, conf: IConfig): void {
+export function insertData(data: any, conf: IConfig): void {
     for (const k in data) {
         conf[k] = data[k];
     }
