@@ -25,7 +25,6 @@ const argv = yargs(hideBin(process.argv))
     .parseSync();
 
 const points = createEndpoints(argv);
-console.log(points);
 
 parseOpts(argv).then(d => {
     const app = serverInit();
