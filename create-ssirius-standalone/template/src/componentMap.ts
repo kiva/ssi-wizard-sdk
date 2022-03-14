@@ -6,12 +6,15 @@ import CredentialIssuance from "./preBuilt/CredentialIssuance";
 import EmailScreen from "./preBuilt/EmailScreen";
 import SMSOTPScreen from "./preBuilt/SMSOTPScreen";
 import WebcamCaptureTool from "./preBuilt/WebcamCaptureTool";
+import FingerprintRegistration from "./preBuilt/FingerprintRegistration";
 import KivaVerifier from "./examples/agents/KivaVerifier";
 import KivaIssuer from "./examples/agents/KivaIssuer";
 import { GuardianSDK } from "@kiva/ssirius-react";
 import config_constants from "./constants";
 import { FPErrorHandler } from "./examples/errorHandlers/FPErrorHandler";
 import { SMSErrorHandler } from "./examples/errorHandlers/SMSErrorHandler";
+import axios from "axios";
+import { FingerprintMap, fpIndex } from "./preBuilt/FingerprintRegistration/interfaces/FingerprintRegistrationInterfaces";
 
 const phoneIntls = {
     only: false,
@@ -102,6 +105,45 @@ const component_map = {
                 token: config_constants.auth_token,
                 errorHandler: FPErrorHandler
             })
+        }
+    },
+    fpRegistration: {
+        component: FingerprintRegistration,
+        props: {
+            getFingerprint: async function() {
+                const {data} = await axios.get('http://localhost:9907/EKYC/Fingerprint');
+                return data.ImageBase64;
+            },
+            register: async function(fingerprints: FingerprintMap, dependencyData: any) {
+                const params = [];
+                for (const i in fingerprints) {
+                    const idx: fpIndex = i as unknown as fpIndex; // this is terrible
+                    if (!!fingerprints[idx].image) {
+                        params.push({
+                            image: fingerprints[idx].image,
+                            capture_date: fingerprints[idx].captured,
+                            position: idx.toString(),
+                            missing_code: null,
+                            type_id: '1'
+                        });
+                    }
+                }
+                
+                return axios.post('http://localhost:8080/v2/kiva/api/guardian/enroll', {
+                    guardianData: [{
+                        pluginType: 'FINGERPRINT',
+                        filters: {
+                            externalIds: {
+                                companyEmail: dependencyData.email
+                            }
+                        },
+                        params
+                    }]
+                });
+            },
+            dependencies: {
+                email_input: ['email']
+            }
         }
     }
 };

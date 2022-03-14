@@ -51,6 +51,7 @@ export default function EmailScreen(props: EmailProps) {
                     <Grid item>
                         <FormControl id="test">
                             <TextField
+                                autoFocus
                                 id="email-input"
                                 data-cy="email-input"
                                 label={email.trim() === '' ? t('Email.text.placeHolder') : ''}

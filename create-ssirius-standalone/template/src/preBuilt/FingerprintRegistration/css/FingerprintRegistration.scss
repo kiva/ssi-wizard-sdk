@@ -1,0 +1,51 @@
+@import '../../../css/mixins/_colors';
+
+#fp-registration-container {
+    p {
+        text-align: center;
+
+        &#instructions {
+            font-size: 1.5em;
+            margin: 10px auto;
+            max-width: 1400px;
+        }
+    }
+
+    button {
+        &:disabled {
+            background-color: $secondary-color;
+            color: $secondary-offset;
+        }
+
+        &:hover {
+            background-color: $primary-color;
+            color: $primary-offset;
+        }
+    }
+}
+
+#fp-images-container {
+    margin: 0 auto;
+    max-width: 1400px;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+
+    .fingerprint-container {
+        width: 100px;
+        min-height: 100px;
+        border: 1px solid black;
+        margin: 1em;
+
+        .clear-fp {
+            color: red;
+            padding-right: 5px;
+            padding-top: 3px;
+            float: right;
+        }
+
+        &.success {
+            border: 3px solid #2AA967;
+        }
+    }
+}
