@@ -16,7 +16,7 @@
         "prepare": "npm run build"
     },
     "bin": {
-        "ssim": "bin/simulator.js"
+        "swrl": "bin/simulator.js"
     },
     "author": "Kiva Microfunds",
     "license": "Apache-2.0",

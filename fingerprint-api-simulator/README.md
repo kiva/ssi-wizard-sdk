@@ -10,13 +10,13 @@ Install the package
 npm i @kiva/fingerprint-api-simulator
 ```
 
-Once installed, set up a script in your `package.json` file.
+Once installed, set up a script in your `package.json` file using the `swrl` command from our package.
 
 ```
 {
     ...
     "scripts": {
-        "simulator": "ssim"
+        "simulator": "swrl"
     }
     ...
 }
@@ -50,7 +50,7 @@ Use this option to create a list of endpoints that can be called in order to get
 
 ```
 # Would give you # ['/MyCoolPath/', '/MyOtherCoolPath', '/HeresAnotherCoolPath', '/AndOneMoreForFun']
-ssim --endpoints /MyCoolPath,/MyOtherCoolPath /HeresAnotherCoolPath /AndOneMoreForFun
+swrl --endpoints /MyCoolPath,/MyOtherCoolPath /HeresAnotherCoolPath /AndOneMoreForFun
 ```
 
 ### `-f`, `--file`
@@ -62,5 +62,5 @@ You can use this option to provide a file containing extra data that you want to
 Don't have enough extra data for you to want to create a whole extra file? No worries - you're allowed to simply add your own custom option to the command line, and the data will automatically be included.
 
 ```
-ssim --token <a token> --password <secret... until someone calls your API>
+swrl --token <a token> --password <secret... until someone calls your API>
 ```
