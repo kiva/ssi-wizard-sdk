@@ -36,7 +36,7 @@ function App(props: AppProps) {
                 <TranslationContext.Provider value={t}>
                     <Toaster />
                     {Header}
-                    <SSIriusRouter {...conf} />;
+                    <SSIriusRouter {...conf} />
                     {Footer}
                 </TranslationContext.Provider>
             </div>
