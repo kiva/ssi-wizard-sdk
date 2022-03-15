@@ -88,7 +88,7 @@ export default function FingerprintRegistration(props: FingerprintRegistrationPr
     }
 
     function renderFpBox(fpId: fpIndex) {
-        return <div className='fingerprint-container success'><><div onClick={() => clearFingerprintCapture(fpId)} className='clear-fp'>X</div><img alt="fingerprint" style={{width: '100%'}} src={`data:image;base64,${fingerprints[fpId].image}`} /></></div>
+        return <div className='fingerprint-container success'><><div onClick={() => clearFingerprintCapture(fpId)} className='clear-fp'>X</div><img alt={fpKeyMap[fpId]} style={{width: '100%'}} src={`data:image;base64,${fingerprints[fpId].image}`} /></></div>
     }
 
     function createFPContainer() {
