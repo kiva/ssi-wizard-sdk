@@ -38,5 +38,15 @@
             "expect": "be.visible",
             "backSelector": ".secondary"
         }
+    },
+    {
+        "title": "Fingerprint Registration",
+        "description": "Customer will scan their fingerprint in order to issue themselves a credential.",
+        "type": "issue",
+        "expectation": {
+            "selector": "[data-cy=\"email-input\"]",
+            "expect": "be.visible",
+            "backSelector": ".secondary"
+        }
     }
 ]

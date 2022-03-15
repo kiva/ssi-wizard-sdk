@@ -102,7 +102,11 @@
         },
         "fingerprint": {
             "fpNotCaptured": "We were unable to capture your fingerprint. Please click \"Recapture Fingerprint\" to retry the scan.",
-            "noCitizenFound": "No record found. Please use an alternative KYC process."
+            "noCitizenFound": "No record found. Please use an alternative KYC process.",
+            "scanFailed": "There was a problem capturing the image for {{scannedFinger}}. The process failed with this message: {{error}}",
+            "scanInProgress": "There is a scan in progress currently. Please wait...",
+            "needAtLeastOne": "Please provide at least one fingerprint image before submitting.",
+            "registrationFailed": "There was an error while trying to register your fingerprints: {{msg}}"
         }
     },
     "ConfirmationScreen": {
@@ -222,6 +226,11 @@
         },
         "buttons": {
             "reset": "Reset Image"
+        }
+    },
+    "FingerprintRegistration": {
+        "text": {
+            "instructions": "Click one of the boxes below to begin scanning your preferred fingerprint. You can discard the image of your fingerprint by clicking the red 'X' within the box."
         }
     }
 }

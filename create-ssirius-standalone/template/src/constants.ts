@@ -95,6 +95,14 @@ const config_constants = {
             description:
                 'Customer will scan their fingerprint in order to prove their identity.',
             sequence: ['searchMenu', 'fpScan']
+        },
+        {
+            id: 'FP_Registration',
+            title: 'Fingerprint Registration',
+            type: 'issue',
+            description:
+                'Customer will scan their fingerprint in order to issue themselves a credential.',
+            sequence: ['email_input', 'fpRegistration']
         }
     ],
     permittedOpenerOrigins

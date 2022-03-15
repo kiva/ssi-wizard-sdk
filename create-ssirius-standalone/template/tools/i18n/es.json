@@ -101,7 +101,12 @@
             "noData": "No pudimos procesar los datos devueltos"
         },
         "fingerprint": {
-            "fpNotCaptured": "No pudimos capturar su huella digital. Haga clic en \"Recapturar huella digital\" para volver a intentar escanear."
+            "fpNotCaptured": "No pudimos capturar su huella digital. Haga clic en \"Recapturar huella digital\" para volver a intentar escanear.",
+            "noCitizenFound": "Ningún record fue encontrado. Utilice un proceso alternativo de KYC.",
+            "scanFailed": "Se encuentra un problem capturando la imagen del {{scannedFinger}}. El proceso falló con esta mensaje: {{error}}",
+            "scanInProgress": "El lector esta escaneando. Espere un momento, por favor...",
+            "needAtLeastOne": "Se necesita al menos una imagen de la huella dactilar antes de enviarla.",
+            "registrationFailed": "Hubo un error al intentar registrar sus huellas dactilares: {{msg}}"
         }
     },
     "ConfirmationScreen": {
@@ -221,6 +226,11 @@
         },
         "buttons": {
             "reset": "Restablecer Imagen"
+        }
+    },
+    "FingerprintRegistration": {
+        "text": {
+            "instructions": "Haga clic en uno de los cuadros a continuación para comenzar a escanear su huella dactilar preferida. Puede descartar la imagen de su huella dactilar haciendo clic en la 'X' roja dentro del cuadro."
         }
     }
 }
