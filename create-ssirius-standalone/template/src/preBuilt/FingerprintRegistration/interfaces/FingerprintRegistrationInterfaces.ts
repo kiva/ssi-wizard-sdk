@@ -41,4 +41,4 @@ interface DependencyConfig {
     [index: string]: string[]
 }
 
-export type fpIndex = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10;
+export type FpIndex = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10;

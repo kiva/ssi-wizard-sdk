@@ -14,7 +14,7 @@ import config_constants from "./constants";
 import { FPErrorHandler } from "./examples/errorHandlers/FPErrorHandler";
 import { SMSErrorHandler } from "./examples/errorHandlers/SMSErrorHandler";
 import axios from "axios";
-import { FingerprintMap, fpIndex } from "./preBuilt/FingerprintRegistration/interfaces/FingerprintRegistrationInterfaces";
+import { FingerprintMap, FpIndex } from "./preBuilt/FingerprintRegistration/interfaces/FingerprintRegistrationInterfaces";
 
 const phoneIntls = {
     only: false,
@@ -117,7 +117,7 @@ const component_map = {
             register: async function(fingerprints: FingerprintMap, dependencyData: any) {
                 const params = [];
                 for (const i in fingerprints) {
-                    const idx: fpIndex = i as unknown as fpIndex; // this is terrible
+                    const idx: FpIndex = i as unknown as FpIndex; // this is terrible
                     if (!!fingerprints[idx].image) {
                         params.push({
                             image: fingerprints[idx].image,

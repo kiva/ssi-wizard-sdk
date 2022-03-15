@@ -1,7 +1,7 @@
 import React, {useState, useContext, useRef} from 'react';
 import { Button } from '@material-ui/core';
 import {FlowDispatchTypes} from '@kiva/ssirius-react';
-import {FingerprintRegistrationProps, FingerprintMap, FingerprintCapture, fpIndex, FingerprintKeyMap} from './interfaces/FingerprintRegistrationInterfaces';
+import {FingerprintRegistrationProps, FingerprintMap, FingerprintCapture, FpIndex, FingerprintKeyMap} from './interfaces/FingerprintRegistrationInterfaces';
 
 import '../../css/Common.scss';
 import './css/FingerprintRegistration.scss';
@@ -71,7 +71,7 @@ export default function FingerprintRegistration(props: FingerprintRegistrationPr
             if ('Errors.fingerprint.scanInProgress' === e.message) {
                 showToast(e.message, 3000);
             } else {
-                const fpi = index as fpIndex;
+                const fpi = index as FpIndex;
                 showToast(t('Errors.fingerprint.scanFailed', {
                     scannedFinger: t(`Fingers.${fpKeyMap[fpi]}_full`)
                 }), 7000);
@@ -87,14 +87,14 @@ export default function FingerprintRegistration(props: FingerprintRegistrationPr
         return <div className='fingerprint-container' onClick={() => addFingerprintCapture(index)}></div>
     }
 
-    function renderFpBox(fpId: fpIndex) {
+    function renderFpBox(fpId: FpIndex) {
         return <div className='fingerprint-container success'><><div onClick={() => clearFingerprintCapture(fpId)} className='clear-fp'>X</div><img alt={fpKeyMap[fpId]} style={{width: '100%'}} src={`data:image;base64,${fingerprints[fpId].image}`} /></></div>
     }
 
     function createFPContainer() {
         return <div id="fp-images-container">
             {Object.keys(fingerprints).map((id: any, index: number) => {
-                const fpId: fpIndex = id;
+                const fpId: FpIndex = id;
                 return <div key={fpId} id={`finger-id-${fpId}`}>
                     {!!fingerprints[fpId].image ? renderFpBox(fpId) : renderEmptyBox(index + 1)}
                     <p>{t(`Fingers.${fpKeyMap[fpId]}_full`, {
