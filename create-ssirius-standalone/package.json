@@ -1,6 +1,6 @@
 {
     "name": "create-ssirius-standalone",
-    "version": "0.0.14",
+    "version": "0.0.15",
     "description": "Quickstart template for getting up and running with a SSIrius app",
     "scripts": {
         "create-ssirius-standalone": "create-ssirius-standalone",
@@ -34,6 +34,7 @@
     },
     "devDependencies": {
         "@types/fs-extra": "^9.0.13",
-        "@types/prompts": "^2.0.14"
+        "@types/prompts": "^2.0.14",
+        "typescript": "^4.6.2"
     }
 }
