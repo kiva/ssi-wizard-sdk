@@ -73,7 +73,9 @@ export default function FingerprintRegistration(props: FingerprintRegistrationPr
             } else {
                 const fpi = index as FpIndex;
                 showToast(t('Errors.fingerprint.scanFailed', {
-                    scannedFinger: t(`Fingers.${fpKeyMap[fpi]}_full`),
+                    scannedFinger: t(`Fingers.${fpKeyMap[fpi]}_full`, {
+                        finger: t('Fingers.finger')
+                    }),
                     error: e.message
                 }), 7000);
             }
