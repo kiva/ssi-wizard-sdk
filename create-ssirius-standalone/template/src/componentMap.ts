@@ -128,7 +128,7 @@ const component_map = {
                         });
                     }
                 }
-                
+
                 return axios.post('http://localhost:8080/v2/kiva/api/guardian/enroll', {
                     guardianData: [{
                         pluginType: 'FINGERPRINT',
@@ -139,6 +139,10 @@ const component_map = {
                         },
                         params
                     }]
+                }, {
+                    headers: {
+                        Authorization: `Bearer ${config_constants.auth_token}`
+                    }
                 });
             },
             dependencies: {
