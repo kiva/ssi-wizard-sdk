@@ -92,19 +92,17 @@ describe('The FingerprintRegistration screen', function() {
         });
     });
 
-    it('surfaces an toast notification for 7 seconds when registration fails', function() {
+    it('surfaces a toast notification for when registration fails', function() {
         cy.intercept('POST', '/v2/kiva/api/guardian/enroll', {
             statusCode: 418
         });
         cy.get('#finger-id-1').click();
         cy.get('button[type="submit"]').click();
         cy.contains('There was an error while trying to register your fingerprints: Request failed with status code 418').should('be.visible');
-        cy.wait(6500);
-        cy.contains('There was an error while trying to register your fingerprints: Request failed with status code 418').should('be.visible');
     });
 
     it('dismisses the toast notification after 7 seconds', function() {
-        cy.wait(1000);
+        cy.wait(7000);
         cy.contains('There was an error while trying to register your fingerprints: Request failed with status code 418').should('not.be.visible');
     });
 
