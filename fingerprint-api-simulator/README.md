@@ -64,3 +64,23 @@ Don't have enough extra data for you to want to create a whole extra file? No wo
 ```
 swrl --token <a token> --password <secret... until someone calls your API>
 ```
+
+## Optional: Docker
+
+The `@kiva/fingerprint-api-simulator` package can be installed and run locally, but we also have an option to run the API via Docker ([which you can install here](https://docs.docker.com/get-docker/)).
+
+In order to run the API, you will need to move into this directory (`ssi-wizard-sdk/fingerprint-api-simulator`) and run these commands.
+
+```
+docker build -t fp-api .
+docker run -p 9907:9907 fp-api
+```
+
+This will launch the API on port `9907` with all the defaults enabled.
+
+You can add the `-d` flag to the `docker run` command in order to run the API in detached mode.
+
+```
+[~] docker run -d -p 9907:9907 fp-api
+[~] echo "We can do other stuff now"
+```
