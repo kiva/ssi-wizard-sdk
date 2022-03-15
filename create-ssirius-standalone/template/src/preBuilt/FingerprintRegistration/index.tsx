@@ -69,11 +69,12 @@ export default function FingerprintRegistration(props: FingerprintRegistrationPr
             scanning.current = false;
         } catch (e: any) {
             if ('Errors.fingerprint.scanInProgress' === e.message) {
-                showToast(e.message, 3000);
+                showToast(t(e.message), 3000);
             } else {
                 const fpi = index as FpIndex;
                 showToast(t('Errors.fingerprint.scanFailed', {
-                    scannedFinger: t(`Fingers.${fpKeyMap[fpi]}_full`)
+                    scannedFinger: t(`Fingers.${fpKeyMap[fpi]}_full`),
+                    error: e.message
                 }), 7000);
             }
         }
