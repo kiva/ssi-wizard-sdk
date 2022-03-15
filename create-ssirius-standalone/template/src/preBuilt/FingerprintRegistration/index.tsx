@@ -66,16 +66,20 @@ export default function FingerprintRegistration(props: FingerprintRegistrationPr
             const image = await props.getFingerprint();
             const captured = new Date();
             updateFingerprints({image, captured}, index);
-            scanning.current = false;
         } catch (e: any) {
             if ('Errors.fingerprint.scanInProgress' === e.message) {
-                showToast(e.message, 3000);
+                showToast(t(e.message), 3000);
             } else {
                 const fpi = index as FpIndex;
                 showToast(t('Errors.fingerprint.scanFailed', {
-                    scannedFinger: t(`Fingers.${fpKeyMap[fpi]}_full`)
+                    scannedFinger: t(`Fingers.${fpKeyMap[fpi]}_full`, {
+                        finger: t('Fingers.finger')
+                    }),
+                    error: e.message
                 }), 7000);
             }
+        } finally {
+            scanning.current = false;
         }
     }
 
