@@ -5,6 +5,21 @@ on:
       - 'main'
 
 jobs:
+  fp-simulator-jest:
+    timeout-minutes: 10
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '14.x'
+      - name: Run unit tests for @kiva/fingerprint-api-simulator
+        run: |
+          cd ./fingerprint-api-simulator
+          npm ci
+          npm run test
   ssirius-react-jest:
     timeout-minutes: 10
     runs-on: ubuntu-latest

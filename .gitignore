@@ -22,6 +22,9 @@
 # files for ssirius-react
 /react-core/lib
 
+# package for fingerprint-api-simulator
+/fingerprint-api-simulator/bin
+
 # translation files
 **translations.json
 
@@ -39,3 +42,5 @@
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+
+tsconfig.tsbuildinfo

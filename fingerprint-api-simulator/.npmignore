@@ -1,0 +1,7 @@
+.npmignore
+.npmrc
+
+test
+src
+README.md
+Dockerfile
