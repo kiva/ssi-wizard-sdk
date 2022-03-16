@@ -1,9 +1,9 @@
-FROM node:17-alpine as built_app
+FROM node:lts-alpine as built_app
 WORKDIR /tmp
 COPY . .
 RUN npm install
 
-FROM node:17-alpine
+FROM node:lts-alpine
 WORKDIR /www
 COPY --from=built_app /tmp/bin ./bin
 COPY --from=built_app /tmp/node_modules ./node_modules
