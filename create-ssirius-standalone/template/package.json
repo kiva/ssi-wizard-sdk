@@ -10,7 +10,6 @@
         "classnames": "^2.3.1",
         "i18next": "^21.2.6",
         "lodash": "^4.17.21",
-        "node-sass-chokidar": "^1.5.0",
         "qrcode": "^1.4.4",
         "react": "^17.0.2",
         "react-dom": "^17.0.2",
@@ -33,6 +32,7 @@
         "cypress": "^9.5.2",
         "fs-extra": "^10.0.0",
         "react-scripts": "4.0.3",
+        "sass": "^1.49.9",
         "serve": "^12.0.1",
         "wait-on": "^6.0.0"
     },
