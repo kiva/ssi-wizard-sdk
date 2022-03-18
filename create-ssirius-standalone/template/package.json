@@ -38,8 +38,8 @@
         "wait-on": "^6.0.0"
     },
     "scripts": {
-        "prep": "npm run toolsCompile && npm run buildTranslations && react-scripts",
-        "lajhem": "npm run toolsCompile && npm run buildTranslations && npm run rmJs",
+        "prep": "npm run i18n && react-scripts",
+        "i18n": "npm run toolsCompile && npm run buildTranslations && npm run rmJs",
         "start": "PORT=7567 npm run prep -- start",
         "build": "npm run prep -- build",
         "serve-build": "serve -s build",
