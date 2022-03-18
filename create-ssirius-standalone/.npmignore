@@ -2,4 +2,6 @@
 .npmignore
 
 template/node_modules
+template/tools/bundle/**/*.js
+template/src/**/*.js
 src/

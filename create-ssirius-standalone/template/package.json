@@ -33,11 +33,13 @@
         "cypress": "^9.5.2",
         "fs-extra": "^10.0.0",
         "react-scripts": "4.0.3",
+        "rimraf": "^3.0.2",
         "serve": "^12.0.1",
         "wait-on": "^6.0.0"
     },
     "scripts": {
-        "prep": "sh tools/bundle/build_required_files.sh & react-scripts",
+        "prep": "npm run toolsCompile && npm run buildTranslations && react-scripts",
+        "lajhem": "npm run toolsCompile && npm run buildTranslations && npm run rmJs",
         "start": "PORT=7567 npm run prep -- start",
         "build": "npm run prep -- build",
         "serve-build": "serve -s build",
@@ -45,6 +47,8 @@
         "eject": "react-scripts eject",
         "compile": "tsc",
         "toolsCompile": "tsc --project tools/tsconfig.json",
+        "buildTranslations": "node tools/bundle/createTranslationFile.js",
+        "rmJs": "rimraf ./tools/**/*.js && rimraf ./src/**/*.js",
         "cy:open": "cypress open",
         "cy:run": "cypress run"
     },
