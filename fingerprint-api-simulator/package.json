@@ -3,11 +3,11 @@
     "version": "0.1.0",
     "description": "Node CLI tool to easily set up a mock fingerprint scanning API",
     "type": "module",
-    "homepage": "https://github.com/kiva/Protocol-UI-DevTools#readme",
+    "homepage": "https://github.com/kiva/ssi-wizard-sdk/tree/main/fingerprint-api-simulator#readme",
     "repository": {
         "type": "git",
-        "url": "git+https://github.com/kiva/Protocol-UI-DevTools",
-        "directory": ""
+        "url": "git+https://github.com/kiva/ssi-wizard-sdk",
+        "directory": "fingerprint-api-simulator"
     },
     "scripts": {
         "test": "NODE_OPTIONS=--experimental-vm-modules jest",
