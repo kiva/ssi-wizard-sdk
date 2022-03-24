@@ -20,7 +20,7 @@ describe('The FingerSelection screen', function () {
         cy.contains('Accept').click();
         cy.selectAuthMenuItem(3).click();
         cy.get('#select-auth-method').click();
-        cy.get('[data-cy="id-input"] input').type('T3STUS3R');
+        cy.get('[data-cy="id-input"] input').type('test@kiva.org');
         cy.get('#scan-fingerprint').click();
         cy.get('[data-cy="select-new-finger"]', { timeout: 500 }).click();
     });
