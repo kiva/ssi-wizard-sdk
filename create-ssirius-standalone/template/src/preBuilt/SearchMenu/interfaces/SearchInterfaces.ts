@@ -16,4 +16,5 @@ export interface DropdownConfigDefinition {
     validation(input: string): boolean;
     name: string;
     errorMsg: string;
+    type?: string;
 }
