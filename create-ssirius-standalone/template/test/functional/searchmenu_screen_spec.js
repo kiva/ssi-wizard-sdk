@@ -10,9 +10,9 @@ describe('The SearchMenu screen', () => {
         cy.get('[data-cy="id-input"] input', { timeout: 200 }).should('exist');
     });
 
-    it('has NIN selected by default', () => {
-        cy.get('#select-searchId', { timeout: 200 }).should('contain', 'NIN');
-    })
+    it('has Email selected by default', () => {
+        cy.get('#select-searchId', { timeout: 200 }).should('contain', 'Email');
+    });
 
     it('has the correct default text', () => {
         cy.get('form[name="ekycIdForm"] label', { timeout: 200 }).should(labelList => {
@@ -23,12 +23,47 @@ describe('The SearchMenu screen', () => {
         });
     });
 
+    it('alerts when an invalid Email is input', () => {
+        const invalids = [
+            '@earthlink.net',
+            987654321,
+            'kiva@',
+            'kiva@kiva.',
+            'B3AT1T'
+        ];
+        for (let i = 0; i < invalids.length; i++) {
+            cy.get('[data-cy="id-input"] input').type(invalids[i] + '{enter}');
+            cy.get('p').contains('Please enter a valid email').should('be.visible');
+            cy.get('[data-cy="id-input"] input').clear();
+        }
+    });
+
+    it('moves to the ScanFingerprint screen when a valid email is entered', () => {
+        cy.get('[data-cy="id-input"] input').type('test@kiva.org');
+        cy.get('#scan-fingerprint').click();
+        cy.get('[data-cy="fp-image"]', { timeout: 500 }).should('be.visible');
+
+        // It worked? Cool, let's go back and do more stuff
+        cy.get('[data-cy="fpscan-back"]').click();
+    });
+
+    it('opens the select menu on click', () => {
+        cy.get('#select-searchId').click();
+        cy.get('#menu-searchId').should('be.visible');
+    });
+
+    it('selects NIN when clicked', () => {
+        cy.get('li[data-value="nationalId"]').click();
+        cy.get('#menu-searchId').should('not.exist');
+        cy.get('#select-searchId').should('contain', 'NIN');
+    });
+
     it('alerts when an invalid NIN is input', () => {
         const invalids = [
             123456,
             987654321,
             'a1234567',
-            'NINSULAt',
+            'NINT3SSt',
             'B3AT1T'
         ];
         for (let i = 0; i < invalids.length; i++) {
@@ -52,14 +87,10 @@ describe('The SearchMenu screen', () => {
         cy.get('[data-cy="id-input"] input').should(inp => {
             expect(inp.val()).to.eql('TestData');
         });
-    })
-
-    it('opens the select menu on click', () => {
-        cy.get('#select-searchId').click();
-        cy.get('#menu-searchId').should('be.visible');
     });
 
     it('selects Voter ID when clicked', () => {
+        cy.get('#select-searchId').click();
         cy.get('li[data-value="voterId"]').click();
         cy.get('#menu-searchId').should('not.exist');
         cy.get('#select-searchId').should('contain', 'Voter ID');

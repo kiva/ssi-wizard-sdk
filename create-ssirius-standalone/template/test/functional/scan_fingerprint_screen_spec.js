@@ -38,7 +38,7 @@ describe('The ScanFingerprint screen', function () {
         cy.contains('Accept').click();
         cy.selectAuthMenuItem(3).click();
         cy.get('#select-auth-method').click();
-        cy.get('[data-cy="id-input"] input').type('T3STUS3R{enter}');
+        cy.get('[data-cy="id-input"] input').type('test@kiva.org{enter}');
         cy.wait('@scannerData').then(function (data) {
             scannerData = data.response.body;
         });
