@@ -124,6 +124,10 @@ const component_map = {
             },
             register: async function(fingerprints: FingerprintMap, dependencyData: any) {
                 const params = [];
+                const headers: any = {};
+                if (config_constants.auth_token) {
+                    headers.Authorization = `Bearer ${config_constants.auth_token}`;
+                }
                 for (const i in fingerprints) {
                     const idx: FpIndex = i as unknown as FpIndex; // this is terrible
                     if (!!fingerprints[idx].image) {
@@ -147,11 +151,7 @@ const component_map = {
                         },
                         params
                     }]
-                }, {
-                    headers: {
-                        Authorization: `Bearer ${config_constants.auth_token}`
-                    }
-                });
+                }, {headers});
             },
             dependencies: {
                 email_input: ['email']
