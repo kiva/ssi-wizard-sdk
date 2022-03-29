@@ -48,6 +48,14 @@ const component_map = {
         component: SearchMenu,
         props: {
             dropdownConfig: {
+                companyEmail: {
+                    name: 'Email',
+                    errorMsg: 'Please enter a valid email',
+                    validation: (input: string) => {
+                        return input.length > 0 && document.querySelector(':invalid') === null;
+                    },
+                    type: 'email'
+                },
                 nationalId: {
                     name: 'NIN',
                     errorMsg:
