@@ -149,6 +149,7 @@ export default function SearchMenu(props: SearchProps) {
                                 <FormControl>
                                     <TextField
                                         className="inspectletIgnore"
+                                        type={props.dropdownConfig[externalId].type || 'text'}
                                         id="id-input"
                                         data-cy="id-input"
                                         autoFocus={true}
