@@ -17,7 +17,8 @@
 
 # files for create-ssirius-standalone
 /create-ssirius-standalone/lib
-/create-ssirius-standalone/template/tools/bundle/js/constants.ts
+/create-ssirius-standalone/template/tools/**/*.js
+/create-ssirius-standalone/template/src/**/*.js
 
 # files for ssirius-react
 /react-core/lib

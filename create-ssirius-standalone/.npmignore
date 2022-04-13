@@ -3,4 +3,7 @@
 
 template/node_modules
 template/cypress
+template/tools/bundle/**/*.js
+template/src/**/*.js
+
 src/

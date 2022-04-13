@@ -33,7 +33,7 @@
         "incremental": true,
         "tsBuildInfoFile": "./lib/.tsbuildinfo",
         "rootDir": "src",
-        "outDir": "lib/esm"
+        "outDir": "lib"
     },
     "exclude": [
         "node_modules",
