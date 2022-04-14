@@ -11,10 +11,9 @@ import './css/ScanFingerprintScreen.scss';
 
 import FingerSelectionScreen from '../FingerSelectionScreen';
 import DialogContainer from '../../components/DialogContainer';
-import FingerprintScanning from '../../dataHelpers/FingerprintScanning';
 import getPostBody from '../../helpers/getPostBody';
 
-import { FingerprintEkycBody, FPScanProps } from './interfaces/ScanFingerprintInterfaces';
+import { FPScanProps } from './interfaces/ScanFingerprintInterfaces';
 
 import failed from './images/np_fingerprint_failed.png';
 import success from './images/np_fingerprint_verified.png';
@@ -41,10 +40,8 @@ export default function ScanFingerprintScreen(props: FPScanProps) {
     const [selectingNewFinger, setSelectingNewFinger] =
         useState<boolean>(false);
     const [deviceInfo, setDeviceInfo] = useState({});
-    const fingerprintScanner = FingerprintScanning.init({
-        api: 'http://localhost:9907'
-    });
     const SDK = props.guardianSDK;
+    const FPScanner = props.scanner;
 
     useEffect(() => {
         resetFingerprintImage();
@@ -122,15 +119,6 @@ export default function ScanFingerprintScreen(props: FPScanProps) {
         setSlowInternet(false);
     }
 
-    function postBody(): FingerprintEkycBody {
-        return getPostBody(
-            fingerPrintImage,
-            translateFingertype(selectedFinger),
-            deviceInfo,
-            props.store.get
-        );
-    }
-
     // TODO: Break up this method - it's too big
     async function makeRequest(): Promise<void> {
         let slowInternetWarning;
@@ -139,7 +127,7 @@ export default function ScanFingerprintScreen(props: FPScanProps) {
                 setSlowInternet(true);
             }, SLOW_INTERNET_THRESHOLD);
 
-            const body: FingerprintEkycBody = postBody();
+            const body: any = getPostBody(fingerPrintImage, translateFingertype(selectedFinger), deviceInfo, props.store.get);
 
             const response = await SDK.fetchKyc(
                 body,
@@ -200,20 +188,11 @@ export default function ScanFingerprintScreen(props: FPScanProps) {
         getImageFromFingerprintScanner();
     }
 
-    function updateFingerprintState(response: any): void {
-        if (!response.ImageBase64) {
+    function updateFingerprintState(fingerprintImage: string | boolean, deviceInfo: any): void {
+        if (!fingerprintImage) {
             setScanStatus('failed');
             setFingerprintImage('');
         } else {
-            const fingerPrintImage: string = response.ImageBase64.replace(
-                'data:image/png;base64,',
-                ''
-            );
-            const deviceInfo: any = response;
-
-            delete deviceInfo.ImageBase64;
-            delete deviceInfo.Token;
-
             setScanStatus('success');
             setFingerprintImage(fingerPrintImage);
             setDeviceInfo(deviceInfo);
@@ -225,16 +204,16 @@ export default function ScanFingerprintScreen(props: FPScanProps) {
 
     async function getImageFromFingerprintScanner(): Promise<void> {
         try {
-            const data: any = await fingerprintScanner.makeDesktopToolRequest(
-                'Fingerprint'
-            );
-            updateFingerprintState(data);
+            const data: string = await FPScanner.getFingerprint();
+            let deviceInfo: any = {};
+            if (FPScanner.getDeviceInfo) {
+                deviceInfo = FPScanner.getDeviceInfo();
+            }
+            updateFingerprintState(data, deviceInfo);
         } catch (e: any) {
             console.log(e);
             setProcessResultMessage('string' === typeof e ? e : e.message);
-            updateFingerprintState({
-                success: false
-            });
+            updateFingerprintState(false, {});
         }
     }
 
