@@ -115,7 +115,7 @@ const component_map = {
                 token: config_constants.auth_token,
                 errorHandler: FPErrorHandler
             }),
-            scanner: FPScanner,
+            scanner: FPScanner.init('http://localhost:9907'),
             getPostBody
         }
     },
