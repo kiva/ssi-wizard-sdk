@@ -11,7 +11,6 @@ import './css/ScanFingerprintScreen.scss';
 
 import FingerSelectionScreen from '../FingerSelectionScreen';
 import DialogContainer from '../../components/DialogContainer';
-import getPostBody from '../../helpers/getPostBody';
 
 import { FPScanProps } from './interfaces/ScanFingerprintInterfaces';
 
@@ -127,7 +126,7 @@ export default function ScanFingerprintScreen(props: FPScanProps) {
                 setSlowInternet(true);
             }, SLOW_INTERNET_THRESHOLD);
 
-            const body: any = getPostBody(fingerPrintImage, translateFingertype(selectedFinger), deviceInfo, props.store.get);
+            const body: any = props.getPostBody(fingerPrintImage, translateFingertype(selectedFinger), deviceInfo, props.store.get);
 
             const response = await SDK.fetchKyc(
                 body,
