@@ -8,6 +8,7 @@ import IActions from "./interfaces/IActions";
 const actions: IActions = {
     updateToken: function(conf: IConstants, token: string) {
         const componentMap: ComponentMap = conf.component_map;
+        conf.auth_token = token;
         componentMap.agency_qr.props.agent = new KivaVerifier(token);
         componentMap.issue.props.agent = new KivaIssuer(token);
         componentMap.fpScan.props.guardianSDK = GuardianSDK.init({
