@@ -187,13 +187,13 @@ export default function ScanFingerprintScreen(props: FPScanProps) {
         getImageFromFingerprintScanner();
     }
 
-    function updateFingerprintState(fingerprintImage: string | boolean, deviceInfo: any): void {
-        if (!fingerprintImage) {
+    function updateFingerprintState(fpImage: string, deviceInfo: any): void {
+        if (!fpImage) {
             setScanStatus('failed');
             setFingerprintImage('');
         } else {
             setScanStatus('success');
-            setFingerprintImage(fingerPrintImage);
+            setFingerprintImage(fpImage);
             setDeviceInfo(deviceInfo);
             setDialogOpen(false);
             setDialogComplete(false);
@@ -212,7 +212,7 @@ export default function ScanFingerprintScreen(props: FPScanProps) {
         } catch (e: any) {
             console.log(e);
             setProcessResultMessage('string' === typeof e ? e : e.message);
-            updateFingerprintState(false, {});
+            updateFingerprintState('', {});
         }
     }
 
