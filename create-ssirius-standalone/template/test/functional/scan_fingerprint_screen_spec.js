@@ -141,6 +141,7 @@ describe('The ScanFingerprint screen', function () {
         // It worked? Cool, let's go back (and set the scanner data correctly again)
         cy.fpScanIntercept();
         cy.get('[data-cy="back"]', { timeout: 500 }).click();
+        cy.wait('@scannerData');
     });
 
     it('rejects invalid fingerprint data', function () {
