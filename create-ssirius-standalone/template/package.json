@@ -42,7 +42,7 @@
         "i18n": "npm run toolsCompile && npm run buildTranslations && npm run rmJs",
         "start": "PORT=7567 npm run prep -- start",
         "build": "npm run prep -- build",
-        "serve-build": "serve -s build",
+        "serve-build": "serve -s build -l 5000",
         "test": "react-scripts test",
         "eject": "react-scripts eject",
         "compile": "tsc",
