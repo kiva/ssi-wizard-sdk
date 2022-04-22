@@ -233,7 +233,8 @@ describe('The ScanFingerprint screen', function () {
     it('successfully validates valid data', function () {
         cy.intercept('POST', '**/v2/kyc', {
             statusCode: 200,
-            body: ekycData
+            body: ekycData,
+            delay: 1000
         }).as('citizenData');
         cy.get('.next', { timeout: 500 }).click();
         cy.wait('@citizenData').then(function() {
