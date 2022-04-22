@@ -63,6 +63,7 @@ describe('The Fuzzy Matching SearchMenu screen', () => {
         cy.get('[data-cy="fathersfirstname-input"] input').clear();
         cy.get('[data-cy="mothersfirstname-input"]').type('MFNTestName');
         cy.get('#scan-fingerprint').click();
+        cy.wait('@scannerData');
         cy.get('[data-cy="fpScan"]').should('be.visible');
         cy.get('[data-cy="fpscan-back"]').click();
     });
@@ -74,6 +75,7 @@ describe('The Fuzzy Matching SearchMenu screen', () => {
         cy.get('[data-cy="mothersfirstname-input"] input').clear();
         cy.get('[data-cy="fathersfirstname-input"] input').clear();
         cy.get('#scan-fingerprint').click();
+        cy.wait('@scannerData');
         cy.get('[data-cy="fpScan"]').should('be.visible');
     });
 
