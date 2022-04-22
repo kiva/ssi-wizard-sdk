@@ -50,6 +50,7 @@ describe('The Fuzzy Matching SearchMenu screen', () => {
         cy.fpScanIntercept();
         cy.get('[data-cy="fathersfirstname-input"]').type('FFNTestName');
         cy.get('#scan-fingerprint').click();
+        cy.wait('@scannerData');
         cy.get('[data-cy="fpScan"]').should('be.visible');
     });
 

@@ -153,6 +153,7 @@ describe('The ScanFingerprint screen', function () {
             }
         }).as('noCitizenFound');
         // wait briefly for actionability of the button
+        cy.wait(500);
         cy.get('.next').click();
         cy.get('#dialog-box h2').contains('Verifying').should('be.visible');
         cy.wait('@noCitizenFound');
