@@ -81,9 +81,10 @@ export default function ScanFingerprintScreen(props: FPScanProps) {
 
         try {
             const data: string = await FPScanner.getFingerprint();
+            const deviceInfo: any = await FPScanner.getDeviceInfo();
 
             setRejection(NoRejection);
-            updateFingerprintState(data, {});
+            updateFingerprintState(data, deviceInfo);
         } catch (e: any) {
             // console.log(e);
             handleScannerFailure(e);

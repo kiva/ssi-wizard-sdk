@@ -233,13 +233,13 @@ describe('The ScanFingerprint screen', function () {
     it('successfully validates valid data', function () {
         cy.intercept('POST', '**/v2/kyc', {
             statusCode: 200,
-            body: ekycData,
-            delay: 1000
+            body: ekycData
         }).as('citizenData');
         cy.get('.next', { timeout: 500 }).click();
         cy.wait('@citizenData').then(function() {
             cy.get('.DialogBody h2').contains('Identity Verified').should('be.visible');
             cy.get('.dialog-icon.verified').should('be.visible');
+            cy.wait(1000);
         });
     });
 
