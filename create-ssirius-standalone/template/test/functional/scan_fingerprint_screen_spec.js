@@ -236,12 +236,10 @@ describe('The ScanFingerprint screen', function () {
             body: ekycData
         }).as('citizenData');
         cy.get('.next', { timeout: 500 }).click();
-        cy.wait('@citizenData');
+        // cy.wait('@citizenData');
         cy.get('.DialogBody h2').contains('Identity Verified').should('be.visible');
-        cy.get('.dialog-icon.verified').should('be.visible').then(function () {
-            // simulate the timeout for closing the success dialog
-            cy.wait(1000);
-        });
+        cy.get('.dialog-icon.verified').should('be.visible');
+        cy.wait(2000);
     });
 
     it('moves to the "Details" screen after the timeout', function () {
