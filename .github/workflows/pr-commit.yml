@@ -46,7 +46,7 @@ jobs:
         with:
           node-version: 'lts/*'
       - name: Run functional tests for create-ssirius-standalone template
-        uses: cypress-io/github-action@v2
+        uses: cypress-io/github-action@v3
         with:
           working-directory: create-ssirius-standalone/template
           build: npm run build
