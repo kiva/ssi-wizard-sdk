@@ -53,4 +53,8 @@ jobs:
           start: npm run serve-build
           config: baseUrl=http://localhost:5000
           wait-on: 'http://localhost:5000'
-
+      - uses: actions/upload-artifact@v3
+        if: ${{ failure() }}
+        with:
+          name: test-artifacts
+          path: ./create-ssirius-standalone/template/cypress
