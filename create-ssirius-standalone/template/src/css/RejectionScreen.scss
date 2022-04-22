@@ -1,0 +1,35 @@
+@import "mixins/_fonts";
+@import "mixins/_colors";
+
+.extraterrestrialLayer {
+  display: flex;
+  background: $primary-color;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  align-content: center;
+  justify-items: center;
+  width: 100%;
+  height:100%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  color: $primary-offset;
+  line-height: 30px;
+  font-size: 16px;
+  button {
+    @include the-font;
+    background: $secondary-color;
+    color: $secondary-offset;
+    font-weight: lighter;
+    margin-top: 20px;
+    font-size: 14px;
+    border-radius: 20px;
+    padding: 10px;
+  }
+}
+
+#error-text {
+  max-width: 450px;
+  text-align: center;
+}

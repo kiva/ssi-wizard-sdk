@@ -116,7 +116,8 @@ const component_map = {
                 errorHandler: FPErrorHandler
             }),
             scanner: FPScanner.init('http://localhost:9907'),
-            getPostBody
+            getPostBody,
+            defaultFinger: 'right_thumb'
         }
     },
     fpRegistration: {

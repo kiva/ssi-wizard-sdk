@@ -67,19 +67,16 @@ Cypress.Commands.add("beginIssuing", () => {
 });
 
 Cypress.Commands.add('fpScanIntercept', function (delay) {
-    const response = {
-        body: {
-            FingerprintSensorSerialNumber: "Kiva-Device-Simulator",
-            TellerComputerUsername: "MAC",
-            ImageBase64: this.fingerprint,
-            success: true
-        }
-    };
-    if (!!delay) {
-        response.delay = delay;
-    }
     cy.fixture('fingerprint.png', 'base64').then(function (fingerprint) {
         this.fingerprint = fingerprint;
-        cy.intercept('GET', 'http://localhost:9907/EKYC/Fingerprint', response).as('scannerData');
+        cy.intercept('GET', 'http://localhost:9907/EKYC/**', {
+            body: {
+                FingerprintSensorSerialNumber: "Kiva-Device-Simulator",
+                TellerComputerUsername: "MAC",
+                ImageBase64: this.fingerprint,
+                success: true
+            },
+            delay
+        }).as('scannerData');
     });
 })
