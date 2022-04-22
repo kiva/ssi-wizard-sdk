@@ -291,42 +291,39 @@ export default function ScanFingerprintScreen(props: FPScanProps) {
                     className="fingerprint"
                     direction="column"
                     justifyContent="center"
-                    alignItems="center"
-                    spacing={8}>
+                    alignItems="center">
                     <Grid item>
                         <Typography
                             component="h2"
                             variant="h6"
-                            gutterBottom
                             className="fingerprint-selection">
                             {t('FingerprintScan.text.place') + ' '}
                             <strong>
                                 {buildFingerCaption(selectedFinger)}
                             </strong>
                             <br />
-                            <a
-                                data-cy="select-new-finger"
-                                onClick={() => setSelectingNewFinger(true)}>
-                                {t('FingerprintScan.text.useDifferentFinger')}
-                            </a>
-                            <br />
                         </Typography>
                     </Grid>
                     <Grid item>{buildSelectedFingerprint()}</Grid>
                     <Grid item>
-                        <Typography
-                            component="h2"
-                            variant="h6"
-                            className="fingerprint-selection">
-                            <a
-                                data-cy="recapture-fp"
-                                className="enhanced"
-                                href="#"
-                                onClick={() => resetFingerprintImage()}>
-                                {t('FingerprintScan.text.recaptureFingerprint')}
-                            </a>
-                            <br />
-                        </Typography>
+                        <Grid container spacing={4}>
+                            <Grid item>
+                                <a
+                                    data-cy="select-new-finger"
+                                    onClick={() => setSelectingNewFinger(true)}>
+                                    {t('FingerprintScan.text.useDifferentFinger')}
+                                </a>
+                            </Grid>
+                            <Grid item>
+                                <a
+                                    data-cy="recapture-fp"
+                                    className="enhanced"
+                                    href="#"
+                                    onClick={() => resetFingerprintImage()}>
+                                    {t('FingerprintScan.text.recaptureFingerprint')}
+                                </a>
+                            </Grid>
+                        </Grid>
                     </Grid>
                     <Grid
                         container

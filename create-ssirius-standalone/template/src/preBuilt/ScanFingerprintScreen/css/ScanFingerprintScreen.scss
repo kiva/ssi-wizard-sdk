@@ -35,6 +35,9 @@
         font-size: 14px;
         &.enhanced {
             text-decoration: underline;
+            &:hover {
+                cursor: pointer;
+            }
         }
         &#select-alternate-auth-method {
             font-size: 1.1em;
