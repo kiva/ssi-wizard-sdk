@@ -47,6 +47,7 @@ describe('The Fuzzy Matching SearchMenu screen', () => {
     });
 
     it('should validate data that includes father\'s name, but no mother\'s name and no birthday', () => {
+        cy.fpScanIntercept();
         cy.get('[data-cy="fathersfirstname-input"]').type('FFNTestName');
         cy.get('#scan-fingerprint').click();
         cy.get('[data-cy="fpScan"]').should('be.visible');
@@ -58,6 +59,7 @@ describe('The Fuzzy Matching SearchMenu screen', () => {
     });
 
     it('should validate data that includes mother\'s name, but no father\'s name and no birthday', () => {
+        cy.fpScanIntercept();
         cy.get('[data-cy="fathersfirstname-input"] input').clear();
         cy.get('[data-cy="mothersfirstname-input"]').type('MFNTestName');
         cy.get('#scan-fingerprint').click();
@@ -66,6 +68,7 @@ describe('The Fuzzy Matching SearchMenu screen', () => {
     });
 
     it('should accept inputs where first and last names are provided with birth date', () => {
+        cy.fpScanIntercept();
         cy.get('[data-cy="dob-row-header"]').click();
         cy.get('[data-cy="birthdate-input"] input').type('2020-03-28');
         cy.get('[data-cy="mothersfirstname-input"] input').clear();

@@ -103,6 +103,7 @@ export default function CredentialIssuance(props: CredentialIssuanceProps) {
     }
 
     function processConnectionError(error: any) {
+        console.log(error);
         const errorMessage = error.hasOwnProperty('message') ? error.message : t('Errors.unknown');
         cancelConnectionPolling = true;
         cancelCredentialPolling = true;

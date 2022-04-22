@@ -15,12 +15,9 @@ export default function RejectionScreen(props: RejectionProps) {
     const FPScanner = props.scanner;
 
     const handleButtonClick = async () => {
-        await FPScanner.getDeviceInfo().then(response => {
-            console.log(response);
+        await FPScanner.getFingerprint().then(() => {
             return props.closeMethod();
         }).catch(e => {
-            console.log('Aloha');
-            console.log(e);
             return dialogOpen ? renderToast() : setDialogOpen(true);
         });
     };

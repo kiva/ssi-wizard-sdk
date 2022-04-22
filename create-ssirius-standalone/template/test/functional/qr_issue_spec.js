@@ -64,7 +64,8 @@ describe('QR Code Scan screen should...', function () {
         let establishConf = conf.establishConnection,
             getConf = conf.getConnection,
             establishResponseBody = establishConf.success,
-            connectResponseBody = getConf.active;
+            connectResponseBody = getConf.active,
+            offerConf = conf.offerCredential;
 
         cy.intercept(establishConf.method, establishConf.endpoint, {
             ...common,
@@ -74,9 +75,14 @@ describe('QR Code Scan screen should...', function () {
             ...common,
             body: connectResponseBody
         });
+        cy.intercept(offerConf.method, offerConf.endpoint, {
+            ...common,
+            body: offerConf.offered,
+            delay: 1000
+        });
 
         cy.beginIssuing();
-        cy.get('.dialog-icon.verified').should('be.visible');
+        cy.get('.dialog-icon.verified', {timeout: 10000}).should('be.visible');
     });
 
     it('should automatically begin the Credential Issuance process when the connection has been established', function () {
