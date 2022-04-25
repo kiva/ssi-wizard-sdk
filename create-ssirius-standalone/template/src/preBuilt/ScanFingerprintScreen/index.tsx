@@ -86,7 +86,7 @@ export default function ScanFingerprintScreen(props: FPScanProps) {
             setRejection(NoRejection);
             updateFingerprintState(data, deviceInfo);
         } catch (e: any) {
-            // console.log(e);
+            console.log(e);
             handleScannerFailure(e);
         }
     };
@@ -154,7 +154,6 @@ export default function ScanFingerprintScreen(props: FPScanProps) {
         setDialogSuccess(false);
         setSlowInternet(false);
     }
-    
 
     // TODO: Break up this method - it's too big
     async function makeRequest(): Promise<void> {
@@ -266,10 +265,7 @@ export default function ScanFingerprintScreen(props: FPScanProps) {
             <RejectionScreen
                 rejection={rejection}
                 scanner={FPScanner}
-                closeMethod={() => {
-                    console.log('Clicked it');
-                    resetFingerprintImage();
-                }}
+                closeMethod={() => resetFingerprintImage()}
             />
         );
     }
