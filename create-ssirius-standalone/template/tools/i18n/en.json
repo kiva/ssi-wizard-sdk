@@ -13,7 +13,8 @@
         "poweredBy": "Powered by",
         "next": "Next",
         "select": "Select",
-        "goBack": "Go Back"
+        "goBack": "Go Back",
+        "startAgain": "Start Again"
     },
     "Fingers": {
         "finger": "finger",
@@ -106,7 +107,9 @@
             "scanFailed": "There was a problem capturing the image for {{scannedFinger}}. The process failed with this message: {{error}}",
             "scanInProgress": "There is a scan in progress currently. Please wait...",
             "needAtLeastOne": "Please provide at least one fingerprint image before submitting.",
-            "registrationFailed": "There was an error while trying to register your fingerprints: {{msg}}"
+            "registrationFailed": "There was an error while trying to register your fingerprints: {{msg}}",
+            "readerUndetected": "The fingerprint reader is not detected, so you cannot proceed. Please make sure the reader is properly plugged in.",
+            "readerStillUndetected": "The fingerprint reader still could not be detected. Please restart the desktop tool and app."
         }
     },
     "ConfirmationScreen": {

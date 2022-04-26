@@ -20,7 +20,7 @@ const FINGER_STORE = 'selectedFinger';
 export default function FingerSelectionScreen(props: FingerSelectProps) {
     const t = useContext(TranslationContext);
     const [selectedFinger, setSelectedFinger] = useState<string>(
-        props.store.get(FINGER_STORE, 'right_thumb')
+        props.store.get(FINGER_STORE, props.defaultFinger)
     );
 
     function getFingerCaption(code: string) {

@@ -10,11 +10,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
       - name: Set up Node.js
-        uses: actions/setup-node@v2
+        uses: actions/setup-node@v3
         with:
-          node-version: '14.x'
+          node-version: 'lts/*'
       - name: Run unit tests for @kiva/fingerprint-api-simulator
         run: |
           cd ./fingerprint-api-simulator
@@ -25,11 +25,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
       - name: Set up Node.js
-        uses: actions/setup-node@v2
+        uses: actions/setup-node@v3
         with:
-          node-version: '12.x'
+          node-version: 'lts/*'
       - name: Run unit tests for @kiva/ssirius-react
         run: |
           cd ./react-core
@@ -40,17 +40,21 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
       - name: Set up Node.js
-        uses: actions/setup-node@v2
+        uses: actions/setup-node@v3
         with:
-          node-version: '12.x'
+          node-version: 'lts/*'
       - name: Run functional tests for create-ssirius-standalone template
-        uses: cypress-io/github-action@v2
+        uses: cypress-io/github-action@v3
         with:
           working-directory: create-ssirius-standalone/template
           build: npm run build
           start: npm run serve-build
           config: baseUrl=http://localhost:5000
           wait-on: 'http://localhost:5000'
-
+      - uses: actions/upload-artifact@v3
+        if: ${{ failure() }}
+        with:
+          name: test-artifacts
+          path: ./create-ssirius-standalone/template/cypress

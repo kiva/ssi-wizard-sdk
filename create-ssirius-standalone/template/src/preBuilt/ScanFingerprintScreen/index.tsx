@@ -7,26 +7,36 @@ import Button from '@material-ui/core/Button';
 import toast from 'react-hot-toast';
 import { FlowDispatchTypes } from '@kiva/ssirius-react';
 import '../../css/Common.scss';
+import '../../css/RejectionScreen.scss';
 import './css/ScanFingerprintScreen.scss';
 
 import FingerSelectionScreen from '../FingerSelectionScreen';
 import DialogContainer from '../../components/DialogContainer';
 
-import { FPScanProps } from './interfaces/ScanFingerprintInterfaces';
+import { FPScanProps, RejectionReport } from './interfaces/ScanFingerprintInterfaces';
 
 import failed from './images/np_fingerprint_failed.png';
 import success from './images/np_fingerprint_verified.png';
 import in_progress from './images/np_fingerprint_inprogress.png';
 import TranslationContext from '../../contexts/TranslationContext';
+import RejectionScreen from '../../components/RejectionScreen';
 
 const FINGER_STORE = 'selectedFinger';
+const NoRejection: RejectionReport = {
+    rejected: false,
+    reason: ""
+};
 
 export default function ScanFingerprintScreen(props: FPScanProps) {
     const t = useContext(TranslationContext);
     const SLOW_INTERNET_THRESHOLD: number =
         props.CONSTANTS.slowInternetThreshold || (process.env.SLOW_INTERNET_THRESHOLD && parseInt(process.env.SLOW_INTERNET_THRESHOLD)) || 10000;
+    const SDK = props.guardianSDK;
+    const FPScanner = props.scanner;
+
+    
     const [selectedFinger, setSelectedFinger] = useState<string>(
-        props.store.get(FINGER_STORE, 'right_thumb')
+        props.store.get(FINGER_STORE, props.defaultFinger)
     );
     const [processResultMessage, setProcessResultMessage] =
         useState<string>('');
@@ -39,13 +49,47 @@ export default function ScanFingerprintScreen(props: FPScanProps) {
     const [selectingNewFinger, setSelectingNewFinger] =
         useState<boolean>(false);
     const [deviceInfo, setDeviceInfo] = useState({});
-    const SDK = props.guardianSDK;
-    const FPScanner = props.scanner;
+    const [rejection, setRejection] = useState<RejectionReport>(NoRejection);
+
+    const resetFingerprintImage = () => {
+        console.log('Resetting...')
+        setFingerprintImage('');
+        setScanStatus('progress');
+        beginFingerprintScan();
+    };
 
     useEffect(() => {
         resetFingerprintImage();
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
+
+    const handleScannerFailure = (e: any) => {
+        const msg = 'string' === typeof e ? e : e.message;
+        setProcessResultMessage(msg);
+        if (FPScanner.isErrorPersistent()) {
+            setRejection({
+                rejected: true,
+                reason: msg
+            });
+        } else {
+            updateFingerprintState('', {});
+        }
+    };
+
+    const getImageFromFingerprintScanner = async (): Promise<void> => {
+        if (FPScanner.isScanInProgress()) return notifyScanInProgress();
+
+        try {
+            const data: string = await FPScanner.getFingerprint();
+            const deviceInfo: any = await FPScanner.getDeviceInfo();
+
+            setRejection(NoRejection);
+            updateFingerprintState(data, deviceInfo);
+        } catch (e: any) {
+            console.log(e);
+            handleScannerFailure(e);
+        }
+    };
 
     function processFingerSelection(index: string) {
         setSelectingNewFinger(false);
@@ -59,13 +103,6 @@ export default function ScanFingerprintScreen(props: FPScanProps) {
         setScanStatus('');
         setSelectingNewFinger(false);
         resetFingerprintImage();
-    }
-
-    function resetFingerprintImage() {
-        console.log('Resetting...')
-        setFingerprintImage('');
-        setScanStatus('progress');
-        beginFingerprintScan();
     }
 
     function buildFingerCaption(fingerType: string): string {
@@ -150,6 +187,12 @@ export default function ScanFingerprintScreen(props: FPScanProps) {
         }
     }
 
+    function notifyScanInProgress() {
+        toast.error(t('Errors.fingerprint.scanInProgress'), {
+            duration: 3000
+        });
+    }
+
     function handleEkycSuccess(personalInfo: any) {
         setTimeout(() => {
             setDialogOpen(false);
@@ -195,24 +238,8 @@ export default function ScanFingerprintScreen(props: FPScanProps) {
             setScanStatus('success');
             setFingerprintImage(fpImage);
             setDeviceInfo(deviceInfo);
-            setDialogOpen(false);
-            setDialogComplete(false);
             setProcessResultMessage('');
-        }
-    }
-
-    async function getImageFromFingerprintScanner(): Promise<void> {
-        try {
-            const data: string = await FPScanner.getFingerprint();
-            let deviceInfo: any = {};
-            if (FPScanner.getDeviceInfo) {
-                deviceInfo = FPScanner.getDeviceInfo();
-            }
-            updateFingerprintState(data, deviceInfo);
-        } catch (e: any) {
-            console.log(e);
-            setProcessResultMessage('string' === typeof e ? e : e.message);
-            updateFingerprintState('', {});
+            setRejection(NoRejection);
         }
     }
 
@@ -233,6 +260,16 @@ export default function ScanFingerprintScreen(props: FPScanProps) {
         }
     }
 
+    function renderRejectionScreen() {
+        return (
+            <RejectionScreen
+                rejection={rejection}
+                scanner={FPScanner}
+                closeMethod={() => resetFingerprintImage()}
+            />
+        );
+    }
+
     function renderChangeScreen() {
         return (
             <FingerSelectionScreen
@@ -250,42 +287,39 @@ export default function ScanFingerprintScreen(props: FPScanProps) {
                     className="fingerprint"
                     direction="column"
                     justifyContent="center"
-                    alignItems="center"
-                    spacing={8}>
+                    alignItems="center">
                     <Grid item>
                         <Typography
                             component="h2"
                             variant="h6"
-                            gutterBottom
                             className="fingerprint-selection">
                             {t('FingerprintScan.text.place') + ' '}
                             <strong>
                                 {buildFingerCaption(selectedFinger)}
                             </strong>
                             <br />
-                            <a
-                                data-cy="select-new-finger"
-                                onClick={() => setSelectingNewFinger(true)}>
-                                {t('FingerprintScan.text.useDifferentFinger')}
-                            </a>
-                            <br />
                         </Typography>
                     </Grid>
                     <Grid item>{buildSelectedFingerprint()}</Grid>
                     <Grid item>
-                        <Typography
-                            component="h2"
-                            variant="h6"
-                            className="fingerprint-selection">
-                            <a
-                                data-cy="recapture-fp"
-                                className="enhanced"
-                                href="#"
-                                onClick={() => resetFingerprintImage()}>
-                                {t('FingerprintScan.text.recaptureFingerprint')}
-                            </a>
-                            <br />
-                        </Typography>
+                        <Grid container spacing={4}>
+                            <Grid item>
+                                <a
+                                    data-cy="select-new-finger"
+                                    onClick={() => setSelectingNewFinger(true)}>
+                                    {t('FingerprintScan.text.useDifferentFinger')}
+                                </a>
+                            </Grid>
+                            <Grid item>
+                                <a
+                                    data-cy="recapture-fp"
+                                    className="enhanced"
+                                    href="#"
+                                    onClick={() => resetFingerprintImage()}>
+                                    {t('FingerprintScan.text.recaptureFingerprint')}
+                                </a>
+                            </Grid>
+                        </Grid>
                     </Grid>
                     <Grid
                         container
@@ -336,6 +370,8 @@ export default function ScanFingerprintScreen(props: FPScanProps) {
 
     if (selectingNewFinger) {
         return renderChangeScreen();
+    } else if(rejection.rejected) {
+        return renderRejectionScreen();
     } else {
         return renderScanScreen();
     }

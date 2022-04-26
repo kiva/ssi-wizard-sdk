@@ -1,6 +1,6 @@
-import { ICommonProps } from "@kiva/ssirius-react";
+import { FPScanProps } from "../../ScanFingerprintScreen/interfaces/ScanFingerprintInterfaces";
 
-export interface FingerSelectProps extends ICommonProps {
+export interface FingerSelectProps extends FPScanProps {
     isReadOnly?: boolean;
     changeFingerSelection?: (index: string) => void;
 }
