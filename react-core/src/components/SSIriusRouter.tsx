@@ -1,7 +1,7 @@
-import React, { useState, useRef, Suspense } from 'react';
+import React, { useState, useRef, Suspense, useEffect } from 'react';
 import FlowDispatchTypes from '../enums/FlowDispatchTypes';
 import { Flow } from '../interfaces/FlowSelectorInterfaces';
-import { IConstants } from '../interfaces/IConstants';
+import SSIriusProps from '../interfaces/SSIriusProps';
 
 import {
     ComponentStoreMethods,
@@ -10,9 +10,16 @@ import {
 import useComponentStore from '../hooks/useComponentStore';
 import getFlow from '../helpers/getFlow';
 
-export default function SSIriusRouter(CONSTANTS: IConstants) {
+export default function SSIriusRouter(props: SSIriusProps) {
+    const {CONSTANTS} = props;
     const [step, setStep] = useState('confirmation');
     const authIndex = useRef<number>(0);
+
+    useEffect(() => {
+        if (!!props.resetFunction) {
+            props.resetFunction.current = restartFlow;
+        }
+    }, []);
 
     let theFlow: Flow = getFlow(authIndex.current, CONSTANTS);
 
@@ -46,9 +53,7 @@ export default function SSIriusRouter(CONSTANTS: IConstants) {
                 }
                 break;
             case FlowDispatchTypes.RESTART:
-                setStep('confirmation');
-                authIndex.current = 0;
-                componentStoreMethods.reset();
+                restartFlow();
                 break;
             case FlowDispatchTypes.SET_AUTH_METHOD:
                 if ('menu' === step) {
@@ -69,6 +74,12 @@ export default function SSIriusRouter(CONSTANTS: IConstants) {
         let component = CONSTANTS.component_map[step].component;
 
         return component;
+    }
+
+    function restartFlow() {
+        setStep('confirmation');
+        authIndex.current = 0;
+        componentStoreMethods.reset();
     }
 
     function getAdditionalProps(step: string) {
