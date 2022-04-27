@@ -62,7 +62,7 @@ import config from './config'; // where config contains an IConstants object
 export default function MySSIApp(props: any) {
     return <div>
         <h1>Hello!</h1>
-        <SSIriusRouter {...config} />
+        <SSIriusRouter CONSTANTS={config} />
     </div>;
 }
 ```
@@ -81,7 +81,7 @@ export default function MySSIApp(props: any) {
 
     return <div>
         <h1>Hello!</h1>
-        <SSIriusRouter {...config} />
+        <SSIriusRouter CONSTANTS={conf} />
     </div>;
 }
 ```
@@ -228,6 +228,29 @@ export default function MyAwesomeButtons(props: ICommonProps) {
             START OVER
         </button>
     </div>;
+}
+```
+
+There may be some cases in which you need to use an external component to control resetting the flow to the beginning, for example if you have a "Restart" button in your app header. In those cases, you can provide an extra prop to the `SSIriusRouter` component like so:
+
+```
+import {useRef} from 'react';
+import SSIriusRouter from '@kiva/ssirius-react';
+import config from './config';
+
+export default function MySSIApp(props: any) {
+    // create a ref that will store our reset function
+    const resetFunction = useRef<any>(null);
+
+    return (
+        <div>
+            <Header>
+                // the SSIriusRouter will automatically set your ref to be the value of its restart function, so you can just call it here
+                <button onClick={() => resetFunction.current && resetFunction.current()}>
+            </Header>
+            <SSIriusRouter CONSTANTS={config} resetFunction={resetFunction}>
+        </div>
+    );
 }
 ```
 
