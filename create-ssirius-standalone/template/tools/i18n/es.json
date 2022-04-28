@@ -14,7 +14,8 @@
         "next": "Siguiente",
         "select": "Seleccionar",
         "goBack": "Regresar",
-        "startAgain": "Reiniciar"
+        "startAgain": "Reiniciar",
+        "restartEkyc": "Reiniciar EKYC"
     },
     "Fingers": {
         "finger": "dedo",
