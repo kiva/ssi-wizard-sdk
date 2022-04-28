@@ -3,10 +3,19 @@ import { ICommonProps } from '../../src/interfaces/ICommonProps';
 import FlowDispatchTypes from '../../src/enums/FlowDispatchTypes';
 
 export default function Mock(props: ICommonProps) {
+
+    const handleInputChange = (e: any) => {
+        e.preventDefault();
+        const input = e.currentTarget.value;
+
+        props.store.set('inputValue', input);
+    };
+
     return (
         <div className="TestComponent">
             <p data-testid="prevScreen">prevScreen: {props.prevScreen}</p>
             <p data-testid="authIndex">authIndex: {props.authIndex}</p>
+            <input data-testid="mockInput" onChange={handleInputChange} value={props.store.get('inputValue', '')} />
             <p data-testid="CONSTANTS">{JSON.stringify(props.CONSTANTS)}</p>
             {renderAdditionalProps(props)}
             <button data-testid="next" onClick={() => props.dispatch({
