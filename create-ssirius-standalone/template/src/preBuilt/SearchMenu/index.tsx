@@ -165,6 +165,7 @@ export default function SearchMenu(props: SearchProps) {
                                         name="inputId"
                                         error={error}
                                         helperText={errorReason || ''}
+                                        autoComplete="off"
                                     />
                                 </FormControl>
                             </Grid>

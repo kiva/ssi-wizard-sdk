@@ -1,6 +1,6 @@
 {
     "name": "@kiva/ssirius-react",
-    "version": "0.0.8",
+    "version": "0.1.0",
     "description": "A bundle of SSIrius UI/UX components for you to use in SSI applications",
     "main": "lib/index.js",
     "module": "lib/index.js",

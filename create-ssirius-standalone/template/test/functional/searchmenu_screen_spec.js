@@ -39,6 +39,7 @@ describe('The SearchMenu screen', () => {
     });
 
     it('moves to the ScanFingerprint screen when a valid email is entered', () => {
+        cy.fpScanIntercept();
         cy.get('[data-cy="id-input"] input').type('test@kiva.org');
         cy.get('#scan-fingerprint').click();
         cy.get('[data-cy="fp-image"]', { timeout: 500 }).should('be.visible');
@@ -111,6 +112,7 @@ describe('The SearchMenu screen', () => {
     });
 
     it('submits on click', () => {
+        cy.fpScanIntercept();
         cy.get('[data-cy="id-input"] input').type('1234567', { timeout: 500 });
         cy.get('#scan-fingerprint').click();
         cy.get('[data-cy="fp-image"]', { timeout: 500 }).should('be.visible');
@@ -120,6 +122,7 @@ describe('The SearchMenu screen', () => {
     });
 
     it('submits on enter', () => {
+        cy.fpScanIntercept();
         cy.get('[data-cy="id-input"] input').type('{enter}', { timeout: 500 });
         cy.get('[data-cy="fp-image"]', { timeout: 500 }).should('be.visible');
     });

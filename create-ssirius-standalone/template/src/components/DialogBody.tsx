@@ -83,11 +83,7 @@ export default function DialogBody(props: DialogBodyProps) {
             <div className="DialogBody">
                 <ErrorIcon className="dialog-icon error" />
                 <div className="DialogBodyErrorMessage">
-                    <div
-                        dangerouslySetInnerHTML={{
-                            __html: props.errorMessage || ''
-                        }}
-                    />
+                    {props.errorMessage}
                 </div>
                 <Button
                     onClick={() => props.clickFunction(false)}

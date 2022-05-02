@@ -23,8 +23,6 @@ const ekycData = {
     phoneNumber: "8675309"
 }
 
-let scannerData;
-
 describe('The ScanFingerprint screen', function () {
     before(() => {
         cy.fpScanIntercept();
@@ -39,9 +37,7 @@ describe('The ScanFingerprint screen', function () {
         cy.selectAuthMenuItem(3).click();
         cy.get('#select-auth-method').click();
         cy.get('[data-cy="id-input"] input').type('test@kiva.org{enter}');
-        cy.wait('@scannerData').then(function (data) {
-            scannerData = data.response.body;
-        });
+        cy.wait('@scannerData');
     });
 
     it('renders the "In Progress" icon on load', function () {
@@ -58,7 +54,11 @@ describe('The ScanFingerprint screen', function () {
         cy.get('[data-cy="fp-image"]', { timeout: 500 }).should(el => {
             expect(el.attr('src')).to.eq('data:image/png;base64,' + this.b64);
         });
-        cy.wait(200);
+        // This test actually makes two requests to the FP scanner, and cy.intercept
+        // appears to have trouble with waiting for data from two places.
+        //
+        // Instead, we just manually set this. It might be flaky.
+        cy.wait(600);
     });
 
     it('correctly re-renders the fingerprint "Success" icon when captured by the scanner', function () {
@@ -77,6 +77,7 @@ describe('The ScanFingerprint screen', function () {
         cy.get('[data-cy="fp-image"]', { timeout: 500 }).should(el => {
             expect(el.attr('src')).to.eq('data:image/png;base64,' + this.b64);
         });
+        cy.wait('@scannerData');
     });
 
     it('responds correctly when the scanner responds with FR_NOT_CAPTURED', function () {
@@ -91,6 +92,48 @@ describe('The ScanFingerprint screen', function () {
         });
     });
 
+    it('renders the RejectionScreen when scanner responds with a serious error', function () {
+        cy.intercept('GET', '**/EKYC/**', {
+            success: false,
+            error: 'FR_NOT_FOUND',
+        });
+        cy.wait(500);
+        cy.get('[data-cy="recapture-fp"]', { timeout: 500 }).click();
+        cy.get('.extraterrestrialLayer').should('be.visible');
+        cy.contains('Fingerprint reader is not detected. Please make sure the fingerprint reader is plugged in or unplug the device and then plug it back in.').should('be.visible');
+    });
+
+    it('navigates back to the ScanFingerprint screen when the RejectionScreen button is clicked', () => {
+        cy.fpScanIntercept();
+        cy.get('[data-cy="restart-button"]', {timeout: 500}).click();
+        cy.get('.extraterrestrialLayer').should('not.exist');
+        cy.get('[data-cy="fp-image"]', {timeout: 500}).should('be.visible'); 
+        cy.wait(500);       
+    });
+
+    it('shows the correct error notifications on persistent failures', () => {
+        cy.intercept('GET', '**/EKYC/**', {
+            success: false,
+            error: 'FR_NOT_FOUND',
+        });
+        cy.wait(500);
+
+        cy.get('[data-cy="recapture-fp"]', {timeout: 500}).click();
+        cy.wait(500);
+        cy.get('[data-cy="restart-button"]', {timeout: 500}).click();
+        cy.get('.DialogBody').should('be.visible').and('contain', 'The fingerprint reader is not detected, so you cannot proceed. Please make sure the reader is properly plugged in.');
+        cy.get('[data-cy="dialog-button"]', {timeout: 500}).click();
+        cy.contains('The fingerprint reader still could not be detected. Please restart the desktop tool and app.').should('be.visible');        
+    });
+
+    it('navigates back to the ScanFingerprint screen if there\'s no scanner error', () => {
+        cy.fpScanIntercept();
+        cy.get('[data-cy="dialog-button"]', {timeout: 500}).click();
+        cy.get('#dialog-box').should('not.exist');
+        cy.get('.extraterrestrialLayer').should('not.exist');
+        cy.get('[data-cy="fp-image"]', {timeout: 500}).should('be.visible');
+    });
+
     it('renders the FingerSelection screen when "Use a different finger" is clicked', function () {
         cy.get('[data-cy="select-new-finger"]', { timeout: 500 }).click();
         cy.get('.FingerContainer').should('be.visible');
@@ -98,6 +141,7 @@ describe('The ScanFingerprint screen', function () {
         // It worked? Cool, let's go back (and set the scanner data correctly again)
         cy.fpScanIntercept();
         cy.get('[data-cy="back"]', { timeout: 500 }).click();
+        cy.wait('@scannerData');
     });
 
     it('rejects invalid fingerprint data', function () {
@@ -107,11 +151,12 @@ describe('The ScanFingerprint screen', function () {
             body: {
                 code: "NO_CITIZEN_FOUND"
             }
-        });
+        }).as('noCitizenFound');
         // wait briefly for actionability of the button
-        cy.wait(200);
+        cy.wait(500);
         cy.get('.next').click();
         cy.get('#dialog-box h2').contains('Verifying').should('be.visible');
+        cy.wait('@noCitizenFound');
         cy.get('.dialog-icon.error').should('be.visible');
         cy.get('.DialogBodyErrorMessage').should('contain', 'No record found. Please use an alternative KYC process.');
     });
@@ -191,17 +236,10 @@ describe('The ScanFingerprint screen', function () {
         cy.intercept('POST', '**/v2/kyc', {
             statusCode: 200,
             body: ekycData
-        })
+        }).as('citizenData');
         cy.get('.next', { timeout: 500 }).click();
-        cy.wait(400);
-        cy.get('.DialogBody h2').contains('Identity Verified').should('be.visible');
-        cy.get('.dialog-icon.verified').should('be.visible').then(function () {
-            // simulate the timeout for closing the success dialog
-            cy.wait(1000);
+        cy.wait('@citizenData').then(function() {
+            cy.get('[data-cy="CustomerInfo"]').should('be.visible');
         });
-    });
-
-    it('moves to the "Details" screen after the timeout', function () {
-        cy.get('[data-cy="CustomerInfo"]', { timeout: 500 }).should('be.visible');
     });
 })

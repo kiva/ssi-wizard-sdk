@@ -13,7 +13,9 @@
         "poweredBy": "Desarrollado por",
         "next": "Siguiente",
         "select": "Seleccionar",
-        "goBack": "Regresar"
+        "goBack": "Regresar",
+        "startAgain": "Reiniciar",
+        "restartEkyc": "Reiniciar EKYC"
     },
     "Fingers": {
         "finger": "dedo",
@@ -106,7 +108,9 @@
             "scanFailed": "Se encuentra un problem capturando la imagen del {{scannedFinger}}. El proceso falló con esta mensaje: {{error}}",
             "scanInProgress": "El lector esta escaneando. Espere un momento, por favor...",
             "needAtLeastOne": "Se necesita al menos una imagen de la huella dactilar antes de enviarla.",
-            "registrationFailed": "Hubo un error al intentar registrar sus huellas dactilares: {{msg}}"
+            "registrationFailed": "Hubo un error al intentar registrar sus huellas dactilares: {{msg}}",
+            "readerNotFound": "El lector de huellas digitales no se detecta, por lo que no puede continuar. Asegúrese de que el lector esté enchufado correctamente.",
+            "readerStillNotFound": "El lector de huellas digitales aún no se pudo detectar. Reinicie la herramienta y la aplicación de escritorio."
         }
     },
     "ConfirmationScreen": {

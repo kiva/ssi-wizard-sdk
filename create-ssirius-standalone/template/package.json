@@ -3,7 +3,7 @@
     "version": "0.1.2",
     "private": true,
     "dependencies": {
-        "@kiva/ssirius-react": "^0.0.7",
+        "@kiva/ssirius-react": "^0.1.0",
         "@material-ui/core": "^4.12.3",
         "@material-ui/icons": "^4.11.2",
         "axios": "^0.26.1",
@@ -29,12 +29,12 @@
         "@types/react-dom": "^17.0.9",
         "@types/react-html5-camera-photo": "^1.5.1",
         "@types/uuid": "^8.3.1",
-        "cypress": "^9.5.2",
+        "cypress": "^9.5.4",
         "fs-extra": "^10.0.0",
         "react-scripts": "4.0.3",
         "rimraf": "^3.0.2",
         "sass": "^1.49.9",
-        "serve": "^12.0.1",
+        "serve": "^13.0.2",
         "wait-on": "^6.0.0"
     },
     "scripts": {
@@ -42,7 +42,7 @@
         "i18n": "npm run toolsCompile && npm run buildTranslations && npm run rmJs",
         "start": "PORT=7567 npm run prep -- start",
         "build": "npm run prep -- build",
-        "serve-build": "serve -s build",
+        "serve-build": "serve -s build -l 5000",
         "test": "react-scripts test",
         "eject": "react-scripts eject",
         "compile": "tsc",

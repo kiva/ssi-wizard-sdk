@@ -15,6 +15,8 @@ import { FPErrorHandler } from "./examples/errorHandlers/FPErrorHandler";
 import { SMSErrorHandler } from "./examples/errorHandlers/SMSErrorHandler";
 import axios from "axios";
 import { FingerprintMap, FpIndex } from "./preBuilt/FingerprintRegistration/interfaces/FingerprintRegistrationInterfaces";
+import FPScanner from "./helpers/FPScanner";
+import getPostBody from "./helpers/getPostBody";
 
 const phoneIntls = {
     only: false,
@@ -112,7 +114,10 @@ const component_map = {
                 url: 'http://localhost:8080/v2/kyc',
                 token: config_constants.auth_token,
                 errorHandler: FPErrorHandler
-            })
+            }),
+            scanner: FPScanner.init('http://localhost:9907'),
+            getPostBody,
+            defaultFinger: 'right_thumb'
         }
     },
     fpRegistration: {
