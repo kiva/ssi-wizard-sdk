@@ -3,5 +3,6 @@
 
 template/node_modules
 template/tools/bundle/**/*.js
+template/build
 template/src/**/*.js
 src/
