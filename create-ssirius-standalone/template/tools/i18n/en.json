@@ -14,7 +14,8 @@
         "next": "Next",
         "select": "Select",
         "goBack": "Go Back",
-        "startAgain": "Start Again"
+        "startAgain": "Start Again",
+        "restartEkyc": "Start New EKYC"
     },
     "Fingers": {
         "finger": "finger",

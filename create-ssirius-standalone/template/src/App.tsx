@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { MutableRefObject, useRef, useState } from 'react';
 import listen from './helpers/listen';
 import { Toaster } from 'react-hot-toast';
 import AppHeader from './components/AppHeader';
@@ -12,7 +12,8 @@ export let auth_token: string | undefined = '';
 
 function App(props: AppProps) {
     const [conf, setConf] = useState<IConstants>(props.config);
-    const Header = useHeaderIfAsked(conf);
+    const reset = useRef<any>(null);
+    const Header = useHeaderIfAsked(conf, reset);
     const Footer = useFooterIfAsked(conf);
     const t = useTranslator(conf.defaultLang);
     const actionHandlers: IActions = actions;
@@ -36,7 +37,7 @@ function App(props: AppProps) {
                 <TranslationContext.Provider value={t}>
                     <Toaster />
                     {Header}
-                    <SSIriusRouter {...conf} />
+                    <SSIriusRouter CONSTANTS={conf} resetFunction={reset} />
                     {Footer}
                 </TranslationContext.Provider>
             </div>
@@ -59,9 +60,9 @@ function useFooterIfAsked(props: IConstants) {
     return null;
 }
 
-function useHeaderIfAsked(props: IConstants) {
+function useHeaderIfAsked(props: IConstants, resetFunction: MutableRefObject<any>) {
     if (isEnabled(props)) {
-        return <AppHeader {...props} />;
+        return <AppHeader {...props} resetFunction={resetFunction} />;
     }
     return null;
 }
