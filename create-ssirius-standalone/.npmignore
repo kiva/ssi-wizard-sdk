@@ -2,7 +2,9 @@
 .npmignore
 
 template/node_modules
+template/cypress
 template/tools/bundle/**/*.js
 template/build
 template/src/**/*.js
+
 src/
