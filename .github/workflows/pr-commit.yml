@@ -20,6 +20,7 @@ jobs:
       - name: Publish package
         run: |
           cd ./create-ssirius-standalone
+          npm ci
           npm publish
         env:
           NODE_AUTH_TOKEN: ${{ secrets.SSIRIUS_STANDALONE_TOKEN }}
@@ -38,6 +39,7 @@ jobs:
       - name: Publish package
         run: |
           cd ./react-core
+          npm ci
           npm publish
         env:
           NODE_AUTH_TOKEN: ${{ secrets.SSIRIUS_REACT_TOKEN }}
@@ -56,6 +58,7 @@ jobs:
       - name: Publish package
         run: |
           cd ./fingerprint-api-simulator
+          npm ci
           npm publish
         env:
           NODE_AUTH_TOKEN: ${{ secrets.FINGERPRINT_SIMULATOR_TOKEN }}
