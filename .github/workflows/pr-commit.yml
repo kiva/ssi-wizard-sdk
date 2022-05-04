@@ -5,7 +5,7 @@ on:
       - 'main'
 
 jobs:
-  Publish create-ssirius-standalone:
+  publish_create_ssirius_standalone:
     timeout-minutes: 10
     runs-on: ubuntu-latest
     steps:
@@ -30,7 +30,7 @@ jobs:
           npm publish --access public --dry-run
         env:
           NODE_AUTH_TOKEN: ${{ secrets.SSIRIUS_STANDALONE_TOKEN }}
-  Publish @kiva/ssirius-react:
+  publish_ssirius_react:
     timeout-minutes: 10
     runs-on: ubuntu-latest
     steps:
@@ -55,7 +55,7 @@ jobs:
           npm publish --access public --dry-run
         env:
           NODE_AUTH_TOKEN: ${{ secrets.SSIRIUS_REACT_TOKEN }}
-  Publish @kiva/fingerprint-api-simulator:
+  publish_fingerprint_simulator:
     timeout-minutes: 10
     runs-on: ubuntu-latest
     steps:
