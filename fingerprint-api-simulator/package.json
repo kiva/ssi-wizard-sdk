@@ -1,6 +1,6 @@
 {
     "name": "@kiva/fingerprint-api-simulator",
-    "version": "0.1.01",
+    "version": "0.1.0",
     "description": "Node CLI tool to easily set up a mock fingerprint scanning API",
     "type": "module",
     "homepage": "https://github.com/kiva/ssi-wizard-sdk/tree/main/fingerprint-api-simulator#readme",
