@@ -5,7 +5,7 @@ on:
       - 'main'
 
 jobs:
-  fp-simulator-jest:
+  publish_create_ssirius_standalone:
     timeout-minutes: 10
     runs-on: ubuntu-latest
     steps:
@@ -15,12 +15,15 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: 'lts/*'
-      - name: Run unit tests for @kiva/fingerprint-api-simulator
+          registry-url: 'https://registry.npmjs.org'
+          scope: '@kiva'
+      - name: Publish package
         run: |
-          cd ./fingerprint-api-simulator
-          npm ci
-          npm run test
-  ssirius-react-jest:
+          cd ./create-ssirius-standalone
+          npm publish
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.SSIRIUS_STANDALONE_TOKEN }}
+  publish_ssirius_react:
     timeout-minutes: 10
     runs-on: ubuntu-latest
     steps:
@@ -30,13 +33,16 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: 'lts/*'
-      - name: Run unit tests for @kiva/ssirius-react
+          registry-url: 'https://registry.npmjs.org'
+          scope: '@kiva'
+      - name: Publish package
         run: |
           cd ./react-core
-          npm ci
-          npm run test
-  template-cypress:
-    timeout-minutes: 15
+          npm publish
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.SSIRIUS_REACT_TOKEN }}
+  publish_fingerprint_api_simulator:
+    timeout-minutes: 10
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -45,16 +51,64 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: 'lts/*'
-      - name: Run functional tests for create-ssirius-standalone template
-        uses: cypress-io/github-action@v3
-        with:
-          working-directory: create-ssirius-standalone/template
-          build: npm run build
-          start: npm run serve-build
-          config: baseUrl=http://localhost:5000
-          wait-on: 'http://localhost:5000'
-      - uses: actions/upload-artifact@v3
-        if: ${{ failure() }}
-        with:
-          name: test-artifacts
-          path: ./create-ssirius-standalone/template/cypress
+          registry-url: 'https://registry.npmjs.org'
+          scope: '@kiva'
+      - name: Publish package
+        run: |
+          cd ./fingerprint-api-simulator
+          npm publish
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.FINGERPRINT_SIMULATOR_TOKEN }}
+  # fp-simulator-jest:
+  #   timeout-minutes: 10
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - name: Checkout
+  #       uses: actions/checkout@v3
+  #     - name: Set up Node.js
+  #       uses: actions/setup-node@v3
+  #       with:
+  #         node-version: 'lts/*'
+  #     - name: Run unit tests for @kiva/fingerprint-api-simulator
+  #       run: |
+  #         cd ./fingerprint-api-simulator
+  #         npm ci
+  #         npm run test
+  # ssirius-react-jest:
+  #   timeout-minutes: 10
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - name: Checkout
+  #       uses: actions/checkout@v3
+  #     - name: Set up Node.js
+  #       uses: actions/setup-node@v3
+  #       with:
+  #         node-version: 'lts/*'
+  #     - name: Run unit tests for @kiva/ssirius-react
+  #       run: |
+  #         cd ./react-core
+  #         npm ci
+  #         npm run test
+  # template-cypress:
+  #   timeout-minutes: 15
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - name: Checkout
+  #       uses: actions/checkout@v3
+  #     - name: Set up Node.js
+  #       uses: actions/setup-node@v3
+  #       with:
+  #         node-version: 'lts/*'
+  #     - name: Run functional tests for create-ssirius-standalone template
+  #       uses: cypress-io/github-action@v3
+  #       with:
+  #         working-directory: create-ssirius-standalone/template
+  #         build: npm run build
+  #         start: npm run serve-build
+  #         config: baseUrl=http://localhost:5000
+  #         wait-on: 'http://localhost:5000'
+  #     - uses: actions/upload-artifact@v3
+  #       if: ${{ failure() }}
+  #       with:
+  #         name: test-artifacts
+  #         path: ./create-ssirius-standalone/template/cypress

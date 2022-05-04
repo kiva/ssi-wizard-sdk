@@ -9,9 +9,6 @@
 /coverage
 **/cypress
 
-# NPM config
-**.npmrc
-
 # config files for Standalone
 /standalone/src/config.ts
 
