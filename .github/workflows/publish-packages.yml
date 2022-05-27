@@ -1,0 +1,83 @@
+name: Publish NPM packages
+on:
+  push:
+    branches:
+      - 'main'
+
+jobs:
+  publish_create_ssirius_standalone:
+    timeout-minutes: 10
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 'lts/*'
+          registry-url: 'https://registry.npmjs.org'
+          scope: '@kiva'
+      - name: Check package version
+        id: version_check
+        uses: PostHog/check-package-version@v2
+        with:
+          path: ./create-ssirius-standalone
+      - name: Publish new package
+        if: steps.version_check.outputs.is-new-version == 'true'
+        run: |
+          cd ./create-ssirius-standalone
+          npm ci
+          npm publish --access public
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.SSIRIUS_STANDALONE_TOKEN }}
+  publish_ssirius_react:
+    timeout-minutes: 10
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 'lts/*'
+          registry-url: 'https://registry.npmjs.org'
+          scope: '@kiva'
+      - name: Check package version
+        id: version_check
+        uses: PostHog/check-package-version@v2
+        with:
+          path: ./react-core
+      - name: Publish new package
+        if: steps.version_check.outputs.is-new-version == 'true'
+        run: |
+          cd ./react-core
+          npm ci
+          npm publish --access public
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.SSIRIUS_REACT_TOKEN }}
+  publish_fingerprint_simulator:
+    timeout-minutes: 10
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 'lts/*'
+          registry-url: 'https://registry.npmjs.org'
+          scope: '@kiva'
+      - name: Check package version
+        id: version_check
+        uses: PostHog/check-package-version@v2
+        with:
+          path: ./fingerprint-api-simulator
+      - name: Publish new package
+        if: steps.version_check.outputs.is-new-version == 'true'
+        run: |
+          cd ./fingerprint-api-simulator
+          npm ci
+          npm publish --access public
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.FINGERPRINT_SIMULATOR_TOKEN }}
+      
