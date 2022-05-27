@@ -63,7 +63,7 @@ describe('The FingerprintRegistration screen', function() {
         cy.get('button.secondary').click();
         cy.get('[data-cy="registration-form"]').should('be.visible');
 
-        // it worked? cool, let's go back to the screen we're testing
+        // it worked? Cool. Let's test the thing we came to test.
         cy.get('.next').click();
     });
 
