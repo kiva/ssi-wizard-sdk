@@ -11,6 +11,10 @@
         }
     }
 
+    .primary-progress {
+        background-color: $primary-color;
+    }
+
     button {
         &:disabled {
             background-color: $secondary-color;

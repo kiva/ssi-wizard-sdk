@@ -32,8 +32,11 @@ describe('The FingerprintRegistration screen', function() {
         cy.contains('Accept').click();
         cy.selectAuthMenuItem(4).click();
         cy.get('#select-auth-method').click();
-        cy.get('#email-input').type('cutest.kitty@kiva.org');
-        cy.get('#continue').click();
+        cy.wait(500);
+        cy.get('#inner-circle').click();
+        cy.get('[data-cy="image-select-continue"]').click();
+        cy.get('[data-cy="populate-form"]').click();
+        cy.get('.next').click();
     });
 
     beforeEach(function () {
@@ -56,16 +59,12 @@ describe('The FingerprintRegistration screen', function() {
         cy.get('button[type="submit"]').should('have.attr', 'disabled');
     });
 
-    it('navigates back to the email input screen when clicking "Back"', function() {
+    it('navigates back to the registration form screen when clicking "Back"', function() {
         cy.get('button.secondary').click();
-        cy.get('[data-cy="email-input"]').should('be.visible');
-    });
+        cy.get('[data-cy="registration-form"]').should('be.visible');
 
-    it('persists the email address entered on the email input screen', function() {
-        cy.get('input[name="inputId"]').should('have.attr', 'value', 'cutest.kitty@kiva.org');
-
-        // it worked? Cool. Let's test the thing we came to test.
-        cy.get('#continue').click();
+        // it worked? cool, let's go back to the screen we're testing
+        cy.get('.next').click();
     });
 
     it('adds a fingerprint image to each box on click', function() {
@@ -93,7 +92,7 @@ describe('The FingerprintRegistration screen', function() {
     });
 
     it('surfaces a toast notification for when registration fails', function() {
-        cy.intercept('POST', '/v2/kiva/api/guardian/enroll', {
+        cy.intercept('POST', '/v2/kiva/api/guardian/onboard', {
             statusCode: 418
         });
         cy.get('#finger-id-1').click();
@@ -106,10 +105,13 @@ describe('The FingerprintRegistration screen', function() {
         cy.contains('There was an error while trying to register your fingerprints: Request failed with status code 418').should('not.be.visible');
     });
 
-    it.skip('succeeds?', function() {
-        cy.intercept('POST', '/v2/kiva/api/guardian/enroll', {
-            statusCode: 200
+    it('succeeds', function() {
+        cy.intercept('POST', '/v2/kiva/api/guardian/onboard', {
+            statusCode: 201,
+            delay: 1000
         });
         cy.get('button[type="submit"]').click();
+        cy.get('.primary-progress').should('be.visible');
+        cy.contains('Credential was successfully issued!').should('be.visible');
     });
 });

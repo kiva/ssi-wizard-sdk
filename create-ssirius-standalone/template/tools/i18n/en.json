@@ -63,7 +63,8 @@
         "firstDay": "Start Date",
         "school": "School Attended",
         "mentor": "Intern Mentor",
-        "lastDay": "End Date"
+        "lastDay": "End Date",
+        "ekycId": "EKYC ID"
     },
     "Errors": {
         "unknown": "An unknown error occurred.",
@@ -234,7 +235,8 @@
     },
     "FingerprintRegistration": {
         "text": {
-            "instructions": "Click one of the boxes below to begin scanning your preferred fingerprint. You can discard the image of your fingerprint by clicking the red 'X' within the box."
+            "instructions": "Click one of the boxes below to begin scanning your preferred fingerprint. You can discard the image of your fingerprint by clicking the red 'X' within the box.",
+            "credentialIssued": "Credential was successfully issued!"
         }
     }
 }

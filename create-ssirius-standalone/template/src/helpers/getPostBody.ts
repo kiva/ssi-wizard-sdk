@@ -8,7 +8,7 @@ export default function setPostBody(
     get: ComponentStoreGet
 ): FingerprintEkycBody {
     const body: FingerprintEkycBody = {
-        profile: 'identity.proof.request.json',
+        profile: 'employee.proof.request.json',
         guardianData: createGuardianData(image, position, get),
         device
     };

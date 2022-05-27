@@ -100,7 +100,7 @@ const component_map = {
     issue: {
         component: CredentialIssuance,
         props: {
-            agent: new KivaIssuer('identity.proof.request.json', config_constants.auth_token),
+            agent: new KivaIssuer('employee.proof.request.json', config_constants.auth_token),
             dependencies: {
                 registrationForm: ['registrationFormData'],
                 webcam: ['photo~attach']
@@ -111,7 +111,7 @@ const component_map = {
         component: ScanFingerprintScreen,
         props: {
             guardianSDK: GuardianSDK.init({
-                url: 'http://localhost:8080/v2/kyc',
+                url: 'http://localhost:8080/v2/kiva/api/guardian/verify',
                 token: config_constants.auth_token,
                 errorHandler: FPErrorHandler
             }),
@@ -139,27 +139,30 @@ const component_map = {
                         params.push({
                             image: fingerprints[idx].image,
                             capture_date: fingerprints[idx].captured,
-                            position: idx.toString(),
+                            position: parseInt(i),
                             missing_code: null,
                             type_id: '1'
                         });
                     }
                 }
 
-                return axios.post('http://localhost:8080/v2/kiva/api/guardian/enroll', {
+                return axios.post('http://localhost:8080/v2/kiva/api/guardian/onboard', {
+                    profile: 'employee.cred.def.json',
                     guardianData: [{
                         pluginType: 'FINGERPRINT',
                         filters: {
                             externalIds: {
-                                companyEmail: dependencyData.email
+                                companyEmail: dependencyData.companyEmail
                             }
                         },
                         params
-                    }]
+                    }],
+                    entityData: dependencyData
                 }, {headers});
             },
             dependencies: {
-                email_input: ['email']
+                registrationForm: ['registrationFormData'],
+                webcam: ['photo~attach']
             }
         }
     }

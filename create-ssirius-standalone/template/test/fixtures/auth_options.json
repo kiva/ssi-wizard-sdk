@@ -44,9 +44,9 @@
         "description": "Customer will scan their fingerprint in order to issue themselves a credential.",
         "type": "issue",
         "expectation": {
-            "selector": "[data-cy=\"email-input\"]",
+            "selector": "[data-cy=\"image-selection\"]",
             "expect": "be.visible",
-            "backSelector": ".secondary"
+            "backSelector": "[data-cy=\"image-select-back\"]"
         }
     }
 ]

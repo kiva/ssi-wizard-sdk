@@ -102,7 +102,7 @@ const config_constants = {
             type: 'issue',
             description:
                 'Customer will scan their fingerprint in order to issue themselves a credential.',
-            sequence: ['email_input', 'fpRegistration']
+            sequence: ['webcam', 'registrationForm', 'fpRegistration']
         }
     ],
     permittedOpenerOrigins

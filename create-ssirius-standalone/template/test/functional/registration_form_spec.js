@@ -65,8 +65,15 @@ describe('The Registration Form screen', () => {
         cy.get('#QR_scan').should('be.visible');
     });
 
-    it.skip('persists the data entered when you clicked "Back" from the QR screen', () => {
+    it('persists the data entered when you clicked "Back" from the QR screen', () => {
         // TODO: Need to figure out what to do with the Back button
         cy.get('[data-cy="qr-back"]').click();
+        for (let prop in properties) {
+            if (properties[prop]) {
+                cy.get('#' + prop).should(input => {
+                    expect(input.attr('value')).to.not.be.empty;
+                });
+            }
+        }
     });
 });

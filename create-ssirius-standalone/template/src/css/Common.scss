@@ -211,6 +211,9 @@ h4 {
   button {
       background-color: $primary-color;
       color: $primary-offset;
+      &:hover {
+          color: $primary-color;
+      }
   }
 }
 
