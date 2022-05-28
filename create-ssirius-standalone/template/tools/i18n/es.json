@@ -63,7 +63,8 @@
         "firstDay": "Primer día",
         "school": "Institución educativa a la que asistió",
         "mentor": "Mentor",
-        "lastDay": "Ultimo día"
+        "lastDay": "Ultimo día",
+        "ekycId": "No. Identidad EKYC"
     },
     "Errors": {
         "unknownError": "Ha ocurrido un problema.",
@@ -234,7 +235,8 @@
     },
     "FingerprintRegistration": {
         "text": {
-            "instructions": "Haga clic en uno de los cuadros a continuación para comenzar a escanear su huella dactilar preferida. Puede descartar la imagen de su huella dactilar haciendo clic en la 'X' roja dentro del cuadro."
+            "instructions": "Haga clic en uno de los cuadros a continuación para comenzar a escanear su huella dactilar preferida. Puede descartar la imagen de su huella dactilar haciendo clic en la 'X' roja dentro del cuadro.",
+            "credentialIssued": "¡Se emite una credencial exitosamente!"
         }
     }
 }

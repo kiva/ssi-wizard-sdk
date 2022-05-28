@@ -1,5 +1,5 @@
 import React, {useState, useContext, useRef} from 'react';
-import { Button } from '@material-ui/core';
+import { Button, LinearProgress } from '@material-ui/core';
 import {FlowDispatchTypes} from '@kiva/ssirius-react';
 import {FingerprintRegistrationProps, FingerprintMap, FingerprintCapture, FpIndex, FingerprintKeyMap} from './interfaces/FingerprintRegistrationInterfaces';
 
@@ -8,8 +8,11 @@ import './css/FingerprintRegistration.scss';
 import TranslationContext from '../../contexts/TranslationContext';
 import toast from 'react-hot-toast';
 
+const CREDENTIAL_STORE_KEY = 'credentialCreationData';
+
 export default function FingerprintRegistration(props: FingerprintRegistrationProps) {
     const t = useContext(TranslationContext);
+    const credentialData = constructInitialData();
     const mountDate = new Date();
     const scanning = useRef<boolean>(false);
     const fpKeyMap: FingerprintKeyMap = {
@@ -36,6 +39,36 @@ export default function FingerprintRegistration(props: FingerprintRegistrationPr
         9: createEmptyCaptureObject(),
         10: createEmptyCaptureObject()
     }));
+    const [requestInProgress, setRequestInProgress] = useState<boolean>(false);
+
+    function constructInitialData() {
+        let credentialCreationData = props.store.get(CREDENTIAL_STORE_KEY, {});
+        const deps = props.dependencies;
+
+        for (const key in deps) {
+            for (let i = 0; i < deps[key].length; i++) {
+                const storeKey = deps[key][i];
+                const storedValue = props.store.get(storeKey, false, key);
+                if (storedValue) {
+                    credentialCreationData = {
+                        ...credentialCreationData,
+                        ...(isObject(storedValue)
+                            ? storedValue
+                            : { [storeKey]: storedValue })
+                    };
+                }
+            }
+        }
+
+        props.store.set(CREDENTIAL_STORE_KEY, credentialCreationData);
+        return props.store.get(CREDENTIAL_STORE_KEY);
+    }
+
+    function isObject(value: any) {
+        return (
+            'object' === typeof value && value !== null && !Array.isArray(value)
+        );
+    }
 
     function showToast(msg: string, duration: number) {
         toast.error(msg, {duration});
@@ -113,38 +146,23 @@ export default function FingerprintRegistration(props: FingerprintRegistrationPr
         return Object.values(fingerprints).some(c => !!c.image);
     }
 
-    function getDependencies() {
-        let ret: any = {};
-        for (const dependency in props.dependencies) {
-            const dep = props.dependencies[dependency];
-            for (let i = 0; i < dep.length; i++) {
-                const data: any = props.store.get(dep[i], null, dependency);
-                if (data === null) continue;
-                if ('object' === typeof data) {
-                    ret = {
-                        ...ret,
-                        ...data
-                    };
-                } else {
-                    ret[dep[i]] = data;
-                }
-            }
-        }
-
-        return ret;
-    }
-
     async function handleSubmission(e: any) {
         e.preventDefault();
-        const dependencyData = getDependencies();
         if (hasAtLeastOneFP()) {
+            setRequestInProgress(true);
             try {
-                await props.register(fingerprints, dependencyData)
+                await props.register(fingerprints, credentialData).then(() => {
+                    toast.success(t('FingerprintRegistration.text.credentialIssued'), {
+                        duration: 7000
+                    });
+                });
             } catch (e: any) {
                 console.log(e);
                 showToast(t('Errors.fingerprint.registrationFailed', {
                     msg: e.message
                 }), 7000);
+            } finally {
+                setRequestInProgress(false);
             }
         } else {
             showToast(t('Errors.fingerprint.needAtLeastOne'), 5000);
@@ -152,6 +170,7 @@ export default function FingerprintRegistration(props: FingerprintRegistrationPr
     }
 
     return <div id="fp-registration-container">
+        {requestInProgress && <LinearProgress color='secondary' className='primary-progress' />}
         <p id="instructions">{t('FingerprintRegistration.text.instructions')}</p>
         {createFPContainer()}
         <div className="centered buttonListNew stack together loose">

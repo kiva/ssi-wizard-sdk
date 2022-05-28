@@ -145,7 +145,7 @@ describe('The ScanFingerprint screen', function () {
     });
 
     it('rejects invalid fingerprint data', function () {
-        cy.intercept('POST', '**/v2/kyc', {
+        cy.intercept('POST', '**/v2/kiva/api/guardian/verify', {
             statusCode: 418,
             delay: 1000,
             body: {
@@ -167,7 +167,7 @@ describe('The ScanFingerprint screen', function () {
     });
 
     it.skip('correctly handles the High Quality FP data, if available', function () {
-        cy.intercept('POST', '**/v2/kyc', {
+        cy.intercept('POST', '**/v2/kiva/api/guardian/verify', {
             statusCode: 400,
             delay: 500,
             body: {
@@ -189,7 +189,7 @@ describe('The ScanFingerprint screen', function () {
     });
 
     it('closes the error dialog when you click Continue', function () {
-        cy.intercept('POST', '**/v2/kyc', {
+        cy.intercept('POST', '**/v2/kiva/api/guardian/verify', {
             statusCode: 418,
             delay: 500,
             body: {
@@ -204,7 +204,7 @@ describe('The ScanFingerprint screen', function () {
     });
 
     it('allows you to cancel if the request is taking too long', function () {
-        cy.intercept('POST', '**/v2/kyc', {
+        cy.intercept('POST', '**/v2/kiva/api/guardian/verify', {
             statusCode: 418,
             delay: 15000,
             body: {
@@ -218,7 +218,7 @@ describe('The ScanFingerprint screen', function () {
     });
 
     it('allows you to continue processing the request if you want to', function () {
-        cy.intercept('POST', '**/v2/kyc', {
+        cy.intercept('POST', '**/v2/kiva/api/guardian/verify', {
             statusCode: 418,
             delay: 12000,
             body: {
@@ -233,7 +233,7 @@ describe('The ScanFingerprint screen', function () {
     });
 
     it('successfully validates valid data', function () {
-        cy.intercept('POST', '**/v2/kyc', {
+        cy.intercept('POST', '**/v2/kiva/api/guardian/verify', {
             statusCode: 200,
             body: ekycData
         }).as('citizenData');
